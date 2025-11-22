@@ -5,7 +5,6 @@ import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import GalleryPage from "./pages/GalleryPage";
 import MyNFTsPage from "./pages/MyNFTsPage";
-import MintPage from "./pages/MintPage";
 import NFTDetailPage from "./pages/NFTDetailPage";
 import { evmContractService } from "./utils/evmContract";
 
@@ -34,23 +33,22 @@ function App() {
 
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route
+              path="/"
+              element={
+                <HomePage
+                  isConnected={isConnected}
+                  address={addressString}
+                  onMint={handleMint}
+                />
+              }
+            />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/nft/:id" element={<NFTDetailPage />} />
             <Route
               path="/my-nfts"
               element={
                 <MyNFTsPage address={addressString} isConnected={isConnected} />
-              }
-            />
-            <Route
-              path="/mint"
-              element={
-                <MintPage
-                  isConnected={isConnected}
-                  address={addressString}
-                  onMint={handleMint}
-                />
               }
             />
           </Routes>

@@ -2,13 +2,21 @@ import { useState, useEffect } from "react";
 import NFTCard from "../components/NFTCard";
 import { evmContractService } from "../utils/evmContract";
 
+type OwnedNFT = {
+  id: number;
+  name: string;
+  image: string;
+  owner: string;
+  level: "white" | "purple";
+};
+
 interface MyNFTsPageProps {
   address: string;
   isConnected: boolean;
 }
 
 function MyNFTsPage({ address, isConnected }: MyNFTsPageProps) {
-  const [myNFTs, setMyNFTs] = useState<any[]>([]);
+  const [myNFTs, setMyNFTs] = useState<OwnedNFT[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -34,14 +42,14 @@ function MyNFTsPage({ address, isConnected }: MyNFTsPageProps) {
 
           // 为每个 token ID 获取详细信息
           const nftDetails = await Promise.all(
-            tokenIds.map(async (tokenId) => {
+            tokenIds.map(async (tokenId): Promise<OwnedNFT | null> => {
               try {
                 // 获取 token URI
                 const tokenURI = await evmContractService.getTokenURI(tokenId);
 
                 // 解析 metadata (这里假设 URI 返回的是 JSON)
                 // 如果 URI 是完整的 URL，可能需要 fetch
-                let metadata = {
+                const metadata = {
                   name: `Ninja #${tokenId}`,
                   image: "/test.png",
                   level: "white" as const,
@@ -77,7 +85,9 @@ function MyNFTsPage({ address, isConnected }: MyNFTsPageProps) {
           );
 
           // 过滤掉 null 值
-          const validNFTs = nftDetails.filter((nft) => nft !== null);
+          const validNFTs = nftDetails.filter(
+            (nft): nft is OwnedNFT => nft !== null
+          );
           setMyNFTs(validNFTs);
         } catch (error) {
           console.error("加载用户 NFT 失败:", error);

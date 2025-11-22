@@ -1,73 +1,105 @@
-/* ============================================
-   Ninja NFT - 全局基础样式
-   - CSS变量定义
-   - 浏览器重置样式
-   - 基础元素样式
-   ============================================ */
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
 
-/* ============ CSS 变量定义 ============ */
 :root {
-  /* 字体设置 */
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: "Space Grotesk", "Inter", "Helvetica Neue", sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  /* 颜色模式 */
   color-scheme: light;
-  
-  /* CryptoPunks 浅色主题配色 */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f7f8fa;
-  --bg-tertiary: #e8eaed;
-  --border-color: #e0e0e0;
-  --text-primary: #000000;
-  --text-secondary: #4a4a4a;
-  --text-tertiary: #8e8e93;
-  
-  /* 等级颜色 */
+  --bg-primary: #fffdf8;
+  --bg-secondary: #f8f3ec;
+  --bg-tertiary: #efe4d9;
+  --border-color: rgba(20, 24, 35, 0.08);
+  --text-primary: #1c1f2b;
+  --text-secondary: rgba(12, 16, 30, 0.7);
+  --text-tertiary: rgba(12, 16, 30, 0.45);
+  --accent-orange: #ff8a3d;
+  --accent-cyan: #45d3ff;
+  --accent-pink: #ff6ea9;
   --level-white: #f5f5f5;
-  --level-purple: #8b5cf6;
-  --level-orange: #f97316;
-  
-  /* 强调色 */
-  --accent-blue: #3b82f6;
-  --accent-red: #ef4444;
-  --accent-purple: #8b5cf6;
-
-  /* 字体渲染优化 */
+  --level-purple: #a36bff;
+  --level-orange: #ff9f43;
+  --glass-dark: rgba(255, 255, 255, 0.8);
+  --glass-light: rgba(255, 255, 255, 0.6);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ============ 浏览器重置 ============ */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ============ 基础元素样式 ============ */
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  display: block;
   min-width: 320px;
   min-height: 100vh;
-  background: var(--bg-primary);
+  background: radial-gradient(circle at 10% 5%, rgba(255, 255, 255, 0.7), transparent 35%),
+    linear-gradient(180deg, #faf5ee 0%, #f6f0eb 30%, #fefbf8 100%);
   color: var(--text-primary);
   position: relative;
   overflow-x: hidden;
 }
 
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  filter: blur(160px);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::before {
+  top: -140px;
+  left: -100px;
+  background: rgba(255, 197, 134, 0.5);
+}
+
+body::after {
+  bottom: -140px;
+  right: -120px;
+  background: rgba(69, 211, 255, 0.35);
+}
+
 #root {
   width: 100%;
-  margin: 0;
-  padding: 0;
+  min-height: 100vh;
   position: relative;
+  background: transparent;
   z-index: 1;
+}
+
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(248, 243, 236, 0.95) 100%);
+  backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  position: relative;
+}
+
+.main-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 15% 10%, rgba(255, 138, 61, 0.12), transparent 45%),
+    radial-gradient(circle at 80% 0%, rgba(69, 211, 255, 0.12), transparent 40%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 button {
@@ -77,28 +109,27 @@ button {
 a {
   color: inherit;
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-/* ============ 滚动条样式 ============ */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #bbb;
+  background: rgba(0, 0, 0, 0.25);
 }
 
-/* ============ 输入框特殊处理 ============ */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -110,8 +141,7 @@ input[type="number"] {
   appearance: textfield;
 }
 
-/* ============ 文本选中样式 ============ */
 ::selection {
-  background: rgba(59, 130, 246, 0.2);
-  color: var(--text-primary);
+  background: rgba(255, 138, 61, 0.3);
+  color: #1c1f2b;
 }

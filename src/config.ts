@@ -55,8 +55,8 @@ export const config = {
 
   // 应用配置
   app: {
-    name: "Ninja Labs NFT",
-    description: "Ninja Labs NFT Collection on Injective",
+    name: "N1NJ4 NFT",
+    description: "N1NJ4 NFT Collection on Injective",
     links: {
       twitter: "https://x.com/ninjalabscn",
       discord: "https://discord.gg/ninjalabs",

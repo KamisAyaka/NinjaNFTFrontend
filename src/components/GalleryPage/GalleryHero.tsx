@@ -14,7 +14,7 @@ function GalleryHero() {
             lineHeight: 1.1,
           }}
         >
-          NINJA LABS NFT
+          N1NJ4 NFT
         </h1>
         <p className="text-xl text-secondary font-medium m-0">
           100 unique digital collectibles living on the Injective blockchain

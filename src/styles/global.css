@@ -27,15 +27,27 @@
 .page-wrapper {
   width: 100%;
   min-height: 100vh;
-  background: var(--bg-primary);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, rgba(250, 244, 236, 0.95) 100%);
+  position: relative;
 }
 
 .section {
-  padding: 80px 20px;
+  padding: 100px 20px;
+  position: relative;
+  border-bottom: 1px solid rgba(12, 16, 30, 0.08);
+}
+
+.section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255, 138, 61, 0.08), transparent 35%, transparent 65%, rgba(69, 211, 255, 0.08));
+  pointer-events: none;
 }
 
 .section-sm {
   padding: 60px 20px;
+  position: relative;
 }
 
 /* ============ Flex 布局 ============ */
@@ -152,52 +164,56 @@
 
 /* ============ 卡片样式 ============ */
 .card {
-  background: var(--bg-primary);
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
-  padding: 24px;
-  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(12, 16, 30, 0.08);
+  border-radius: 16px;
+  padding: 28px;
+  transition: all 0.35s ease;
+  box-shadow: 0 25px 80px rgba(120, 90, 60, 0.15);
+  backdrop-filter: blur(18px);
 }
 
 .card:hover {
-  border-color: var(--text-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: rgba(255, 138, 61, 0.5);
+  transform: translateY(-6px);
+  box-shadow: 0 40px 120px rgba(255, 164, 90, 0.35);
 }
 
 .card-sm {
-  padding: 16px;
-  border-radius: 8px;
+  padding: 18px;
+  border-radius: 12px;
 }
 
 .card-lg {
-  padding: 32px;
+  padding: 36px;
 }
 
 .card-no-hover {
-  background: var(--bg-primary);
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
-  padding: 24px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(12, 16, 30, 0.08);
+  border-radius: 16px;
+  padding: 28px;
+  backdrop-filter: blur(18px);
 }
 
 /* ============ 按钮样式 ============ */
 .btn {
-  padding: 12px 24px;
+  padding: 14px 28px;
   font-size: 1rem;
-  font-weight: 700;
-  border-radius: 8px;
-  border: 2px solid;
+  font-weight: 600;
+  border-radius: 999px;
+  border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.35s ease;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.08em;
   font-family: inherit;
-  background: none;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn:disabled {
@@ -207,39 +223,39 @@
 }
 
 .btn-primary {
-  background: var(--text-primary);
-  color: white;
-  border-color: var(--text-primary);
+  background: linear-gradient(120deg, #ffb347, #ff7096);
+  color: #ffffff;
+  box-shadow: 0 20px 60px rgba(255, 140, 120, 0.35);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: transparent;
-  color: var(--text-primary);
-  transform: translateY(-2px);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 30px 80px rgba(255, 140, 120, 0.45);
 }
 
 .btn-secondary {
-  background: transparent;
+  background: linear-gradient(120deg, rgba(69, 211, 255, 0.15), rgba(255, 138, 61, 0.15));
   color: var(--text-primary);
-  border-color: var(--text-primary);
+  border: 1px solid rgba(12, 16, 30, 0.1);
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: var(--text-primary);
-  color: white;
-  transform: translateY(-2px);
+  color: var(--text-primary);
+  border-color: rgba(12, 16, 30, 0.25);
+  transform: translateY(-4px);
+  background: linear-gradient(120deg, rgba(69, 211, 255, 0.25), rgba(255, 138, 61, 0.25));
 }
 
 .btn-outline {
   background: transparent;
   color: var(--text-secondary);
-  border-color: var(--border-color);
+  border: 1px solid rgba(12, 16, 30, 0.2);
 }
 
 .btn-outline:hover:not(:disabled) {
-  background: var(--bg-secondary);
+  background: rgba(255, 255, 255, 0.6);
   color: var(--text-primary);
-  border-color: var(--text-primary);
+  border-color: rgba(12, 16, 30, 0.35);
 }
 
 .btn-sm {
@@ -248,8 +264,8 @@
 }
 
 .btn-lg {
-  padding: 16px 32px;
-  font-size: 1.125rem;
+  padding: 18px 36px;
+  font-size: 1.05rem;
 }
 
 .btn-full {
@@ -266,20 +282,22 @@
 /* ============ 输入框样式 ============ */
 .input {
   width: 100%;
-  padding: 12px 16px;
+  padding: 14px 18px;
   font-size: 1rem;
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
-  background: var(--bg-primary);
+  border: 1px solid rgba(12, 16, 30, 0.15);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
   color: var(--text-primary);
   font-family: inherit;
   transition: all 0.3s ease;
+  backdrop-filter: blur(12px);
 }
 
 .input:focus {
   outline: none;
-  border-color: var(--text-primary);
-  background: var(--bg-secondary);
+  border-color: rgba(69, 211, 255, 0.6);
+  box-shadow: 0 0 0 4px rgba(69, 211, 255, 0.15);
+  background: #ffffff;
 }
 
 .input:disabled {
@@ -376,6 +394,7 @@
   color: var(--text-primary);
   margin: 0;
   line-height: 1.2;
+  font-family: "Inter", "Helvetica Neue", sans-serif;
 }
 
 .title-xl {
@@ -669,18 +688,19 @@
 /* ============ 特殊组件样式 ============ */
 /* 统计卡片 */
 .stat-card {
-  background: var(--bg-primary);
-  padding: 20px;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 28px;
+  border-radius: 20px;
   text-align: center;
-  border: 2px solid var(--border-color);
+  border: 1px solid rgba(12, 16, 30, 0.08);
   transition: all 0.3s ease;
+  box-shadow: 0 15px 60px rgba(165, 119, 90, 0.15);
 }
 
 .stat-card:hover {
-  border-color: var(--text-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: rgba(255, 138, 61, 0.5);
+  transform: translateY(-6px);
+  box-shadow: 0 25px 90px rgba(255, 164, 90, 0.3);
 }
 
 .stat-value {
@@ -714,19 +734,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(12, 16, 30, 0.1);
+  border-radius: 12px;
   color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s ease;
   padding: 0;
   font-family: inherit;
+  box-shadow: 0 10px 40px rgba(165, 119, 90, 0.15);
 }
 
 .pagination-btn:hover:not(:disabled) {
-  background: var(--bg-secondary);
-  border-color: var(--text-primary);
+  background: rgba(255, 255, 255, 1);
+  border-color: rgba(12, 16, 30, 0.3);
+  color: var(--text-primary);
 }
 
 .pagination-btn:disabled {
@@ -741,26 +763,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(12, 16, 30, 0.1);
+  border-radius: 12px;
   color: var(--text-secondary);
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: 0 10px 40px rgba(165, 119, 90, 0.15);
 }
 
 .pagination-number:hover {
-  background: var(--bg-secondary);
+  background: rgba(255, 255, 255, 1);
   color: var(--text-primary);
-  border-color: var(--text-primary);
+  border-color: rgba(12, 16, 30, 0.3);
 }
 
 .pagination-number.active {
-  background: var(--text-primary);
-  color: white;
-  border-color: var(--text-primary);
+  background: linear-gradient(120deg, #ffb347, #ff7096);
+  color: #ffffff;
+  border-color: transparent;
 }
 
 /* 等级相关样式 */
@@ -892,22 +915,23 @@
 .nft-showcase-item {
   position: relative;
   aspect-ratio: 1;
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
+  border: 1px solid rgba(12, 16, 30, 0.08);
+  border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.2s ease;
-  background: var(--bg-primary);
+  transition: all 0.35s ease;
+  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.9), rgba(255, 243, 232, 0.9));
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
+  box-shadow: 0 25px 60px rgba(165, 119, 90, 0.2);
 }
 
 .nft-showcase-item:hover {
-  border-color: var(--text-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: rgba(255, 138, 61, 0.5);
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 30px 100px rgba(255, 164, 90, 0.35);
 }
 
 .nft-showcase-item img {
@@ -922,11 +946,11 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  font-size: 0.7rem;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(252, 169, 113, 0.85) 30%, rgba(252, 169, 113, 0.85) 70%, rgba(255, 255, 255, 0));
+  color: #fff;
+  font-size: 0.75rem;
   font-weight: 600;
-  padding: 4px;
+  padding: 6px;
   text-align: center;
   font-family: monospace;
   opacity: 0;
@@ -985,21 +1009,22 @@
 }
 
 .faq-item {
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
+  border: 1px solid rgba(12, 16, 30, 0.08);
+  border-radius: 16px;
   overflow: hidden;
-  background: var(--bg-primary);
-  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.95);
+  transition: all 0.35s ease;
+  box-shadow: 0 20px 60px rgba(165, 119, 90, 0.15);
 }
 
 .faq-item:hover {
-  border-color: var(--text-primary);
+  border-color: rgba(255, 138, 61, 0.5);
 }
 
 .faq-question {
   width: 100%;
-  padding: 20px 24px;
-  background: var(--bg-primary);
+  padding: 22px 28px;
+  background: transparent;
   border: none;
   text-align: left;
   cursor: pointer;
@@ -1015,7 +1040,7 @@
 }
 
 .faq-question:hover {
-  background: var(--bg-secondary);
+  background: rgba(255, 222, 202, 0.2);
 }
 
 .faq-question span {
@@ -1034,7 +1059,7 @@
 }
 
 .faq-answer {
-  padding: 0 24px 20px 24px;
+  padding: 0 28px 24px 28px;
   color: var(--text-secondary);
   line-height: 1.8;
   animation: fadeIn 0.3s ease;
@@ -1042,13 +1067,12 @@
 
 @media (max-width: 768px) {
   .faq-question {
-    padding: 16px 20px;
+    padding: 18px 22px;
     font-size: 0.95rem;
   }
   
   .faq-answer {
-    padding: 0 20px 16px 20px;
+    padding: 0 22px 18px 22px;
     font-size: 0.9rem;
   }
 }
-

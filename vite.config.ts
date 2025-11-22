@@ -1,12 +1,30 @@
-import { defineConfig } from "vite";
+import { defineConfig, type PluginOption } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import { nodePolyfills } from "@bangjelkoski/vite-plugin-node-polyfills";
+
+const stripUseClientDirective = (): PluginOption => ({
+  name: "strip-use-client-directive",
+  enforce: "pre",
+  apply: "build",
+  transform(code: string, id: string) {
+    if (!id.includes("node_modules")) return null;
+    if (
+      !code.includes('"use client"') &&
+      !code.includes("'use client'")
+    ) {
+      return null;
+    }
+    const cleaned = code.replace(/(^|\n)\s*(['"])use client\2;?/g, "$1");
+    return { code: cleaned, map: null };
+  },
+});
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react(), 
-    nodePolyfills({ protocolImports: true })
+    react(),
+    nodePolyfills({ protocolImports: true }),
+    stripUseClientDirective(),
   ],
   define: {
     global: "globalThis",

@@ -81,7 +81,7 @@ export class EvmContractService {
    * 铸造 NFT
    * @param quantity 铸造数量
    */
-  async mint(quantity: number): Promise<any> {
+  async mint(quantity: number): Promise<ethers.TransactionReceipt> {
     if (!this.contract) {
       await this.init();
     }
@@ -260,7 +260,7 @@ export class EvmContractService {
         const endIndex = Math.min(i + batchSize - 1, Number(totalMinted));
         
         // 创建批量查询 promises
-        const promises: Promise<any>[] = [];
+        const promises: Promise<string>[] = [];
         for (let j = i; j <= endIndex; j++) {
           promises.push(this.contract!.ownerOf(j));
         }
@@ -333,4 +333,3 @@ export class EvmContractService {
 export const evmContractService = new EvmContractService();
 
 export default EvmContractService;
-

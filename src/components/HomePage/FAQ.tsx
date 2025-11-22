@@ -7,14 +7,14 @@ interface FAQItem {
 
 const faqData: FAQItem[] = [
   {
-    question: "什么是 Ninja Labs NFT?",
+    question: "什么是 N1NJ4 NFT?",
     answer:
-      "Ninja Labs NFT 是一个包含 100 个独特像素赛博朋克忍者肖像的 NFT 集合。每个 Ninja 都是从不同的特征（发型、配饰、面部细节）中通过算法生成的，分为两个等级：白色背景（普通贡献者）和紫色背景（资深贡献者）。",
+      "N1NJ4 NFT 是一个包含 100 个独特像素赛博朋克忍者肖像的 NFT 集合。每个 Ninja 都是从不同的特征（发型、配饰、面部细节）中通过算法生成的，分为两个等级：白色背景（普通贡献者）和紫色背景（资深贡献者）。",
   },
   {
     question: "这里到底发生了什么？",
     answer:
-      "Ninja Labs NFT 旨在构建一个专属的开发者社区身份系统。这是一个大规模的生成艺术作品，一种全新的数字所有权模式，以及一个内置的社区贡献激励系统。通过参与社区活动、贡献代码、分享知识等方式，你的 NFT 会随着贡献度提升而升级。",
+      "N1NJ4 NFT 旨在构建一个专属的开发者社区身份系统。这是一个大规模的生成艺术作品，一种全新的数字所有权模式，以及一个内置的社区贡献激励系统。通过参与社区活动、贡献代码、分享知识等方式，你的 NFT 会随着贡献度提升而升级。",
   },
   {
     question: "如何获得一个 Ninja?",
@@ -29,7 +29,7 @@ const faqData: FAQItem[] = [
   {
     question: "Ninja 是 ERC-721 代币吗？",
     answer:
-      "Ninja Labs NFT 部署在 Injective 区块链上，遵循类似的 NFT 标准。每个 NFT 都是唯一且不可替代的，可以在支持的市场上进行交易。",
+      "N1NJ4 NFT 部署在 Injective 区块链上，遵循类似的 NFT 标准。每个 NFT 都是唯一且不可替代的，可以在支持的市场上进行交易。",
   },
   {
     question: "网站上的市场数据来自哪里？",
@@ -52,7 +52,7 @@ function FAQ() {
 
   return (
     <div className="faq-section">
-      <h2 className="title title-lg text-center mb-lg">Q&A</h2>
+      <h2 className="title title-lg text-center mb-lg">Q &amp; A</h2>
       <div className="faq-list">
         {faqData.map((item, index) => (
           <div key={index} className="faq-item">
@@ -88,4 +88,3 @@ function FAQ() {
 }
 
 export default FAQ;
-

@@ -42,16 +42,17 @@ function GalleryPage() {
       if (levelFilter === "all") return true;
       return nft.level === levelFilter;
     })
-    .sort((a, b) => {
-      switch (sortBy) {
-        case "level":
-          const levelOrder = { purple: 0, white: 1 };
-          return levelOrder[a.level] - levelOrder[b.level];
-        case "oldest":
-          return a.id - b.id;
-        case "newest":
-        default:
-          return b.id - a.id;
+      .sort((a, b) => {
+        switch (sortBy) {
+          case "level": {
+            const levelOrder = { purple: 0, white: 1 };
+            return levelOrder[a.level] - levelOrder[b.level];
+          }
+          case "oldest":
+            return a.id - b.id;
+          case "newest":
+          default:
+            return b.id - a.id;
       }
     });
 

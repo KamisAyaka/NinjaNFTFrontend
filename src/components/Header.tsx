@@ -5,44 +5,43 @@ import "./Header.css";
 function Header() {
   const location = useLocation();
 
-  const isActive = (path: string) => {
-    return location.pathname === path ? "active" : "";
+  const navItems = [
+    { path: "/", label: "Home" },
+    { path: "/gallery", label: "Gallery" },
+    { path: "/my-nfts", label: "My NFTs" },
+  ];
+
+  const getActiveClass = (item: { path: string }) => {
+    return location.pathname === item.path ? "active" : "";
   };
 
   return (
     <header className="header">
+      <div className="header-glow" />
       <div className="header-container">
-        <div className="header-left">
-          <Link to="/" className="logo">
-            <img 
-              src="/Logo.jpg" 
-              alt="Ninja Labs Logo" 
-              style={{ 
-                height: "48px", 
-                width: "auto",
-                display: "block"
-              }} 
-            />
-          </Link>
+        <Link to="/" className="logo">
+          <img src="/NINJ4-Logo-2.svg" alt="N1NJ4" className="logo-symbol" />
+        </Link>
 
-          <nav className="nav-links">
-            <Link to="/" className={`nav-link ${isActive("/")}`}>
-              Home
+        <nav className="nav-links">
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`nav-link ${getActiveClass(item)}`}
+            >
+              <span className="nav-link-label">{item.label}</span>
             </Link>
-            <Link to="/gallery" className={`nav-link ${isActive("/gallery")}`}>
-              Gallery
-            </Link>
-            <Link to="/mint" className={`nav-link ${isActive("/mint")}`}>
-              Mint
-            </Link>
-            <Link to="/my-nfts" className={`nav-link ${isActive("/my-nfts")}`}>
-              My NFTs
-            </Link>
-          </nav>
-        </div>
+          ))}
+        </nav>
 
         <div className="header-right">
-          <ConnectButton />
+          <div className="header-divider" />
+          <ConnectButton
+            chainStatus="icon"
+            showBalance={false}
+            accountStatus="address"
+          />
         </div>
       </div>
     </header>

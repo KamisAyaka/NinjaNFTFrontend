@@ -39,7 +39,7 @@ function NFTShowcase({ count = 30, totalNFTs = 100 }: NFTShowcaseProps) {
   return (
     <div className="nft-showcase">
       <div className="nft-showcase-header">
-        <h2 className="title title-lg text-center mb-md">All Ninja NFTs</h2>
+        <h2 className="title title-lg text-center mb-md">All N1NJ4 NFTs</h2>
         <Link to="/gallery" className="btn btn-outline btn-sm">
           See all NFTs →
         </Link>
@@ -62,4 +62,3 @@ function NFTShowcase({ count = 30, totalNFTs = 100 }: NFTShowcaseProps) {
 }
 
 export default NFTShowcase;
-

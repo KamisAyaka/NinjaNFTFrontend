@@ -241,8 +241,8 @@ function NFTDetailPage() {
                 className="text-base text-secondary"
                 style={{ lineHeight: "1.7" }}
               >
-                这是 Ninja Labs NFT 系列中的第 {nft.id} 号作品。每个 Ninja
-                都是独特的像素艺术作品， 代表着社区成员在 Injective
+                这是 N1NJ4 NFT 系列中的第 {nft.id} 号作品。每个 Ninja
+                都是独特的像素 艺术作品，代表着社区成员在 Injective
                 生态中的贡献等级。
               </p>
             </div>
@@ -253,7 +253,7 @@ function NFTDetailPage() {
                 className="btn btn-primary btn-lg"
                 style={{ width: "100%" }}
               >
-                查看在区块链上
+                在区块链上查看
               </button>
             </div>
           </div>

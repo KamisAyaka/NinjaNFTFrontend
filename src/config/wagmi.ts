@@ -1,5 +1,5 @@
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
-import { http } from "wagmi";
+import { http, type Chain } from "wagmi";
 import { defineChain } from "viem";
 import config from "../config";
 
@@ -64,15 +64,15 @@ export const injectiveMainnet = defineChain({
 });
 
 // 根据配置选择链
-const chains = config.localChain.enabled
-  ? ([localhost] as const)
-  : ([injectiveTestnet, injectiveMainnet] as const);
+const chains: readonly [Chain, ...Chain[]] = config.localChain.enabled
+  ? [localhost]
+  : [injectiveTestnet, injectiveMainnet];
 
 // 创建 wagmi 配置
 export const wagmiConfig = getDefaultConfig({
   appName: "Ninja NFT",
   projectId: "3a8170812b534d0ff9d794f19a901d64", // 需要从 https://cloud.walletconnect.com/ 获取
-  chains: chains as any, // RainbowKit 类型要求，实际运行时是正确的
+  chains,
   ssr: false, // 如果是 Next.js SSR，设置为 true
   transports: config.localChain.enabled
     ? {
