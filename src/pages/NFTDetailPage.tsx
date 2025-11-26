@@ -12,7 +12,7 @@ const mockNFTs = Array.from({ length: 100 }, (_, i) => {
   return {
     id: i + 1,
     name: `Ninja #${i + 1}`,
-    image: "/test.png",
+    image: "/Placeholder_image.jpg",
     owner: `0x${Math.random().toString(16).slice(2, 8)}...${Math.random()
       .toString(16)
       .slice(2, 6)}`,

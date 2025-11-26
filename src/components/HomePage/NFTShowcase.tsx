@@ -52,7 +52,7 @@ function NFTShowcase({ count = 30, totalNFTs = 100 }: NFTShowcaseProps) {
             className={`nft-showcase-item level-${nft.level}`}
             title={nft.name}
           >
-            <img src="/test.png" alt={nft.name} />
+            <img src="/Placeholder_image.jpg" alt={nft.name} />
             <span className="nft-showcase-id">#{nft.id}</span>
           </Link>
         ))}

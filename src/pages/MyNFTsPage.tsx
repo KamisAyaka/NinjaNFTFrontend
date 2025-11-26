@@ -51,7 +51,7 @@ function MyNFTsPage({ address, isConnected }: MyNFTsPageProps) {
                 // 如果 URI 是完整的 URL，可能需要 fetch
                 const metadata = {
                   name: `Ninja #${tokenId}`,
-                  image: "/test.png",
+                  image: "/Placeholder_image.jpg",
                   level: "white" as const,
                 };
 

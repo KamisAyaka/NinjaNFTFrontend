@@ -16,7 +16,7 @@ const mockNFTs = Array.from({ length: 100 }, (_, i) => {
   return {
     id: i + 1,
     name: `Ninja #${i + 1}`,
-    image: "/test.png",
+    image: "/Placeholder_image.jpg",
     owner: `0x${Math.random().toString(16).slice(2, 8)}...${Math.random()
       .toString(16)
       .slice(2, 6)}`,
@@ -42,17 +42,17 @@ function GalleryPage() {
       if (levelFilter === "all") return true;
       return nft.level === levelFilter;
     })
-      .sort((a, b) => {
-        switch (sortBy) {
-          case "level": {
-            const levelOrder = { purple: 0, white: 1 };
-            return levelOrder[a.level] - levelOrder[b.level];
-          }
-          case "oldest":
-            return a.id - b.id;
-          case "newest":
-          default:
-            return b.id - a.id;
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "level": {
+          const levelOrder = { purple: 0, white: 1 };
+          return levelOrder[a.level] - levelOrder[b.level];
+        }
+        case "oldest":
+          return a.id - b.id;
+        case "newest":
+        default:
+          return b.id - a.id;
       }
     });
 
