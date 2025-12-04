@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 import "./NFTCard.css";
 
 type NFTLevel = "white" | "purple";
@@ -20,6 +21,8 @@ function NFTCard({
   level,
   attributes,
 }: NFTCardProps) {
+  const { language } = useLanguage();
+
   return (
     <Link to={`/nft/${id}`} className="nft-card-link">
       <div className={`nft-card level-${level}`}>
@@ -47,7 +50,9 @@ function NFTCard({
 
         {owner && (
           <div className="nft-owner-section">
-            <span className="owner-label">持有者</span>
+            <span className="owner-label">
+              {language === "zh" ? "持有者" : "Owner"}
+            </span>
             <span className="owner-address">
               {owner.slice(0, 6)}...{owner.slice(-4)}
             </span>

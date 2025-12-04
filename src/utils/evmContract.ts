@@ -2,21 +2,10 @@ import { ethers } from 'ethers';
 import { getWalletClient } from 'wagmi/actions';
 import { wagmiConfig } from '../config/wagmi';
 import config from '../config';
+import Ninj4Artifact from '../abi/NINJ4NFT.json';
 
-// NFT 合约 ABI（只包含需要的方法）
-const NFT_ABI = [
-  'function mint(uint256 quantity) payable',
-  'function totalMinted() view returns (uint256)',
-  'function mintActive() view returns (bool)',
-  'function minted(address owner) view returns (uint256)',
-  'function MAX_SUPPLY() view returns (uint256)',
-  'function MAX_PER_WALLET() view returns (uint256)',
-  'function ownerOf(uint256 tokenId) view returns (address)',
-  'function tokenURI(uint256 tokenId) view returns (string)',
-  'function balanceOf(address owner) view returns (uint256)',
-  'function tokenByIndex(uint256 index) view returns (uint256)', // ERC721Enumerable
-  'function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)', // ERC721Enumerable
-];
+const NFT_ABI = Ninj4Artifact;
+const MAX_PER_WALLET = 1;
 
 // EVM 合约交互服务类
 export class EvmContractService {
@@ -24,20 +13,71 @@ export class EvmContractService {
   private contract: ethers.Contract | null = null;
   private signer: ethers.JsonRpcSigner | null = null;
   private isInitialized = false;
+  private currentAccount: string | null = null;
+  private readProvider: ethers.JsonRpcProvider | null = null;
+  private readContract: ethers.Contract | null = null;
+
+  private async getReadContract(): Promise<ethers.Contract> {
+    this.ensureReadProvider();
+    if (!this.readContract) {
+      throw new Error("只读合约未初始化");
+    }
+    return this.readContract;
+  }
 
   constructor() {
     // 延迟初始化，等待 window.ethereum 可用
+  }
+
+  private getRpcConfig() {
+    if (config.networkType === "testnet") {
+      return config.chain.testnet;
+    }
+    if (config.networkType === "mainnet") {
+      return config.chain.mainnet;
+    }
+    return null;
+  }
+
+  private getRpcUrl() {
+    const rpcConfig = this.getRpcConfig();
+    if (rpcConfig) {
+      return rpcConfig.node;
+    }
+    if (config.localChain.enabled) {
+      return config.localChain.rpcUrl;
+    }
+    return null;
+  }
+
+  private getContractAddress() {
+    return config.localChain.enabled
+      ? config.localChain.contractAddress
+      : config.nft.contractAddress;
+  }
+
+  private ensureReadProvider() {
+    if (this.readProvider && this.readContract) {
+      return;
+    }
+
+    const rpcUrl = this.getRpcUrl();
+    if (!rpcUrl) {
+      throw new Error("未配置 RPC 节点");
+    }
+
+    this.readProvider = new ethers.JsonRpcProvider(rpcUrl);
+    this.readContract = new ethers.Contract(
+      this.getContractAddress(),
+      NFT_ABI,
+      this.readProvider
+    );
   }
 
   /**
    * 初始化 provider 和合约实例
    */
   async init() {
-    // 如果已经初始化，直接返回
-    if (this.isInitialized && this.contract) {
-      return;
-    }
-
     if (typeof window === 'undefined') {
       throw new Error('Window object not available');
     }
@@ -46,6 +86,13 @@ export class EvmContractService {
     const walletClient = await getWalletClient(wagmiConfig);
     if (!walletClient) {
       throw new Error('请先连接钱包');
+    }
+
+    const walletAddress = walletClient.account?.address?.toLowerCase() ?? null;
+
+    // 如果已经初始化且钱包地址未变化，直接返回
+    if (this.isInitialized && this.contract && walletAddress === this.currentAccount) {
+      return;
     }
 
     // 使用 window.ethereum（RainbowKit 已经管理了连接）
@@ -60,12 +107,12 @@ export class EvmContractService {
     
     // 获取 signer
     this.signer = await this.provider.getSigner();
+    this.currentAccount = walletAddress;
     
     // 创建合约实例
-    const contractAddress = config.localChain.enabled 
-      ? config.localChain.contractAddress 
-      : config.nft.contractAddress;
-    
+    const contractAddress = this.getContractAddress();
+    this.ensureReadProvider();
+
     this.contract = new ethers.Contract(
       contractAddress,
       NFT_ABI,
@@ -78,8 +125,8 @@ export class EvmContractService {
   }
 
   /**
-   * 铸造 NFT
-   * @param quantity 铸造数量
+   * 铸造 NFT（NINJ4 合约一次仅允许铸造 1 个）
+   * @param quantity 铸造数量（必须为 1）
    */
   async mint(quantity: number): Promise<ethers.TransactionReceipt> {
     if (!this.contract) {
@@ -90,18 +137,15 @@ export class EvmContractService {
       throw new Error('合约未初始化');
     }
 
-    console.log(`🔄 铸造 ${quantity} 个 NFT...`);
-    
-    // 调用 mint 函数，value: 0（免费 mint）
-    const tx = await this.contract.mint(quantity, { value: 0 });
-    
+    if (quantity !== 1) {
+      throw new Error('NINJ4 系列一次只能铸造 1 个 NFT');
+    }
+
+    console.log('🔄 铸造 1 个 NINJ4 NFT...');
+    const tx = await this.contract.mint();
     console.log('📝 交易已发送:', tx.hash);
-    
-    // 等待交易确认
     const receipt = await tx.wait();
-    
     console.log('✅ 交易已确认:', receipt);
-    
     return receipt;
   }
 
@@ -109,16 +153,9 @@ export class EvmContractService {
    * 查询总铸造数量
    */
   async getTotalMinted(): Promise<number> {
-    if (!this.contract) {
-      await this.init();
-    }
-
-    if (!this.contract) {
-      return 0;
-    }
-
     try {
-      const totalMinted = await this.contract.totalMinted();
+      const contract = await this.getReadContract();
+      const totalMinted = await contract.totalMinted();
       return Number(totalMinted);
     } catch (error) {
       console.error('查询 totalMinted 失败:', error);
@@ -131,17 +168,10 @@ export class EvmContractService {
    * @param address 用户地址
    */
   async getMintedCount(address: string): Promise<number> {
-    if (!this.contract) {
-      await this.init();
-    }
-
-    if (!this.contract) {
-      return 0;
-    }
-
     try {
-      const minted = await this.contract.minted(address);
-      return Number(minted);
+      const contract = await this.getReadContract();
+      const minted = await contract.hasMinted(address);
+      return minted ? 1 : 0;
     } catch (error) {
       console.error('查询 minted 失败:', error);
       return 0;
@@ -155,38 +185,21 @@ export class EvmContractService {
     if (!this.contract) {
       await this.init();
     }
-
-    if (!this.contract) {
-      return false;
-    }
-
-    try {
-      const mintActive = await this.contract.mintActive();
-      return mintActive;
-    } catch (error) {
-      console.error('查询 mintActive 失败:', error);
-      return false;
-    }
+    // NINJ4 合约没有开关，默认始终可铸造（除非链上达到限额或余额不足）
+    return true;
   }
 
   /**
    * 查询最大供应量
    */
   async getMaxSupply(): Promise<number> {
-    if (!this.contract) {
-      await this.init();
-    }
-
-    if (!this.contract) {
-      return 10000;
-    }
-
     try {
-      const maxSupply = await this.contract.MAX_SUPPLY();
+      const contract = await this.getReadContract();
+      const maxSupply = await contract.maxSupply();
       return Number(maxSupply);
     } catch (error) {
       console.error('查询 MAX_SUPPLY 失败:', error);
-      return 10000;
+      return config.nft.maxSupply;
     }
   }
 
@@ -194,20 +207,26 @@ export class EvmContractService {
    * 查询每个钱包最大铸造数量
    */
   async getMaxPerWallet(): Promise<number> {
+    return MAX_PER_WALLET;
+  }
+
+  /**
+   * 查询用户是否已经铸造过
+   */
+  async hasMinted(address: string): Promise<boolean> {
     if (!this.contract) {
       await this.init();
     }
 
     if (!this.contract) {
-      return 10;
+      return false;
     }
 
     try {
-      const maxPerWallet = await this.contract.MAX_PER_WALLET();
-      return Number(maxPerWallet);
+      return await this.contract.hasMinted(address);
     } catch (error) {
-      console.error('查询 MAX_PER_WALLET 失败:', error);
-      return 10;
+      console.error('查询 hasMinted 失败:', error);
+      return false;
     }
   }
 
@@ -238,18 +257,10 @@ export class EvmContractService {
    * @param owner 用户地址
    */
   async getUserNFTs(owner: string): Promise<number[]> {
-    if (!this.contract) {
-      await this.init();
-    }
-
-    if (!this.contract) {
-      return [];
-    }
-
     try {
       console.log(`🔍 查询用户 ${owner} 的 NFT...`);
-      
-      const totalMinted = await this.contract.totalMinted();
+      const contract = await this.getReadContract();
+      const totalMinted = await contract.totalMinted();
       const nftIds: number[] = [];
 
       // 遍历所有已铸造的 token，检查拥有者
@@ -262,7 +273,7 @@ export class EvmContractService {
         // 创建批量查询 promises
         const promises: Promise<string>[] = [];
         for (let j = i; j <= endIndex; j++) {
-          promises.push(this.contract!.ownerOf(j));
+          promises.push(contract.ownerOf(j));
         }
         
         // 并行查询
@@ -289,16 +300,9 @@ export class EvmContractService {
    * @param tokenId token ID
    */
   async getTokenURI(tokenId: number): Promise<string> {
-    if (!this.contract) {
-      await this.init();
-    }
-
-    if (!this.contract) {
-      return '';
-    }
-
     try {
-      const uri = await this.contract.tokenURI(tokenId);
+      const contract = await this.getReadContract();
+      const uri = await contract.tokenURI(tokenId);
       return uri;
     } catch (error) {
       console.error('查询 tokenURI 失败:', error);
@@ -311,20 +315,34 @@ export class EvmContractService {
    * @param owner 用户地址
    */
   async getBalanceOf(owner: string): Promise<number> {
-    if (!this.contract) {
-      await this.init();
-    }
-
-    if (!this.contract) {
-      return 0;
-    }
-
     try {
-      const balance = await this.contract.balanceOf(owner);
+      const contract = await this.getReadContract();
+      const balance = await contract.balanceOf(owner);
       return Number(balance);
     } catch (error) {
       console.error('查询 balanceOf 失败:', error);
       return 0;
+    }
+  }
+
+  /**
+   * 查询用户持有的 NFT（包含 tokenURI）
+   */
+  async getOwnerTokensWithURI(owner: string): Promise<Array<{ tokenId: number; tokenURI: string }>> {
+    if (!owner) {
+      return [];
+    }
+
+    try {
+      const contract = await this.getReadContract();
+      const response = await contract.ownerTokensWithURI(owner);
+      return response.map((item: { tokenId: bigint; tokenURI: string }) => ({
+        tokenId: Number(item.tokenId),
+        tokenURI: item.tokenURI,
+      }));
+    } catch (error) {
+      console.error('查询 ownerTokensWithURI 失败:', error);
+      return [];
     }
   }
 }

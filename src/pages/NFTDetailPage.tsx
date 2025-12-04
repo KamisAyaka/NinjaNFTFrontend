@@ -1,70 +1,149 @@
-import { useParams, Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useLanguage } from "../context/LanguageContext";
+import imagesSummary from "../abi/images_summary.json";
 
-type NFTLevel = "white" | "purple" | "orange";
+type Attribute = {
+  trait_type: string;
+  value: string;
+};
 
-// 模拟NFT数据（实际应该从合约或API获取）
-const mockNFTs = Array.from({ length: 100 }, (_, i) => {
-  let level: NFTLevel = "white";
-  if (i < 10) level = "orange";
-  else if (i < 30) level = "purple";
-  else level = "white";
+type Metadata = {
+  name: string;
+  description: string;
+  image: string;
+  edition?: number;
+  attributes: Attribute[];
+};
 
-  return {
-    id: i + 1,
-    name: `Ninja #${i + 1}`,
-    image: "/Placeholder_image.jpg",
-    owner: `0x${Math.random().toString(16).slice(2, 8)}...${Math.random()
-      .toString(16)
-      .slice(2, 6)}`,
-    level,
-    attributes: [
-      { trait_type: "Background", value: level },
-      { trait_type: "Type", value: "Cyber Ninja" },
-      {
-        trait_type: "Rarity",
-        value:
-          level === "orange"
-            ? "Legendary"
-            : level === "purple"
-            ? "Rare"
-            : "Common",
-      },
-    ],
-  };
-});
+type SummaryEntry = {
+  edition: number;
+  image: string;
+  metadata?: string;
+};
+
+const summaryEntries = imagesSummary as SummaryEntry[];
+
+const resolveIpfsUrl = (url?: string) =>
+  url?.startsWith("ipfs://") ? `https://ipfs.io/ipfs/${url.slice(7)}` : url;
+
+type ErrorKey = "missingId" | "notFound" | "loadFailed" | null;
 
 function NFTDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const nft = mockNFTs.find((n) => n.id === Number(id));
+  const [metadata, setMetadata] = useState<Metadata | null>(null);
+  const [errorKey, setErrorKey] = useState<ErrorKey>(null);
+  const { language } = useLanguage();
+  const translate = (zh: string, en: string) => (language === "zh" ? zh : en);
+  const getErrorMessage = (key: Exclude<ErrorKey, null>) => {
+    switch (key) {
+      case "missingId":
+        return translate("未指定 NFT ID", "NFT ID not provided");
+      case "notFound":
+        return translate(
+          "未找到对应的 NFT 数据",
+          "No metadata found for this NFT"
+        );
+      case "loadFailed":
+      default:
+        return translate("加载 NFT 数据失败", "Failed to load NFT data");
+    }
+  };
 
-  if (!nft) {
+  const editionNumber = useMemo(() => (id ? Number(id) : NaN), [id]);
+
+  const summaryEntry = useMemo(() => {
+    if (!Number.isFinite(editionNumber)) return null;
+    return (
+      summaryEntries.find((entry) => entry.edition === editionNumber) || null
+    );
+  }, [editionNumber]);
+
+  useEffect(() => {
+    if (!id) {
+      setErrorKey("missingId");
+      setMetadata(null);
+      return;
+    }
+
+    if (!summaryEntry) {
+      setErrorKey("notFound");
+      setMetadata(null);
+      return;
+    }
+
+    const metadataUrl = resolveIpfsUrl(summaryEntry.metadata);
+    if (!metadataUrl) {
+      setErrorKey("loadFailed");
+      setMetadata(null);
+      return;
+    }
+
+    let cancelled = false;
+
+    const fetchMetadata = async () => {
+      try {
+        const response = await fetch(metadataUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch metadata: ${response.status}`);
+        }
+        const data = (await response.json()) as Metadata;
+        if (!cancelled) {
+          setMetadata(data);
+          setErrorKey(null);
+        }
+      } catch (err) {
+        console.error("加载 NFT metadata 失败:", err);
+        if (!cancelled) {
+          setMetadata(null);
+          setErrorKey("loadFailed");
+        }
+      }
+    };
+
+    fetchMetadata();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id, summaryEntry]);
+
+  const displayImage = useMemo(
+    () =>
+      metadata?.image
+        ? resolveIpfsUrl(metadata.image)
+        : resolveIpfsUrl(summaryEntry?.image) || "",
+    [metadata, summaryEntry]
+  );
+
+  if (errorKey) {
     return (
       <div className="page-wrapper section">
         <div className="container text-center">
-          <h1 className="title title-xl mb-md">NFT Not Found</h1>
+          <h1 className="title title-xl mb-md">{getErrorMessage(errorKey)}</h1>
           <Link to="/gallery" className="btn btn-primary">
-            返回画廊
+            {translate("返回画廊", "Back to Gallery")}
           </Link>
         </div>
       </div>
     );
   }
 
-  const getLevelLabel = (level: NFTLevel) => {
-    switch (level) {
-      case "orange":
-        return "顶级贡献者";
-      case "purple":
-        return "资深贡献者";
-      case "white":
-        return "普通贡献者";
-    }
-  };
+  if (!metadata) {
+    return (
+      <div className="page-wrapper section">
+        <div className="container text-center">
+          <h1 className="title title-xl mb-md">
+            {translate("加载中...", "Loading...")}
+          </h1>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page-wrapper section">
       <div className="container">
-        {/* 返回按钮 */}
         <div className="mb-lg">
           <Link
             to="/gallery"
@@ -78,11 +157,10 @@ function NFTDetailPage() {
               fontWeight: "600",
             }}
           >
-            ← 返回画廊
+            ← {translate("返回画廊", "Back to Gallery")}
           </Link>
         </div>
 
-        {/* 主要内容 */}
         <div
           style={{
             display: "grid",
@@ -91,137 +169,97 @@ function NFTDetailPage() {
             alignItems: "start",
           }}
         >
-          {/* 左侧：NFT图片 */}
-          <div style={{ position: "sticky", top: "100px" }}>
+          <div
+            style={{
+              position: "sticky",
+              top: "100px",
+              maxWidth: "520px",
+              margin: "0 auto",
+            }}
+          >
             <div
               className="card"
               style={{
                 padding: "0",
                 aspectRatio: "1",
                 overflow: "hidden",
+                width: "100%",
               }}
             >
-              <img
-                src={nft.image}
-                alt={nft.name}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-              />
+              {displayImage ? (
+                <img
+                  src={displayImage}
+                  alt={metadata.name}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              ) : (
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "var(--text-secondary)",
+                  }}
+                >
+                  {translate("无图片数据", "No image data")}
+                </div>
+              )}
             </div>
           </div>
 
-          {/* 右侧：NFT信息 */}
           <div className="flex-col gap-lg">
-            {/* 标题 */}
             <div
               style={{
                 borderBottom: "1px solid var(--border-color)",
                 paddingBottom: "24px",
               }}
             >
-              <h1 className="title title-xl mb-sm">{nft.name}</h1>
-              <p className="text-lg text-tertiary font-mono">#{nft.id}</p>
+              <h1 className="title title-xl mb-sm">{metadata.name}</h1>
             </div>
 
-            {/* 等级徽章 */}
             <div
               style={{
                 padding: "16px 0",
                 borderBottom: "1px solid var(--border-color)",
               }}
             >
-              <span
-                className="card"
-                style={{
-                  display: "inline-block",
-                  padding: "8px 16px",
-                  fontSize: "0.875rem",
-                  fontWeight: "700",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.5px",
-                  background:
-                    nft.level === "orange"
-                      ? "#fed7aa"
-                      : nft.level === "purple"
-                      ? "#ddd6fe"
-                      : "#f3f4f6",
-                  color:
-                    nft.level === "orange"
-                      ? "#c2410c"
-                      : nft.level === "purple"
-                      ? "#6d28d9"
-                      : "var(--text-primary)",
-                  border: "none",
-                }}
-              >
-                {getLevelLabel(nft.level)}
-              </span>
-            </div>
-
-            {/* 持有者信息 */}
-            <div
-              style={{
-                padding: "16px 0",
-                borderBottom: "1px solid var(--border-color)",
-              }}
-            >
-              <h3
+              <h1
                 className="text-sm font-bold text-primary mb-md"
                 style={{
                   textTransform: "uppercase",
                   letterSpacing: "1px",
                 }}
               >
-                Owned by
-              </h3>
-              <p className="text-base text-secondary font-mono">{nft.owner}</p>
-            </div>
-
-            {/* 属性 */}
-            <div
-              style={{
-                padding: "16px 0",
-                borderBottom: "1px solid var(--border-color)",
-              }}
-            >
-              <h3
-                className="text-sm font-bold text-primary mb-md"
-                style={{
-                  textTransform: "uppercase",
-                  letterSpacing: "1px",
-                }}
-              >
-                Attributes
-              </h3>
-              <div
-                className="grid-auto gap-sm"
-                style={{
-                  gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
-                }}
-              >
-                {nft.attributes.map((attr, index) => (
-                  <div key={index} className="card text-center p-md">
-                    <p
-                      className="text-xs text-tertiary mb-xs"
-                      style={{
-                        textTransform: "uppercase",
-                        letterSpacing: "0.5px",
-                      }}
-                    >
-                      {attr.trait_type}
-                    </p>
-                    <p className="text-base font-semibold text-primary">
-                      {attr.value}
-                    </p>
-                  </div>
-                ))}
+                {translate("属性", "Attributes")}
+              </h1>
+              <div className="flex-col gap-sm">
+                <div className="grid-auto gap-sm">
+                  {metadata.attributes.map((attr, index) => (
+                    <div key={index} className="card text-center p-md">
+                      <p
+                        className="text-xs text-tertiary mb-xs"
+                        style={{
+                          textTransform: "uppercase",
+                          letterSpacing: "0.5px",
+                        }}
+                      >
+                        {attr.trait_type}
+                      </p>
+                      <p className="text-base font-semibold text-primary">
+                        {attr.value}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* 描述 */}
             <div
               style={{
                 padding: "16px 0",
@@ -230,30 +268,24 @@ function NFTDetailPage() {
             >
               <h3
                 className="text-sm font-bold text-primary mb-md"
-                style={{
-                  textTransform: "uppercase",
-                  letterSpacing: "1px",
-                }}
+                style={{ textTransform: "uppercase", letterSpacing: "1px" }}
               >
-                Description
+                {translate("简介", "Description")}
               </h3>
               <p
                 className="text-base text-secondary"
                 style={{ lineHeight: "1.7" }}
               >
-                这是 N1NJ4 NFT 系列中的第 {nft.id} 号作品。每个 Ninja
-                都是独特的像素 艺术作品，代表着社区成员在 Injective
-                生态中的贡献等级。
+                {metadata.description}
               </p>
             </div>
 
-            {/* 操作按钮 */}
             <div className="mt-md">
               <button
                 className="btn btn-primary btn-lg"
                 style={{ width: "100%" }}
               >
-                在区块链上查看
+                {translate("在区块链上查看", "View on-chain")}
               </button>
             </div>
           </div>

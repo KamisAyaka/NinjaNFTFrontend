@@ -1,36 +1,46 @@
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
+import imagesSummary from "../../abi/images_summary.json";
+import filterMap from "../../abi/filter_map.json";
 
 type NFTLevel = "white" | "purple";
 
 interface NFT {
   id: number;
   name: string;
+  image: string;
   level: NFTLevel;
 }
 
 interface NFTShowcaseProps {
   count?: number;
-  totalNFTs?: number;
 }
 
-function NFTShowcase({ count = 30, totalNFTs = 100 }: NFTShowcaseProps) {
-  // 生成所有可能的 NFT
+const resolveImageUrl = (image: string) =>
+  image.startsWith("ipfs://")
+    ? `https://ipfs.io/ipfs/${image.slice(7)}`
+    : image;
+
+function NFTShowcase({ count = 30 }: NFTShowcaseProps) {
+  const rareSet = useMemo(() => {
+    const rareList =
+      (filterMap as Record<string, Record<string, number[]>>)?.["Tier"]?.[
+        "Rare"
+      ] || [];
+    return new Set(rareList);
+  }, []);
+
   const allNFTs: NFT[] = useMemo(() => {
-    return Array.from({ length: totalNFTs }, (_, i) => {
-      let level: NFTLevel = "white";
-      if (i < Math.floor(totalNFTs * 0.3)) level = "purple";
-      else level = "white";
+    return (imagesSummary as Array<{ edition: number; image: string }>).map(
+      ({ edition, image }) => ({
+        id: edition,
+        name: `NINJ4 #${edition}`,
+        image: resolveImageUrl(image),
+        level: rareSet.has(edition) ? "purple" : "white",
+      })
+    );
+  }, [rareSet]);
 
-      return {
-        id: i + 1,
-        name: `Ninja #${i + 1}`,
-        level,
-      };
-    });
-  }, [totalNFTs]);
-
-  // 随机选择指定数量的 NFT
   const showcaseNFTs: NFT[] = useMemo(() => {
     const shuffled = [...allNFTs].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, count);
@@ -52,7 +62,7 @@ function NFTShowcase({ count = 30, totalNFTs = 100 }: NFTShowcaseProps) {
             className={`nft-showcase-item level-${nft.level}`}
             title={nft.name}
           >
-            <img src="/Placeholder_image.jpg" alt={nft.name} />
+            <img src={nft.image} alt={nft.name} loading="lazy" />
             <span className="nft-showcase-id">#{nft.id}</span>
           </Link>
         ))}

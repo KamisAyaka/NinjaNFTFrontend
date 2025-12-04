@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+import { useLanguage } from "../context/LanguageContext";
 import "./Footer.css";
 
 type FooterColumn = {
@@ -44,26 +46,48 @@ const socialLinks = [
   },
 ];
 
-const footerColumns: FooterColumn[] = [
-  {
-    title: "协议",
-    links: [
-      { label: "Injective", href: "https://injective.com" },
-      { label: "Mint 指南", href: "#mint" },
-      { label: "GitHub", href: "https://github.com/ninjalabscn" },
-    ],
-  },
-  {
-    title: "支持",
-    links: [
-      { label: "帮助中心", href: "#" },
-      { label: "联系我们", href: "mailto:team@ninjalabs.io" },
-      { label: "反馈", href: "#" },
-    ],
-  },
-];
+const footerColumnsMap: Record<"zh" | "en", FooterColumn[]> = {
+  zh: [
+    {
+      title: "协议",
+      links: [
+        { label: "Injective", href: "https://injective.com" },
+        { label: "Mint 指南", href: "#mint" },
+        { label: "GitHub", href: "https://github.com/ninjalabscn" },
+      ],
+    },
+    {
+      title: "支持",
+      links: [
+        { label: "帮助中心", href: "#" },
+        { label: "联系我们", href: "mailto:team@ninjalabs.io" },
+        { label: "反馈", href: "#" },
+      ],
+    },
+  ],
+  en: [
+    {
+      title: "Protocols",
+      links: [
+        { label: "Injective", href: "https://injective.com" },
+        { label: "Mint Guide", href: "#mint" },
+        { label: "GitHub", href: "https://github.com/ninjalabscn" },
+      ],
+    },
+    {
+      title: "Support",
+      links: [
+        { label: "Help Center", href: "#" },
+        { label: "Contact Us", href: "mailto:team@ninjalabs.io" },
+        { label: "Feedback", href: "#" },
+      ],
+    },
+  ],
+};
 
 function Footer() {
+  const { language } = useLanguage();
+  const footerColumns = useMemo(() => footerColumnsMap[language], [language]);
   return (
     <footer className="footer">
       <div className="footer-container">

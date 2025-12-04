@@ -7,15 +7,19 @@ import GalleryPage from "./pages/GalleryPage";
 import MyNFTsPage from "./pages/MyNFTsPage";
 import NFTDetailPage from "./pages/NFTDetailPage";
 import { evmContractService } from "./utils/evmContract";
+import { useLanguage } from "./context/LanguageContext";
 
 function App() {
   const { address, isConnected } = useAccount();
   const addressString = address || "";
+  const { language } = useLanguage();
+  const translate = (zh: string, en: string) =>
+    language === "zh" ? zh : en;
 
   // Mint NFT 函数
   const handleMint = async (quantity: number) => {
     if (!isConnected || !address) {
-      throw new Error("请先连接钱包");
+      throw new Error(translate("请先连接钱包", "Please connect your wallet"));
     }
 
     console.log(`🔄 Minting ${quantity} NFT(s) for address:`, address);

@@ -2,51 +2,93 @@ import { useState, useEffect } from "react";
 import NFTCard from "../components/NFTCard";
 import GalleryHero from "../components/GalleryPage/GalleryHero";
 import GallerySidebar from "../components/GalleryPage/GallerySidebar";
+import traitSummary from "../abi/_summary.json";
+import imagesSummary from "../abi/images_summary.json";
+import filterMap from "../abi/filter_map.json";
+import { useLanguage } from "../context/LanguageContext";
 import "./GalleryPage.css";
 
-// NFT等级类型
-type NFTLevel = "white" | "purple";
+type TraitSummary = typeof traitSummary;
+type TraitCategory = keyof TraitSummary;
+type TraitMap = Record<TraitCategory, string>;
+type TierValue = TraitMap["Tier"];
+type NFTItem = {
+  id: number;
+  name: string;
+  image: string;
+  traits: TraitMap;
+};
 
-// 模拟NFT数据 - 包含等级信息
-const mockNFTs = Array.from({ length: 100 }, (_, i) => {
-  let level: NFTLevel = "white";
-  if (i < 30) level = "purple"; // 30% 紫色(资深)
-  else level = "white"; // 70% 白色(普通)
+const traitCategories = Object.keys(traitSummary) as TraitCategory[];
 
-  return {
-    id: i + 1,
-    name: `Ninja #${i + 1}`,
-    image: "/Placeholder_image.jpg",
-    owner: `0x${Math.random().toString(16).slice(2, 8)}...${Math.random()
-      .toString(16)
-      .slice(2, 6)}`,
-    level,
-    attributes: ["Cyber Style", "Rare Trait", "Limited Edition"].slice(
-      0,
-      Math.floor(Math.random() * 3) + 1
-    ),
-  };
-});
+const resolveImageUrl = (image: string) =>
+  image.startsWith("ipfs://")
+    ? `https://ipfs.io/ipfs/${image.slice(7)}`
+    : image;
+
+const nftTraitLookup: Record<number, TraitMap> = {};
+Object.entries(filterMap as Record<string, Record<string, number[]>>).forEach(
+  ([category, values]) => {
+    Object.entries(values).forEach(([value, editions]) => {
+      editions.forEach((edition) => {
+        const cat = category as TraitCategory;
+        if (!nftTraitLookup[edition]) {
+          nftTraitLookup[edition] = {} as TraitMap;
+        }
+        nftTraitLookup[edition][cat] = value;
+      });
+    });
+  }
+);
+
+const nftList = (imagesSummary as Array<{ edition: number; image: string }>).map(
+  ({ edition, image }) => ({
+    id: edition,
+    name: `NINJ4 #${edition}`,
+    image: resolveImageUrl(image),
+    traits: nftTraitLookup[edition] || ({} as TraitMap),
+  })
+);
 
 const ITEMS_PER_PAGE = 24; // 每页显示24个
 
 function GalleryPage() {
-  const [nfts] = useState(mockNFTs);
+  const { language } = useLanguage();
+  const translate = (zh: string, en: string) =>
+    language === "zh" ? zh : en;
+  const [nfts] = useState<NFTItem[]>(() =>
+    nftList.slice().sort((a, b) => b.id - a.id)
+  );
   const [sortBy, setSortBy] = useState("newest");
-  const [levelFilter, setLevelFilter] = useState<NFTLevel | "all">("all");
+  const [filters, setFilters] = useState<Record<TraitCategory, string>>(() => {
+    const initial = {} as Record<TraitCategory, string>;
+    traitCategories.forEach((category) => {
+      initial[category] = "all";
+    });
+    return initial;
+  });
   const [currentPage, setCurrentPage] = useState(1);
+
+  const handleFilterChange = (category: TraitCategory, value: string) => {
+    setFilters((prev) => ({ ...prev, [category]: value }));
+  };
 
   // 筛选和排序
   const filteredNFTs = nfts
     .filter((nft) => {
-      if (levelFilter === "all") return true;
-      return nft.level === levelFilter;
+      return traitCategories.every((category) => {
+        const filterValue = filters[category];
+        if (filterValue === "all") return true;
+        return nft.traits[category] === filterValue;
+      });
     })
     .sort((a, b) => {
       switch (sortBy) {
         case "level": {
-          const levelOrder = { purple: 0, white: 1 };
-          return levelOrder[a.level] - levelOrder[b.level];
+          const levelOrder = { Rare: 0, Common: 1 };
+          const tierA = (a.traits["Tier"] as TierValue) || "Common";
+          const tierB = (b.traits["Tier"] as TierValue) || "Common";
+          return levelOrder[tierA] - levelOrder[tierB];
         }
         case "oldest":
           return a.id - b.id;
@@ -65,7 +107,7 @@ function GalleryPage() {
   // 当筛选条件改变时，重置到第一页
   useEffect(() => {
     setCurrentPage(1);
-  }, [levelFilter, sortBy]);
+  }, [filters, sortBy]);
 
   // 生成页码数组
   const getPageNumbers = () => {
@@ -121,8 +163,9 @@ function GalleryPage() {
         <div className="gallery-main-container">
           {/* 左侧边栏 */}
           <GallerySidebar
-            levelFilter={levelFilter}
-            onLevelChange={setLevelFilter}
+            traitSummary={traitSummary as TraitSummary}
+            filters={filters}
+            onFilterChange={handleFilterChange}
             sortBy={sortBy}
             onSortChange={setSortBy}
           />
@@ -139,9 +182,14 @@ function GalleryPage() {
                       id={nft.id}
                       name={nft.name}
                       image={nft.image}
-                      owner={nft.owner}
-                      level={nft.level}
-                      attributes={nft.attributes}
+                      level={
+                        (nft.traits["Tier"] as TierValue) === "Rare"
+                          ? "purple"
+                          : "white"
+                      }
+                      attributes={Object.entries(nft.traits).map(
+                        ([key, value]) => `${key}: ${value}`
+                      )}
                     />
                   ))}
                 </div>
@@ -215,7 +263,7 @@ function GalleryPage() {
               </>
             ) : (
               <div className="no-results">
-                <p>No items found</p>
+                <p>{translate("没有符合条件的 NFT", "No items found")}</p>
               </div>
             )}
           </div>

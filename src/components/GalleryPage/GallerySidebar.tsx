@@ -1,83 +1,113 @@
+import { useMemo, useState } from "react";
+import { useLanguage } from "../../context/LanguageContext";
 import "./GallerySidebar.css";
 
-type NFTLevel = "white" | "purple";
+type TraitSummary = Record<string, Record<string, number>>;
 
 interface GallerySidebarProps {
-  levelFilter: NFTLevel | "all";
-  onLevelChange: (level: NFTLevel | "all") => void;
+  traitSummary: TraitSummary;
+  filters: Record<string, string>;
+  onFilterChange: (category: string, value: string) => void;
   sortBy: string;
   onSortChange: (sort: string) => void;
 }
 
 function GallerySidebar({
-  levelFilter,
-  onLevelChange,
+  traitSummary,
+  filters,
+  onFilterChange,
   sortBy,
   onSortChange,
 }: GallerySidebarProps) {
+  const { language } = useLanguage();
+  const translate = useMemo(
+    () => (zh: string, en: string) => (language === "zh" ? zh : en),
+    [language]
+  );
+  const categories = Object.keys(traitSummary);
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>(() =>
+    categories.reduce((acc, category) => {
+      acc[category] = false;
+      return acc;
+    }, {} as Record<string, boolean>)
+  );
+
+  const toggleSection = (category: string) => {
+    setOpenSections((prev) => ({ ...prev, [category]: !prev[category] }));
+  };
+
   return (
     <div className="gallery-sidebar">
-      {/* 排序 */}
       <div className="sidebar-section">
-        <h3 className="sidebar-title">Sort By</h3>
+        <h3 className="sidebar-title">
+          {translate("排序方式", "Sort By")}
+        </h3>
         <div className="sidebar-options">
           <button
             className={`sidebar-option ${sortBy === "newest" ? "active" : ""}`}
             onClick={() => onSortChange("newest")}
           >
-            Newest
+            {translate("最新", "Newest")}
           </button>
           <button
             className={`sidebar-option ${sortBy === "oldest" ? "active" : ""}`}
             onClick={() => onSortChange("oldest")}
           >
-            Oldest
+            {translate("最早", "Oldest")}
           </button>
           <button
             className={`sidebar-option ${sortBy === "level" ? "active" : ""}`}
             onClick={() => onSortChange("level")}
           >
-            Level
+            {translate("等级", "Level")}
           </button>
         </div>
       </div>
 
-      {/* 分隔线 */}
       <div className="sidebar-divider"></div>
 
-      {/* NFT 等级筛选 */}
-      <div className="sidebar-section">
-        <h3 className="sidebar-title">Level</h3>
-        <div className="sidebar-options">
-          <button
-            className={`sidebar-option ${levelFilter === "all" ? "active" : ""}`}
-            onClick={() => onLevelChange("all")}
-          >
-            <span className="option-label">All</span>
-          </button>
-          <button
-            className={`sidebar-option level-option ${
-              levelFilter === "white" ? "active" : ""
-            }`}
-            onClick={() => onLevelChange("white")}
-          >
-            <span className="level-indicator white"></span>
-            <span className="option-label">White</span>
-          </button>
-          <button
-            className={`sidebar-option level-option ${
-              levelFilter === "purple" ? "active" : ""
-            }`}
-            onClick={() => onLevelChange("purple")}
-          >
-            <span className="level-indicator purple"></span>
-            <span className="option-label">Purple</span>
-          </button>
-        </div>
-      </div>
+      {categories.map((category) => {
+        const options = Object.keys(traitSummary[category]);
+        const isOpen = openSections[category];
+
+        return (
+          <div className="sidebar-section" key={category}>
+            <button
+              className="sidebar-section-header"
+              onClick={() => toggleSection(category)}
+            >
+              <span className="sidebar-title">{category}</span>
+              <span className={`dropdown-icon ${isOpen ? "open" : ""}`}>⌃</span>
+            </button>
+            {isOpen && (
+              <div className="sidebar-options">
+                <button
+                  className={`sidebar-option ${
+                    filters[category] === "all" ? "active" : ""
+                  }`}
+                  onClick={() => onFilterChange(category, "all")}
+                >
+                  {translate("全部", "All")}
+                </button>
+                {options.map((option) => (
+                  <button
+                    key={option}
+                    className={`sidebar-option ${
+                      filters[category] === option ? "active" : ""
+                    }`}
+                    onClick={() => onFilterChange(category, option)}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="sidebar-divider light"></div>
+          </div>
+        );
+      })}
     </div>
   );
 }
 
 export default GallerySidebar;
-

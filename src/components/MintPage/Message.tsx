@@ -3,16 +3,18 @@ interface MessageProps {
 }
 
 function Message({ message }: MessageProps) {
-  if (!message) return null
+  if (!message) return null;
 
-  const isError = message.includes('失败') || message.includes('错误')
+  const lower = message.toLowerCase();
+  const isError =
+    message.includes("失败") ||
+    message.includes("错误") ||
+    lower.includes("fail") ||
+    lower.includes("error");
 
   return (
-    <div className={`message ${isError ? 'error' : 'success'}`}>
-      {message}
-    </div>
-  )
+    <div className={`message ${isError ? "error" : "success"}`}>{message}</div>
+  );
 }
 
 export default Message
-

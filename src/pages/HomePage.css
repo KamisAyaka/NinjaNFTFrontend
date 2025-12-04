@@ -243,9 +243,15 @@
 
 .poster-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 36px;
-  align-items: center;
+  grid-template-columns: minmax(260px, 0.95fr) minmax(320px, 1.55fr);
+  gap: 40px;
+  align-items: stretch;
+}
+
+@media (max-width: 920px) {
+  .poster-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .poster-copy {
@@ -256,13 +262,14 @@
   box-shadow: 0 30px 90px rgba(160, 120, 90, 0.15);
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 24px;
 }
 
 .poster-copy p {
-  color: var(--text-secondary);
-  line-height: 1.8;
+  color: var(--text-primary);
+  line-height: 1.9;
   margin: 0;
+  font-size: 1.05rem;
 }
 
 .poster-meta {
@@ -274,33 +281,198 @@
   color: var(--text-tertiary);
 }
 
-.poster-visual {
+.poster-copy h2 {
+  font-size: clamp(2.2rem, 3.2vw, 3rem);
+  line-height: 1.2;
+}
+
+.poster-slider-container {
+  width: 100%;
+}
+
+.poster-slider {
   position: relative;
+  overflow: hidden;
   border-radius: 32px;
   border: 1px solid rgba(12, 16, 30, 0.08);
-  padding: 14px;
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 40px 130px rgba(120, 140, 255, 0.25);
-}
-
-.poster-image {
+  background: rgba(12, 16, 30, 0.03);
+  min-height: 520px;
   width: 100%;
-  display: block;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.poster-badge {
+.poster-slider-track {
+  display: flex;
+  transition: transform 0.5s ease;
+  height: 100%;
+}
+
+.poster-card {
+  flex: 0 0 100%;
+  border-radius: 32px;
+  border: 1px solid rgba(12, 16, 30, 0.08);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 35px 100px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.poster-card-event {
+  background: linear-gradient(
+      135deg,
+      rgba(233, 255, 90, 0.12),
+      rgba(118, 132, 255, 0.18)
+    ),
+    rgba(255, 255, 255, 0.95);
+  border-color: rgba(233, 255, 90, 0.35);
+}
+
+.poster-card-media {
+  position: relative;
+  padding: 24px 16px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.poster-card-media img {
+  width: calc(100% - 80px);
+  max-width: 620px;
+  max-height: 340px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 24px;
+  margin: 0 auto;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
+}
+
+.poster-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0 24px 24px;
+  color: var(--text-primary);
+}
+
+.poster-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.poster-card-head h3 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.poster-card-body p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.poster-slider-nav {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  padding: 8px 16px;
-  border-radius: 999px;
-  background: rgba(233, 255, 90, 0.9);
-  color: #121212;
-  font-size: 0.7rem;
-  letter-spacing: 0.3em;
-  font-weight: 700;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 90px;
+  height: 200px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  color: transparent;
+  overflow: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.poster-slider-nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.05));
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.poster-slider-nav::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  border: solid rgba(0, 0, 0, 0.45);
+  border-width: 0 3px 3px 0;
+  transform: translate(-50%, -50%) rotate(135deg);
+}
+
+.poster-slider-nav:hover::before {
+  opacity: 0.95;
+}
+
+.poster-slider-nav-prev {
+  left: 0;
+}
+
+.poster-slider-nav-prev::before {
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.poster-slider-nav-prev::after {
+  transform: translate(-30%, -50%) rotate(135deg);
+}
+
+.poster-slider-nav-next {
+  right: 0;
+}
+
+.poster-slider-nav-next::before {
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
+}
+
+.poster-slider-nav-next::after {
+  transform: translate(-70%, -50%) rotate(-45deg);
+}
+
+.poster-slider-dots {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.poster-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.poster-dot-active {
+  background: #e9ff5a;
+  transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+  .poster-slider {
+    min-height: 480px;
+  }
+
+  .poster-card-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .poster-slider-nav {
+    display: none;
+  }
 }
 
 .section-kicker {

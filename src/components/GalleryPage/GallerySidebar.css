@@ -14,6 +14,27 @@
   margin-bottom: 32px;
 }
 
+.sidebar-section-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.dropdown-icon {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.dropdown-icon.open {
+  transform: rotate(180deg);
+}
+
 .sidebar-title {
   font-size: 0.875rem;
   font-weight: 700;
@@ -88,6 +109,11 @@
   margin: 24px 0;
 }
 
+.sidebar-divider.light {
+  margin: 16px 0 0;
+  opacity: 0.4;
+}
+
 /* 滚动条样式 */
 .gallery-sidebar::-webkit-scrollbar {
   width: 6px;
@@ -118,4 +144,3 @@
     display: none;
   }
 }
-

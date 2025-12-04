@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import NFTCard from "../components/NFTCard";
+import { useLanguage } from "../context/LanguageContext";
 import { evmContractService } from "../utils/evmContract";
 
 type OwnedNFT = {
@@ -10,93 +11,95 @@ type OwnedNFT = {
   level: "white" | "purple";
 };
 
+type Attribute = {
+  trait_type: string;
+  value: string;
+};
+
 interface MyNFTsPageProps {
   address: string;
   isConnected: boolean;
 }
 
+const resolveImageUrl = (url?: string) =>
+  url && url.startsWith("ipfs://")
+    ? `https://ipfs.io/ipfs/${url.slice(7)}`
+    : url;
+
+async function fetchMetadata(tokenURI: string) {
+  if (!tokenURI) return null;
+  try {
+    const resolved = resolveImageUrl(tokenURI) || tokenURI;
+    const response = await fetch(resolved);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch metadata: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch metadata:", error);
+    return null;
+  }
+}
+
 function MyNFTsPage({ address, isConnected }: MyNFTsPageProps) {
   const [myNFTs, setMyNFTs] = useState<OwnedNFT[]>([]);
   const [loading, setLoading] = useState(false);
+  const { language } = useLanguage();
+  const translate = useMemo(
+    () => (zh: string, en: string) => (language === "zh" ? zh : en),
+    [language]
+  );
+  const pageTitle = translate("我的 N1NJ4", "MY N1NJ4");
 
   useEffect(() => {
     const loadMyNFTs = async () => {
-      if (isConnected && address) {
-        try {
-          setLoading(true);
-          console.log("🔍 开始加载用户的 NFT...");
-
-          // 初始化合约服务
-          await evmContractService.init();
-
-          // 查询用户拥有的所有 NFT token IDs
-          const tokenIds = await evmContractService.getUserNFTs(address);
-
-          console.log(`✅ 找到 ${tokenIds.length} 个 NFT`);
-
-          if (tokenIds.length === 0) {
-            setMyNFTs([]);
-            setLoading(false);
-            return;
-          }
-
-          // 为每个 token ID 获取详细信息
-          const nftDetails = await Promise.all(
-            tokenIds.map(async (tokenId): Promise<OwnedNFT | null> => {
-              try {
-                // 获取 token URI
-                const tokenURI = await evmContractService.getTokenURI(tokenId);
-
-                // 解析 metadata (这里假设 URI 返回的是 JSON)
-                // 如果 URI 是完整的 URL，可能需要 fetch
-                const metadata = {
-                  name: `Ninja #${tokenId}`,
-                  image: "/Placeholder_image.jpg",
-                  level: "white" as const,
-                };
-
-                // 如果有实际的 tokenURI，可以尝试获取 metadata
-                if (tokenURI && tokenURI !== "") {
-                  try {
-                    // 这里可以添加从 IPFS 或其他地方获取 metadata 的逻辑
-                    // const response = await fetch(tokenURI);
-                    // metadata = await response.json();
-                    console.log(`Token #${tokenId} URI:`, tokenURI);
-                  } catch (error) {
-                    console.error(
-                      `获取 token #${tokenId} metadata 失败:`,
-                      error
-                    );
-                  }
-                }
-
-                return {
-                  id: tokenId,
-                  name: metadata.name,
-                  image: metadata.image,
-                  owner: address,
-                  level: metadata.level,
-                };
-              } catch (error) {
-                console.error(`处理 token #${tokenId} 失败:`, error);
-                return null;
-              }
-            })
-          );
-
-          // 过滤掉 null 值
-          const validNFTs = nftDetails.filter(
-            (nft): nft is OwnedNFT => nft !== null
-          );
-          setMyNFTs(validNFTs);
-        } catch (error) {
-          console.error("加载用户 NFT 失败:", error);
-          setMyNFTs([]);
-        } finally {
-          setLoading(false);
-        }
-      } else {
+      if (!isConnected || !address) {
         setMyNFTs([]);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const tokens = await evmContractService.getOwnerTokensWithURI(address);
+
+        if (tokens.length === 0) {
+          setMyNFTs([]);
+          return;
+        }
+
+        const details = await Promise.all(
+          tokens.map(async ({ tokenId, tokenURI }) => {
+            try {
+              const metadata = await fetchMetadata(tokenURI);
+              const image =
+                resolveImageUrl(metadata?.image) || "/Placeholder_image.jpg";
+              const name = metadata?.name || `NINJ4 #${tokenId}`;
+              const tier = metadata?.attributes?.find(
+                (attr: Attribute) => attr.trait_type === "Tier"
+              )?.value;
+              const level =
+                tier === "Rare" ? ("purple" as const) : ("white" as const);
+
+              return {
+                id: tokenId,
+                name,
+                image,
+                owner: address,
+                level,
+              };
+            } catch (error) {
+              console.error(`Failed to process token #${tokenId}:`, error);
+              return null;
+            }
+          })
+        );
+
+        setMyNFTs(details.filter((item): item is OwnedNFT => item !== null));
+      } catch (error) {
+        console.error("Failed to load user N1NJ4:", error);
+        setMyNFTs([]);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -108,14 +111,14 @@ function MyNFTsPage({ address, isConnected }: MyNFTsPageProps) {
       <div className="page-wrapper section">
         <div className="container">
           <div className="text-center mb-lg">
-            <h1 className="title title-xl mb-md">我的 NFT</h1>
+            <h1 className="title title-xl mb-md">{pageTitle}</h1>
             <p className="text-lg text-secondary">
-              请先连接钱包查看您的NFT收藏
+              {translate("请先连接钱包查看您的 N1NJ4", "Connect a wallet to see your N1NJ4")}
             </p>
           </div>
           <div className="empty-state">
             <div style={{ fontSize: "4rem", marginBottom: "20px" }}>🔌</div>
-            <p>未连接钱包</p>
+            <p>{translate("未连接钱包", "Wallet not connected")}</p>
           </div>
         </div>
       </div>
@@ -127,14 +130,11 @@ function MyNFTsPage({ address, isConnected }: MyNFTsPageProps) {
       <div className="page-wrapper section">
         <div className="container">
           <div className="text-center mb-lg">
-            <h1 className="title title-xl mb-md">我的 NFT</h1>
-            <p className="text-base text-secondary font-mono">
-              地址: {address.slice(0, 10)}...{address.slice(-8)}
-            </p>
+            <h1 className="title title-xl mb-md">{pageTitle}</h1>
           </div>
           <div className="empty-state">
             <div style={{ fontSize: "4rem", marginBottom: "20px" }}>⏳</div>
-            <p>加载中...</p>
+            <p>{translate("加载中...", "Loading...")}</p>
           </div>
         </div>
       </div>
@@ -146,15 +146,17 @@ function MyNFTsPage({ address, isConnected }: MyNFTsPageProps) {
       <div className="page-wrapper section">
         <div className="container">
           <div className="text-center mb-lg">
-            <h1 className="title title-xl mb-md">我的 NFT</h1>
-            <p className="text-base text-secondary font-mono">
-              地址: {address.slice(0, 10)}...{address.slice(-8)}
-            </p>
+            <h1 className="title title-xl mb-md">{pageTitle}</h1>
           </div>
           <div className="empty-state">
             <div style={{ fontSize: "4rem", marginBottom: "20px" }}>📦</div>
-            <p>您还没有任何NFT</p>
-            <p className="text-secondary">前往铸造页面获取您的第一个NFT！</p>
+            <p>{translate("您还没有任何 N1NJ4", "You don't own any N1NJ4 yet")}</p>
+            <p className="text-secondary">
+              {translate(
+                "前往铸造页面获取您的第一个 N1NJ4！",
+                "Head to the mint page to claim your first N1NJ4!"
+              )}
+            </p>
           </div>
         </div>
       </div>
@@ -165,13 +167,7 @@ function MyNFTsPage({ address, isConnected }: MyNFTsPageProps) {
     <div className="page-wrapper section">
       <div className="container">
         <div className="text-center mb-lg">
-          <h1 className="title title-xl mb-md">我的 NFT</h1>
-          <p className="text-base text-secondary font-mono mb-sm">
-            地址: {address.slice(0, 10)}...{address.slice(-8)}
-          </p>
-          <p className="text-lg text-primary font-semibold">
-            拥有 {myNFTs.length} 个 NFT
-          </p>
+          <h1 className="title title-xl mb-md">{pageTitle}</h1>
         </div>
 
         <div className="nft-grid">
@@ -181,8 +177,8 @@ function MyNFTsPage({ address, isConnected }: MyNFTsPageProps) {
               id={nft.id}
               name={nft.name}
               image={nft.image}
-              level={nft.level}
               owner={nft.owner}
+              level={nft.level}
             />
           ))}
         </div>
