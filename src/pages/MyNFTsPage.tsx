@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import NFTCard from "../components/NFTCard";
-import { useLanguage } from "../context/LanguageContext";
+import { useLanguage } from "../context/useLanguage";
 import { evmContractService } from "../utils/evmContract";
 
 type OwnedNFT = {

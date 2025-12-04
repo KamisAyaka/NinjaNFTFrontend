@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useLanguage, type Language } from "../context/LanguageContext";
+import { useLanguage } from "../context/useLanguage";
+import type { Language } from "../context/LanguageContext";
 import "./Header.css";
 
 function Header() {

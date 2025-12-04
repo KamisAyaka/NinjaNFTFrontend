@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import NFTShowcase from "../components/HomePage/NFTShowcase";
 import FAQ from "../components/HomePage/FAQ";
@@ -6,7 +6,7 @@ import NFTPreview from "../components/MintPage/NFTPreview";
 import StatsGrid from "../components/MintPage/StatsGrid";
 import MintSection from "../components/MintPage/MintSection";
 import Message from "../components/MintPage/Message";
-import { useLanguage } from "../context/LanguageContext";
+import { useLanguage } from "../context/useLanguage";
 import { evmContractService } from "../utils/evmContract";
 import "./HomePage.css";
 
@@ -18,8 +18,10 @@ interface HomePageProps {
 
 function HomePage({ isConnected, address, onMint }: HomePageProps) {
   const { language } = useLanguage();
-  const translate = (zh: string, en: string) =>
-    language === "zh" ? zh : en;
+  const translate = useCallback(
+    (zh: string, en: string) => (language === "zh" ? zh : en),
+    [language]
+  );
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -59,7 +61,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
         status: "Locked",
       },
     ],
-    [language]
+    [translate]
   );
 
   const posterCollections = useMemo(
@@ -93,7 +95,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
         image: "/Ninja Labs CN-banner-2.png",
       },
     ],
-    [language]
+    [translate]
   );
 
   useEffect(() => {
@@ -115,7 +117,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
       targets.forEach((el) => observer.unobserve(el));
       observer.disconnect();
     };
-  }, []);
+  }, [translate]);
 
   useEffect(() => {
     let isMounted = true;
@@ -143,7 +145,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [translate]);
 
   useEffect(() => {
     let isMounted = true;
@@ -170,7 +172,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
     return () => {
       isMounted = false;
     };
-  }, [isConnected, address]);
+  }, [isConnected, address, translate]);
 
   const handleMintAction = async (quantity: number) => {
     if (!isConnected) {

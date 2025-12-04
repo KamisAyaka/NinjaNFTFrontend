@@ -1,4 +1,4 @@
-import { useLanguage } from "../../context/LanguageContext";
+import { useLanguage } from "../../context/useLanguage";
 
 function GalleryHero() {
   const { language } = useLanguage();

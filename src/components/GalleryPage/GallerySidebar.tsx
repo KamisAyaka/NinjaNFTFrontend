@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useLanguage } from "../../context/LanguageContext";
+import { useLanguage } from "../../context/useLanguage";
 import "./GallerySidebar.css";
 
 type TraitSummary = Record<string, Record<string, number>>;

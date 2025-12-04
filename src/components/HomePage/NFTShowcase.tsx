@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
-import imagesSummary from "../../abi/images_summary.json";
-import filterMap from "../../abi/filter_map.json";
+import imagesSummary from "../../abi/images_summary.json" assert { type: "json" };
+import filterMap from "../../abi/filter_map.json" assert { type: "json" };
 
 type NFTLevel = "white" | "purple";
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLanguage } from "../../context/LanguageContext";
+import { useLanguage } from "../../context/useLanguage";
 
 type LocaleText = { zh: string; en: string };
 

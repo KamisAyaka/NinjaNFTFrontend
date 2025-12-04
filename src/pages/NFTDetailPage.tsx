@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
-import { useLanguage } from "../context/LanguageContext";
-import imagesSummary from "../abi/images_summary.json";
+import { useLanguage } from "../context/useLanguage";
+import imagesSummary from "../abi/images_summary.json" assert { type: "json" };
 
 type Attribute = {
   trait_type: string;

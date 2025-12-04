@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 import { getWalletClient } from 'wagmi/actions';
 import { wagmiConfig } from '../config/wagmi';
 import config from '../config';
-import Ninj4Artifact from '../abi/NINJ4NFT.json';
+import Ninj4Artifact from "../abi/NINJ4NFT.json" assert { type: "json" };
 
 const NFT_ABI = Ninj4Artifact;
 const MAX_PER_WALLET = 1;

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useLanguage } from "../../context/LanguageContext";
+import { useLanguage } from "../../context/useLanguage";
 import "./NFTFilters.css";
 
 type NFTLevel = "white" | "purple" | "orange";

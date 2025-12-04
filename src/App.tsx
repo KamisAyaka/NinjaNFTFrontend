@@ -7,7 +7,7 @@ import GalleryPage from "./pages/GalleryPage";
 import MyNFTsPage from "./pages/MyNFTsPage";
 import NFTDetailPage from "./pages/NFTDetailPage";
 import { evmContractService } from "./utils/evmContract";
-import { useLanguage } from "./context/LanguageContext";
+import { useLanguage } from "./context/useLanguage";
 
 function App() {
   const { address, isConnected } = useAccount();

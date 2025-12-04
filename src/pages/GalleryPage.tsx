@@ -2,23 +2,33 @@ import { useState, useEffect } from "react";
 import NFTCard from "../components/NFTCard";
 import GalleryHero from "../components/GalleryPage/GalleryHero";
 import GallerySidebar from "../components/GalleryPage/GallerySidebar";
-import traitSummary from "../abi/_summary.json";
-import imagesSummary from "../abi/images_summary.json";
-import filterMap from "../abi/filter_map.json";
-import { useLanguage } from "../context/LanguageContext";
+import imagesSummary from "../abi/images_summary.json" assert { type: "json" };
+import rawFilterMap from "../abi/filter_map.json" assert { type: "json" };
+import { useLanguage } from "../context/useLanguage";
 import "./GalleryPage.css";
 
-type TraitSummary = typeof traitSummary;
-type TraitCategory = keyof TraitSummary;
-type TraitMap = Record<TraitCategory, string>;
-type TierValue = TraitMap["Tier"];
+type TraitCategory = string;
+type TraitMapRecord = Record<TraitCategory, string>;
+type TierValue = string;
+type TierRank = "Rare" | "Common";
 type NFTItem = {
   id: number;
   name: string;
   image: string;
-  traits: TraitMap;
+  traits: TraitMapRecord;
 };
 
+const filterMap = rawFilterMap as Record<string, Record<string, number[]>>;
+const traitSummary = Object.entries(filterMap).reduce(
+  (acc, [category, values]) => {
+    acc[category] = {};
+    Object.entries(values).forEach(([value, editions]) => {
+      acc[category][value] = editions.length;
+    });
+    return acc;
+  },
+  {} as Record<string, Record<string, number>>
+);
 const traitCategories = Object.keys(traitSummary) as TraitCategory[];
 
 const resolveImageUrl = (image: string) =>
@@ -26,14 +36,22 @@ const resolveImageUrl = (image: string) =>
     ? `https://ipfs.io/ipfs/${image.slice(7)}`
     : image;
 
-const nftTraitLookup: Record<number, TraitMap> = {};
-Object.entries(filterMap as Record<string, Record<string, number[]>>).forEach(
+const tierOrder: Record<TierRank, number> = {
+  Rare: 0,
+  Common: 1,
+};
+
+const getTierRank = (value?: string): TierRank =>
+  value === "Rare" ? "Rare" : "Common";
+
+const nftTraitLookup: Record<number, TraitMapRecord> = {};
+Object.entries(filterMap).forEach(
   ([category, values]) => {
     Object.entries(values).forEach(([value, editions]) => {
       editions.forEach((edition) => {
         const cat = category as TraitCategory;
         if (!nftTraitLookup[edition]) {
-          nftTraitLookup[edition] = {} as TraitMap;
+          nftTraitLookup[edition] = {} as TraitMapRecord;
         }
         nftTraitLookup[edition][cat] = value;
       });
@@ -46,7 +64,7 @@ const nftList = (imagesSummary as Array<{ edition: number; image: string }>).map
     id: edition,
     name: `NINJ4 #${edition}`,
     image: resolveImageUrl(image),
-    traits: nftTraitLookup[edition] || ({} as TraitMap),
+    traits: nftTraitLookup[edition] || ({} as TraitMapRecord),
   })
 );
 
@@ -85,10 +103,9 @@ function GalleryPage() {
     .sort((a, b) => {
       switch (sortBy) {
         case "level": {
-          const levelOrder = { Rare: 0, Common: 1 };
-          const tierA = (a.traits["Tier"] as TierValue) || "Common";
-          const tierB = (b.traits["Tier"] as TierValue) || "Common";
-          return levelOrder[tierA] - levelOrder[tierB];
+          const tierA = getTierRank(a.traits["Tier"] as TierValue);
+          const tierB = getTierRank(b.traits["Tier"] as TierValue);
+          return tierOrder[tierA] - tierOrder[tierB];
         }
         case "oldest":
           return a.id - b.id;
@@ -163,7 +180,7 @@ function GalleryPage() {
         <div className="gallery-main-container">
           {/* 左侧边栏 */}
           <GallerySidebar
-            traitSummary={traitSummary as TraitSummary}
+            traitSummary={traitSummary}
             filters={filters}
             onFilterChange={handleFilterChange}
             sortBy={sortBy}

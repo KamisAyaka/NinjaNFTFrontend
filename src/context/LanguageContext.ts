@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext } from "react";
 
 type Language = "en" | "zh";
 
@@ -60,39 +54,12 @@ type LanguageContextValue = {
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState<Language>("en");
-
-  const toggleLanguage = () => {
-    setLanguage((prev) => (prev === "en" ? "zh" : "en"));
-  };
-
-  const value = useMemo(
-    () => ({
-      language,
-      setLanguage,
-      toggleLanguage,
-      translations: translationMap[language],
-      supportedLanguages,
-    }),
-    [language]
-  );
-
-  return (
-    <LanguageContext.Provider value={value}>
-      {children}
-    </LanguageContext.Provider>
-  );
+export {
+  LanguageContext,
+  translationMap,
+  supportedLanguages,
+  type Language,
+  type TranslationDictionary,
+  type SupportedLanguage,
+  type LanguageContextValue,
 };
-
-export const useLanguage = () => {
-  const context = useContext(LanguageContext);
-
-  if (!context) {
-    throw new Error("useLanguage must be used within LanguageProvider");
-  }
-
-  return context;
-};
-
-export type { Language, TranslationDictionary, SupportedLanguage };
