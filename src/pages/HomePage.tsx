@@ -35,7 +35,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
     () => [
       {
         phase: "roadmap - 01",
-        title: translate("零号城市部署", "Zero City Deployment"),
+        title: translate("零号城市部署", "City Zero Deployment"),
         description: translate(
           "发布 N1NJ4:Origins， 公开所有赛博忍者身份",
           "Launch N1NJ4: Origins and reveal every cyber-ninja identity."
@@ -247,7 +247,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
             <div className="hero-download-panel">
               <div>
                 <p className="hero-download-title">
-                  {translate("零号城市已开放，立刻入驻", "Zero City is open now.")}
+                  {translate("零号城市已开放，立刻入驻", "City Zero is open now.")}
                 </p>
               </div>
               <div className="download-buttons">
