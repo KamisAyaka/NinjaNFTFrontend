@@ -17,7 +17,7 @@ function GalleryHero() {
             lineHeight: 1.1,
           }}
         >
-          N1NJ4 GALLERY
+          N1NJ4 ORIGIN GALLERY
         </h1>
         <p
           style={{
