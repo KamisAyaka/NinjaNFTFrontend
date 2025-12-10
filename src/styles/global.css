@@ -105,6 +105,29 @@
   gap: 20px;
 }
 
+/* NFT 详情属性网格：Tier 独占一行，其余一行四个，更紧凑 */
+.nft-attributes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.attribute-tier-rare {
+  grid-column: 1 / -1; /* 在属性网格中单独占一整行 */
+}
+
+@media (max-width: 1200px) {
+  .nft-attributes-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .nft-attributes-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 /* NFT 网格布局 - 统一所有页面的 NFT 展示格式 */
 .nft-grid {
   display: grid;
@@ -907,9 +930,10 @@
 
 .nft-showcase-grid {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 16px;
-  max-width: 100%;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .nft-showcase-item {
@@ -964,24 +988,24 @@
 /* NFT 展示响应式 */
 @media (max-width: 1400px) {
   .nft-showcase-grid {
-    grid-template-columns: repeat(8, 1fr);
-    gap: 14px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
   }
 }
 
 @media (max-width: 1024px) {
   .nft-showcase-grid {
-    grid-template-columns: repeat(6, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
   }
 }
 
 @media (max-width: 768px) {
   .nft-showcase-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
   }
-  
+
   .nft-showcase-header {
     flex-direction: column;
     align-items: flex-start;
@@ -990,8 +1014,8 @@
 
 @media (max-width: 480px) {
   .nft-showcase-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 10px;
   }
 }
 

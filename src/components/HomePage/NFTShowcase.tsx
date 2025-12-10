@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
+import { useHomeMintStats } from "./useHomeMintStats";
 import imagesSummary from "../../abi/images_summary.json" assert { type: "json" };
 import filterMap from "../../abi/filter_map.json" assert { type: "json" };
 
@@ -21,7 +22,9 @@ const resolveImageUrl = (image: string) =>
     ? `https://ipfs.io/ipfs/${image.slice(7)}`
     : image;
 
-function NFTShowcase({ count = 30 }: NFTShowcaseProps) {
+function NFTShowcase({ count = 18 }: NFTShowcaseProps) {
+  const { totalMinted } = useHomeMintStats();
+
   const rareSet = useMemo(() => {
     const rareList =
       (filterMap as Record<string, Record<string, number[]>>)?.["Tier"]?.[
@@ -31,7 +34,7 @@ function NFTShowcase({ count = 30 }: NFTShowcaseProps) {
   }, []);
 
   const allNFTs: NFT[] = useMemo(() => {
-    return (imagesSummary as Array<{ edition: number; image: string }>).map(
+    const list = (imagesSummary as Array<{ edition: number; image: string }>).map(
       ({ edition, image }) => ({
         id: edition,
         name: `NINJ4 #${edition}`,
@@ -39,12 +42,23 @@ function NFTShowcase({ count = 30 }: NFTShowcaseProps) {
         level: rareSet.has(edition) ? "purple" : "white",
       })
     );
-  }, [rareSet]);
+    // 已铸造的在前，未铸造的在后
+    return list.sort((a, b) => {
+      const aMinted = a.id <= totalMinted;
+      const bMinted = b.id <= totalMinted;
+      if (aMinted === bMinted) return 0;
+      return aMinted ? -1 : 1;
+    });
+  }, [rareSet, totalMinted]);
 
   const showcaseNFTs: NFT[] = useMemo(() => {
-    const shuffled = [...allNFTs].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, count);
-  }, [allNFTs, count]);
+    const minted = allNFTs.filter((nft) => nft.id <= totalMinted);
+    const notMinted = allNFTs.filter((nft) => nft.id > totalMinted);
+    const pickedMinted = minted.slice(0, count);
+    const remaining = count - pickedMinted.length;
+    const pickedPlaceholder = remaining > 0 ? notMinted.slice(0, remaining) : [];
+    return [...pickedMinted, ...pickedPlaceholder];
+  }, [allNFTs, totalMinted, count]);
 
   return (
     <div className="nft-showcase">
@@ -55,17 +69,39 @@ function NFTShowcase({ count = 30 }: NFTShowcaseProps) {
         </Link>
       </div>
       <div className="nft-showcase-grid">
-        {showcaseNFTs.map((nft) => (
-          <Link
-            key={nft.id}
-            to={`/nft/${nft.id}`}
-            className={`nft-showcase-item level-${nft.level}`}
-            title={nft.name}
-          >
-            <img src={nft.image} alt={nft.name} loading="lazy" />
-            <span className="nft-showcase-id">#{nft.id}</span>
-          </Link>
-        ))}
+        {showcaseNFTs.map((nft) => {
+          const isMinted = nft.id <= totalMinted;
+          const imageSrc = isMinted
+            ? nft.image
+            : "/Placeholder_image.jpg";
+
+          const content = (
+            <>
+              <img src={imageSrc} alt={nft.name} loading="lazy" />
+              {isMinted && (
+                <span className="nft-showcase-id">#{nft.id}</span>
+              )}
+            </>
+          );
+
+          return isMinted ? (
+            <Link
+              key={nft.id}
+              to={`/nft/${nft.id}`}
+              className={`nft-showcase-item level-${nft.level}`}
+              title={nft.name}
+            >
+              {content}
+            </Link>
+          ) : (
+            <div
+              key={nft.id}
+              className={`nft-showcase-item level-${nft.level}`}
+            >
+              {content}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

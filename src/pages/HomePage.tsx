@@ -247,7 +247,10 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
             <div className="hero-download-panel">
               <div>
                 <p className="hero-download-title">
-                  {translate("零号城市已开放，立刻入驻", "City Zero is open now.")}
+                  {translate(
+                    "零号城市已开放，立刻入驻",
+                    "City Zero is open now."
+                  )}
                 </p>
               </div>
               <div className="download-buttons">
@@ -300,10 +303,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
                 )}
               </p>
               <p>
-                {translate(
-                  "未来，",
-                  "Looking ahead, "
-                )}
+                {translate("未来，", "Looking ahead, ")}
                 <strong>N1NJ4</strong>
                 {translate(
                   " 的世界观与城市版图将持续扩展，不断引入更多链上实验与链下交互场景，构建一个集 Web3 科技、潮流文化与沉浸式体验于一体的先锋生态。",
@@ -328,10 +328,16 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
 
             <div className="hero-actions">
               <a href="#mint" className="btn btn-primary btn-lg">
-                {translate("铸造你的专属 N1NJ4，加入零号城市", "Mint your exclusive N1NJ4 and join City Zero")}
+                {translate(
+                  "铸造你的专属 N1NJ4，加入零号城市",
+                  "Mint your exclusive N1NJ4 and join City Zero"
+                )}
               </a>
               <Link to="/gallery" className="btn btn-secondary btn-lg">
-                {translate("进入画廊，探索全部忍者", "Enter the gallery to explore all ninjas")}
+                {translate(
+                  "进入画廊，探索全部忍者",
+                  "Enter the gallery to explore all ninjas"
+                )}
               </Link>
             </div>
           </div>
@@ -474,7 +480,9 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
           <div className="ops-copy">
             <p className="section-kicker">FIELD REPORT</p>
             <h2>{translate("零号城市实时画面", "Zero City Live Feed")}</h2>
-            <h3>{translate("城市发起人： Ninja Labs", "Initiated by: Ninja Labs")}</h3>
+            <h3>
+              {translate("城市发起人： Ninja Labs", "Initiated by: Ninja Labs")}
+            </h3>
             <p>
               {translate(
                 "城市的摩天大楼天际线一望无际，忍者们已经悄然加入，零号城市深度融入 Injective 生态，赛博文化与链上潮流在此无缝叠加。这里不仅是一座城市，更是一个持续进化的实验场。",
@@ -549,9 +557,14 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
               <p className="section-kicker">NINJA INDEX</p>
               <h2>{translate("先导档案展示", "Preview Roster")}</h2>
             </div>
-            <p>{translate("初始 500 名 Ninja 正在待机", "The first 500 ninjas are standing by.")}</p>
+            <p>
+              {translate(
+                "初始 500 名 Ninja 正在待机",
+                "The first 500 ninjas are standing by."
+              )}
+            </p>
           </div>
-          <NFTShowcase count={30} />
+          <NFTShowcase count={18} />
         </div>
       </section>
 

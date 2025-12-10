@@ -239,23 +239,44 @@ function NFTDetailPage() {
                 {translate("属性", "Attributes")}
               </h1>
               <div className="flex-col gap-sm">
-                <div className="grid-auto gap-sm">
-                  {metadata.attributes.map((attr, index) => (
-                    <div key={index} className="card text-center p-md">
-                      <p
-                        className="text-xs text-tertiary mb-xs"
-                        style={{
-                          textTransform: "uppercase",
-                          letterSpacing: "0.5px",
-                        }}
+                <div className="nft-attributes-grid gap-sm">
+                  {/* 优先渲染 Tier === Rare，其余属性排在后面 */}
+                  {[
+                    ...metadata.attributes.filter(
+                      (attr) =>
+                        attr.trait_type === "Tier" && attr.value === "Rare"
+                    ),
+                    ...metadata.attributes.filter(
+                      (attr) =>
+                        !(
+                          attr.trait_type === "Tier" && attr.value === "Rare"
+                        )
+                    ),
+                  ].map((attr, index) => {
+                    const isTierRare =
+                      attr.trait_type === "Tier" && attr.value === "Rare";
+                    return (
+                      <div
+                        key={`${attr.trait_type}-${index}`}
+                        className={`card text-center p-md${
+                          isTierRare ? " attribute-tier-rare" : ""
+                        }`}
                       >
-                        {attr.trait_type}
-                      </p>
-                      <p className="text-base font-semibold text-primary">
-                        {attr.value}
-                      </p>
-                    </div>
-                  ))}
+                        <p
+                          className="text-xs text-tertiary mb-xs"
+                          style={{
+                            textTransform: "uppercase",
+                            letterSpacing: "0.5px",
+                          }}
+                        >
+                          {attr.trait_type}
+                        </p>
+                        <p className="text-base font-semibold text-primary">
+                          {attr.value}
+                        </p>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>

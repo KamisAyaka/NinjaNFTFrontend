@@ -6,6 +6,7 @@ import imagesSummary from "../abi/images_summary.json" assert { type: "json" };
 import rawFilterMap from "../abi/filter_map.json" assert { type: "json" };
 import { useLanguage } from "../context/useLanguage";
 import "./GalleryPage.css";
+import { evmContractService } from "../utils/evmContract";
 
 type TraitCategory = string;
 type TraitMapRecord = Record<TraitCategory, string>;
@@ -68,15 +69,14 @@ const nftList = (imagesSummary as Array<{ edition: number; image: string }>).map
   })
 );
 
-const ITEMS_PER_PAGE = 24; // 每页显示24个
+const ITEMS_PER_PAGE = 20; // 每页显示20个
 
 function GalleryPage() {
   const { language } = useLanguage();
   const translate = (zh: string, en: string) =>
     language === "zh" ? zh : en;
-  const [nfts] = useState<NFTItem[]>(() =>
-    nftList.slice().sort((a, b) => b.id - a.id)
-  );
+  const [nfts, setNfts] = useState<NFTItem[]>([]);
+  const [searchId, setSearchId] = useState("");
   const [sortBy, setSortBy] = useState("newest");
   const [filters, setFilters] = useState<Record<TraitCategory, string>>(() => {
     const initial = {} as Record<TraitCategory, string>;
@@ -86,6 +86,34 @@ function GalleryPage() {
     return initial;
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const [mintedLimit, setMintedLimit] = useState<number | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const load = async () => {
+      try {
+        const total = await evmContractService.getTotalMinted();
+        if (!mounted) return;
+        setMintedLimit(total);
+        setNfts(
+          nftList
+            .filter((nft) => nft.id <= total)
+            .sort((a, b) => b.id - a.id)
+        );
+      } catch {
+        if (!mounted) return;
+        setMintedLimit(0);
+        setNfts([]);
+      }
+    };
+
+    load();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const handleFilterChange = (category: TraitCategory, value: string) => {
     setFilters((prev) => ({ ...prev, [category]: value }));
@@ -94,12 +122,18 @@ function GalleryPage() {
   // 筛选和排序
   const filteredNFTs = nfts
     .filter((nft) => {
-      return traitCategories.every((category) => {
+      if (!searchId) return true;
+      const idNumber = Number(searchId);
+      if (!idNumber) return false;
+      return nft.id === idNumber;
+    })
+    .filter((nft) =>
+      traitCategories.every((category) => {
         const filterValue = filters[category];
         if (filterValue === "all") return true;
         return nft.traits[category] === filterValue;
-      });
-    })
+      })
+    )
     .sort((a, b) => {
       switch (sortBy) {
         case "level": {
@@ -124,7 +158,7 @@ function GalleryPage() {
   // 当筛选条件改变时，重置到第一页
   useEffect(() => {
     setCurrentPage(1);
-  }, [filters, sortBy]);
+  }, [filters, sortBy, searchId]);
 
   // 生成页码数组
   const getPageNumbers = () => {
@@ -189,6 +223,23 @@ function GalleryPage() {
 
           {/* 右侧内容 */}
           <div className="gallery-content">
+            <div className="gallery-search">
+              <label className="gallery-search-label" htmlFor="gallery-search-id">
+                {translate("按编号搜索", "Search by ID")}
+              </label>
+              <input
+                id="gallery-search-id"
+                className="gallery-search-input"
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                placeholder={translate("输入编号，例如 123", "Enter ID, e.g. 123")}
+                value={searchId}
+                onChange={(e) =>
+                  setSearchId(e.target.value.replace(/[^0-9]/g, ""))
+                }
+              />
+            </div>
             {/* NFT 网格 */}
             {filteredNFTs.length > 0 ? (
               <>
