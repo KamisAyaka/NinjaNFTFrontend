@@ -81,7 +81,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
         title: "N1NJ4: Origin Prime",
         description: translate(
           "500 枚原初忍者身份 NFT，算法生成、绝无重复，限定供应正在进行中。",
-          "A generative drop of 500 origin ninjas—never repeated, strictly limited, and live now."
+          "A generative drop of 500 origin ninjas: never repeated, strictly limited, and live now."
         ),
         image: "/Ninja Labs CN-banner-2-1.png",
       },
@@ -247,7 +247,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
             <div className="hero-download-panel">
               <div>
                 <p className="hero-download-title">
-                  {translate("零号城市已开放，立刻入驻", "Zero City is open—deploy now.")}
+                  {translate("零号城市已开放，立刻入驻", "Zero City is open now.")}
                 </p>
               </div>
               <div className="download-buttons">
@@ -275,14 +275,14 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
                 <strong>
                   {translate(
                     "500 个独一无二的赛博朋克忍者即将降临 N1NJ4 零号城市。",
-                    "500 unique cyberpunk ninjas are descending upon the N1NJ4 Zero City."
+                    "500 unique cyberpunk ninjas are descending upon the N1NJ4 City Zero."
                   )}
                 </strong>
               </p>
               <p>
                 {translate(
                   "这座零号城市由 Ninja Labs 发起并由社区自治共建，是数字秩序与未来文明交汇的起点。",
-                  "Zero City is initiated by Ninja Labs and co-built with the community—a meeting point between digital order and future civilization."
+                  "City Zero is initiated by Ninja Labs and co-built with the community. It is a joint point between digital order and future civilization."
                 )}
               </p>
               <p>
@@ -314,24 +314,24 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
                 <strong>
                   {translate(
                     "每一个 N1NJ4：Origin 均由多种特征经算法随机生成，绝无重复。",
-                    "Every N1NJ4: Origin is generated algorithmically from countless traits—no duplicates."
+                    "Every N1NJ4: Origin is generated algorithmically from traits—no duplicates."
                   )}
                 </strong>
               </p>
               <p>
                 {translate(
                   "它不仅是一枚 NFT，更是你在赛博忍者世界中的身份象征。",
-                  "It’s more than an NFT—it’s your identity inside the cyber-ninja universe."
+                  "It’s more than an NFT, it’s your identity inside the cyber-ninja universe."
                 )}
               </p>
             </div>
 
             <div className="hero-actions">
               <a href="#mint" className="btn btn-primary btn-lg">
-                {translate("铸造你的专属 N1NJ4，加入零号城市", "Mint your exclusive N1NJ4 and join Zero City")}
+                {translate("铸造你的专属 N1NJ4，加入零号城市", "Mint your exclusive N1NJ4 and join City Zero")}
               </a>
               <Link to="/gallery" className="btn btn-secondary btn-lg">
-                {translate("进入画廊，探索全部忍者", "Enter the gallery to explore every ninja")}
+                {translate("进入画廊，探索全部忍者", "Enter the gallery to explore all ninjas")}
               </Link>
             </div>
           </div>
@@ -362,7 +362,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
             <p>
               {translate(
                 "N1NJ4 现已开放入驻，加入零号城市，成为忍者一员，开启独一无二的链上体验！",
-                "N1NJ4 is open—enter Zero City, become a ninja, and unlock a one-of-a-kind on-chain experience."
+                "N1NJ4 is open, enter City Zero, become a ninja, and unlock a one-of-a-kind on-chain experience."
               )}
             </p>
           </div>
@@ -372,7 +372,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
             <p>
               {translate(
                 "随着忍者们进入零号城市，城市地图将逐渐开放。详尽的城市生存指南即将发布，你准备好了么？",
-                "As ninjas enter Zero City, the map unlocks piece by piece. A complete survival guide is coming—are you ready?"
+                "As ninjas enter City Zero, the map unlocks piece by piece. A complete survival guide is coming, are you ready?"
               )}
             </p>
           </div>
@@ -478,7 +478,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
             <p>
               {translate(
                 "城市的摩天大楼天际线一望无际，忍者们已经悄然加入，零号城市深度融入 Injective 生态，赛博文化与链上潮流在此无缝叠加。这里不仅是一座城市，更是一个持续进化的实验场。",
-                "The skyline stretches forever as ninjas slip into the city. Zero City is deeply woven into Injective—where cyber culture and on-chain trends merge. It’s more than a city; it’s an ever-evolving test field."
+                "The skyline stretches forever as ninjas slip into the city. City Zero is deeply woven into Injective where cyber culture and on-chain trends merge. It’s more than a city; it’s an ever-evolving test field."
               )}
             </p>
             <div className="ops-actions">
@@ -549,7 +549,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
               <p className="section-kicker">NINJA INDEX</p>
               <h2>{translate("先导档案展示", "Preview Roster")}</h2>
             </div>
-            <p>{translate("初始 30 名 Ninja 正在待机", "The first 30 ninjas are standing by.")}</p>
+            <p>{translate("初始 500 名 Ninja 正在待机", "The first 500 ninjas are standing by.")}</p>
           </div>
           <NFTShowcase count={30} />
         </div>
