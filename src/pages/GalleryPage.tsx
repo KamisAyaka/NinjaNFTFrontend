@@ -86,8 +86,6 @@ function GalleryPage() {
     return initial;
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const [mintedLimit, setMintedLimit] = useState<number | null>(null);
-
   useEffect(() => {
     let mounted = true;
 
@@ -95,7 +93,6 @@ function GalleryPage() {
       try {
         const total = await evmContractService.getTotalMinted();
         if (!mounted) return;
-        setMintedLimit(total);
         setNfts(
           nftList
             .filter((nft) => nft.id <= total)
@@ -103,7 +100,6 @@ function GalleryPage() {
         );
       } catch {
         if (!mounted) return;
-        setMintedLimit(0);
         setNfts([]);
       }
     };

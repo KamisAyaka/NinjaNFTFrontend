@@ -34,14 +34,17 @@ function NFTShowcase({ count = 18 }: NFTShowcaseProps) {
   }, []);
 
   const allNFTs: NFT[] = useMemo(() => {
-    const list = (imagesSummary as Array<{ edition: number; image: string }>).map(
-      ({ edition, image }) => ({
+    const list = (
+      imagesSummary as Array<{ edition: number; image: string }>
+    ).map(({ edition, image }) => {
+      const level: NFTLevel = rareSet.has(edition) ? "purple" : "white";
+      return {
         id: edition,
         name: `NINJ4 #${edition}`,
         image: resolveImageUrl(image),
-        level: rareSet.has(edition) ? "purple" : "white",
-      })
-    );
+        level,
+      };
+    });
     // 已铸造的在前，未铸造的在后
     return list.sort((a, b) => {
       const aMinted = a.id <= totalMinted;
