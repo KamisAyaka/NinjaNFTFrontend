@@ -30,7 +30,7 @@ function GalleryHero() {
         >
           {language === "zh"
             ? "这里存放着 N1NJ4 的视觉档案：每一位忍者都由算法随机生成。浏览画廊即可追踪他们的进化形态、任务状态与社区贡献，让零号城市的故事在你的屏幕上延展。"
-            : "This is the visual archive of N1NJ4: every ninja is algorithmically generated. Browse the gallery to track their evolution, missions, and contributions as Zero City's story unfolds on your screen."}
+            : "This is the visual archive of N1NJ4: every ninja is algorithmically generated. Browse the gallery to track their evolution, missions, and contributions as City Zero's story unfolds on your screen."}
         </p>
       </div>
     </div>

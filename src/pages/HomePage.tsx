@@ -68,7 +68,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
     () => [
       {
         id: "event-zero",
-        title: translate("零号城市特别广播", "Zero City Broadcast"),
+        title: translate("零号城市特别广播", "City Zero Broadcast"),
         description: translate(
           "最新的战术数据正在释出，Origin 小队完成了第一轮部署，空投信号覆盖整个 Injective 主城。",
           "Fresh tactical intel is being released as Team Origin completes phase one and the airdrop signal covers the entire Injective capital."
@@ -374,7 +374,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
           </div>
           <div className="mission-card reveal">
             <p className="mission-label">MISSION // 01</p>
-            <h3>{translate("零号城市 Hack！", "Zero City Hack!")}</h3>
+            <h3>{translate("零号城市 Hack！", "City Zero Hack!")}</h3>
             <p>
               {translate(
                 "随着忍者们进入零号城市，城市地图将逐渐开放。详尽的城市生存指南即将发布，你准备好了么？",
@@ -479,7 +479,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
         <div className="container ops-grid">
           <div className="ops-copy">
             <p className="section-kicker">FIELD REPORT</p>
-            <h2>{translate("零号城市实时画面", "Zero City Live Feed")}</h2>
+            <h2>{translate("零号城市实时画面", "City Zero Live Feed")}</h2>
             <h3>
               {translate("城市发起人： Ninja Labs", "Initiated by: Ninja Labs")}
             </h3>
@@ -502,7 +502,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
           <div className="ops-visual reveal">
             <img
               src="/Ninja Labs CN-banner-2-1.png"
-              alt="Zero City"
+              alt="City Zero"
               className="ops-image"
             />
             <div className="ops-overlay">
