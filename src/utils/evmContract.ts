@@ -1,13 +1,25 @@
-import { ethers } from 'ethers';
+import { ethers, ZeroAddress } from 'ethers';
 import { getWalletClient } from 'wagmi/actions';
 import { wagmiConfig } from '../config/wagmi';
 import config from '../config';
-import Ninj4Artifact from "../abi/NINJ4NFT.json" assert { type: "json" };
+import NFT_ABI from "../abi/abi.json" assert { type: "json" };
 
-const NFT_ABI = Ninj4Artifact;
-const MAX_PER_WALLET = 1;
+// 默认每个钱包最大铸造数量（会被合约条件覆盖）
+const DEFAULT_MAX_PER_WALLET = 1;
 
-// EVM 合约交互服务类
+// Claim Condition 结构体定义
+interface ClaimCondition {
+  startTimestamp: bigint;
+  maxClaimableSupply: bigint;
+  supplyClaimed: bigint;
+  quantityLimitPerWallet: bigint;
+  merkleRoot: string;
+  pricePerToken: bigint;
+  currency: string;
+  metadata: string;
+}
+
+// EVM 合约交互服务类 (适配 ThirdWeb DropERC721)
 export class EvmContractService {
   private provider: ethers.BrowserProvider | null = null;
   private contract: ethers.Contract | null = null;
@@ -29,31 +41,8 @@ export class EvmContractService {
     // 延迟初始化，等待 window.ethereum 可用
   }
 
-  private getRpcConfig() {
-    if (config.networkType === "testnet") {
-      return config.chain.testnet;
-    }
-    if (config.networkType === "mainnet") {
-      return config.chain.mainnet;
-    }
-    return null;
-  }
-
-  private getRpcUrl() {
-    const rpcConfig = this.getRpcConfig();
-    if (rpcConfig) {
-      return rpcConfig.node;
-    }
-    if (config.localChain.enabled) {
-      return config.localChain.rpcUrl;
-    }
-    return null;
-  }
-
   private getContractAddress() {
-    return config.localChain.enabled
-      ? config.localChain.contractAddress
-      : config.nft.contractAddress;
+    return config.nft.contractAddress;
   }
 
   private ensureReadProvider() {
@@ -61,12 +50,17 @@ export class EvmContractService {
       return;
     }
 
-    const rpcUrl = this.getRpcUrl();
-    if (!rpcUrl) {
-      throw new Error("未配置 RPC 节点");
-    }
+    const rpcUrl = config.chain.node;
+    const chainId = config.chain.evmChainId;
 
-    this.readProvider = new ethers.JsonRpcProvider(rpcUrl);
+    // Injective RPC 不支持批量请求，需要使用 staticNetwork 和禁用批量
+    const fetchRequest = new ethers.FetchRequest(rpcUrl);
+    this.readProvider = new ethers.JsonRpcProvider(
+      fetchRequest,
+      chainId,
+      { staticNetwork: true, batchMaxCount: 1 }
+    );
+
     this.readContract = new ethers.Contract(
       this.getContractAddress(),
       NFT_ABI,
@@ -104,11 +98,11 @@ export class EvmContractService {
     this.provider = new ethers.BrowserProvider(window.ethereum);
     const network = await this.provider.getNetwork();
     console.log('🌐 当前网络:', network.name, network.chainId);
-    
+
     // 获取 signer
     this.signer = await this.provider.getSigner();
     this.currentAccount = walletAddress;
-    
+
     // 创建合约实例
     const contractAddress = this.getContractAddress();
     this.ensureReadProvider();
@@ -125,24 +119,71 @@ export class EvmContractService {
   }
 
   /**
-   * 铸造 NFT（NINJ4 合约一次仅允许铸造 1 个）
-   * @param quantity 铸造数量（必须为 1）
+   * 获取当前活跃的 Claim Condition
+   */
+  async getActiveClaimCondition(): Promise<ClaimCondition | null> {
+    try {
+      const contract = await this.getReadContract();
+      const conditionId = await contract.getActiveClaimConditionId();
+      const condition = await contract.getClaimConditionById(conditionId);
+      console.log('📦 当前 Claim Condition:', condition);
+      return condition;
+    } catch (error) {
+      console.error('获取 Claim Condition 失败:', error);
+      return null;
+    }
+  }
+
+  /**
+   * 铸造 NFT (使用 claim 函数)
+   * @param quantity 铸造数量
    */
   async mint(quantity: number): Promise<ethers.TransactionReceipt> {
-    if (!this.contract) {
+    if (!this.contract || !this.currentAccount) {
       await this.init();
     }
 
-    if (!this.contract) {
+    if (!this.contract || !this.currentAccount) {
       throw new Error('合约未初始化');
     }
 
-    if (quantity !== 1) {
-      throw new Error('NINJ4 系列一次只能铸造 1 个 NFT');
+    console.log(`🔄 准备铸造 ${quantity} 个 NFT...`);
+
+    // 1. 获取当前活跃的 Claim Condition
+    const condition = await this.getActiveClaimCondition();
+    if (!condition) {
+      throw new Error('当前没有活跃的销售条件，无法铸造');
     }
 
-    console.log('🔄 铸造 1 个 NINJ4 NFT...');
-    const tx = await this.contract.mint();
+    const pricePerToken = condition.pricePerToken;
+    const currency = condition.currency;
+    const totalPrice = pricePerToken * BigInt(quantity);
+
+    console.log('💰 单价:', ethers.formatEther(pricePerToken), '总价:', ethers.formatEther(totalPrice));
+    console.log('💳 支付币种:', currency);
+
+    // 2. 构造 AllowlistProof (公售情况下为空 proof)
+    const allowlistProof = {
+      proof: [],
+      quantityLimitPerWallet: condition.quantityLimitPerWallet,
+      pricePerToken: pricePerToken,
+      currency: currency
+    };
+
+    // 3. 调用 claim 函数
+    // claim(receiver, quantity, currency, pricePerToken, allowlistProof, data)
+    const isNativeToken = currency === ZeroAddress;
+
+    const tx = await this.contract.claim(
+      this.currentAccount,       // _receiver
+      quantity,                  // _quantity
+      currency,                  // _currency
+      pricePerToken,             // _pricePerToken
+      allowlistProof,            // _allowlistProof
+      "0x",                      // _data (空数据)
+      { value: isNativeToken ? totalPrice : 0n }
+    );
+
     console.log('📝 交易已发送:', tx.hash);
     const receipt = await tx.wait();
     console.log('✅ 交易已确认:', receipt);
@@ -150,7 +191,7 @@ export class EvmContractService {
   }
 
   /**
-   * 查询总铸造数量
+   * 查询总铸造数量 (使用 totalMinted)
    */
   async getTotalMinted(): Promise<number> {
     try {
@@ -164,66 +205,77 @@ export class EvmContractService {
   }
 
   /**
-   * 查询用户已铸造的数量
+   * 查询用户已铸造的数量 (基于当前 Claim Condition)
    * @param address 用户地址
    */
   async getMintedCount(address: string): Promise<number> {
     try {
       const contract = await this.getReadContract();
-      const minted = await contract.hasMinted(address);
-      return minted ? 1 : 0;
+      const conditionId = await contract.getActiveClaimConditionId();
+      const supplyClaimed = await contract.getSupplyClaimedByWallet(conditionId, address);
+      return Number(supplyClaimed);
     } catch (error) {
-      console.error('查询 minted 失败:', error);
+      console.error('查询用户铸造数量失败:', error);
       return 0;
     }
   }
 
   /**
-   * 查询铸造状态
+   * 查询铸造状态 (是否有活跃的 Claim Condition)
    */
   async isMintActive(): Promise<boolean> {
-    if (!this.contract) {
-      await this.init();
+    try {
+      const condition = await this.getActiveClaimCondition();
+      if (!condition) return false;
+
+      const now = BigInt(Math.floor(Date.now() / 1000));
+      const started = condition.startTimestamp <= now;
+      const hasSupply = condition.maxClaimableSupply === 0n ||
+        condition.supplyClaimed < condition.maxClaimableSupply;
+
+      return started && hasSupply;
+    } catch {
+      return false;
     }
-    // NINJ4 合约没有开关，默认始终可铸造（除非链上达到限额或余额不足）
-    return true;
   }
 
   /**
-   * 查询最大供应量
+   * 查询最大供应量 (使用 maxTotalSupply)
    */
   async getMaxSupply(): Promise<number> {
     try {
       const contract = await this.getReadContract();
-      const maxSupply = await contract.maxSupply();
+      const maxSupply = await contract.maxTotalSupply();
       return Number(maxSupply);
     } catch (error) {
-      console.error('查询 MAX_SUPPLY 失败:', error);
+      console.error('查询 maxTotalSupply 失败:', error);
       return config.nft.maxSupply;
     }
   }
 
   /**
-   * 查询每个钱包最大铸造数量
+   * 查询每个钱包最大铸造数量 (从当前 Claim Condition 获取)
    */
   async getMaxPerWallet(): Promise<number> {
-    return MAX_PER_WALLET;
+    try {
+      const condition = await this.getActiveClaimCondition();
+      if (condition && condition.quantityLimitPerWallet > 0n) {
+        return Number(condition.quantityLimitPerWallet);
+      }
+      return DEFAULT_MAX_PER_WALLET;
+    } catch {
+      return DEFAULT_MAX_PER_WALLET;
+    }
   }
 
   /**
-   * 查询用户是否已经铸造过
+   * 查询用户是否已经达到铸造限额
    */
   async hasMinted(address: string): Promise<boolean> {
-    if (!this.contract) {
-      await this.init();
-    }
-
-    if (!this.contract) {
-      return false;
-    }
-
     try {
-      return await this.contract.hasMinted(address);
+      const minted = await this.getMintedCount(address);
+      const maxPerWallet = await this.getMaxPerWallet();
+      return minted >= maxPerWallet;
     } catch (error) {
       console.error('查询 hasMinted 失败:', error);
       return false;
@@ -266,19 +318,19 @@ export class EvmContractService {
       // 遍历所有已铸造的 token，检查拥有者
       // 为了提高性能，可以批量查询
       const batchSize = 50; // 每批查询50个
-      
-      for (let i = 1; i <= Number(totalMinted); i += batchSize) {
-        const endIndex = Math.min(i + batchSize - 1, Number(totalMinted));
-        
+
+      for (let i = 0; i < Number(totalMinted); i += batchSize) {
+        const endIndex = Math.min(i + batchSize, Number(totalMinted));
+
         // 创建批量查询 promises
         const promises: Promise<string>[] = [];
-        for (let j = i; j <= endIndex; j++) {
-          promises.push(contract.ownerOf(j));
+        for (let j = i; j < endIndex; j++) {
+          promises.push(contract.ownerOf(j).catch(() => ZeroAddress));
         }
-        
+
         // 并行查询
         const owners = await Promise.all(promises);
-        
+
         // 检查哪些 token 属于该用户
         for (let k = 0; k < owners.length; k++) {
           if (owners[k].toLowerCase() === owner.toLowerCase()) {
@@ -327,6 +379,7 @@ export class EvmContractService {
 
   /**
    * 查询用户持有的 NFT（包含 tokenURI）
+   * 注意：新合约可能没有 ownerTokensWithURI，改用 getUserNFTs + getTokenURI
    */
   async getOwnerTokensWithURI(owner: string): Promise<Array<{ tokenId: number; tokenURI: string }>> {
     if (!owner) {
@@ -334,12 +387,15 @@ export class EvmContractService {
     }
 
     try {
-      const contract = await this.getReadContract();
-      const response = await contract.ownerTokensWithURI(owner);
-      return response.map((item: { tokenId: bigint; tokenURI: string }) => ({
-        tokenId: Number(item.tokenId),
-        tokenURI: item.tokenURI,
-      }));
+      const tokenIds = await this.getUserNFTs(owner);
+      const results: Array<{ tokenId: number; tokenURI: string }> = [];
+
+      for (const tokenId of tokenIds) {
+        const tokenURI = await this.getTokenURI(tokenId);
+        results.push({ tokenId, tokenURI });
+      }
+
+      return results;
     } catch (error) {
       console.error('查询 ownerTokensWithURI 失败:', error);
       return [];

@@ -30,6 +30,8 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
   const [maxSupply, setMaxSupply] = useState(0);
   const [maxPerWallet, setMaxPerWallet] = useState(1);
   const [activePoster, setActivePoster] = useState(0);
+  // 销售状态：'loading' | 'active' | 'not_started' | 'ended'
+  const [mintStatus, setMintStatus] = useState<'loading' | 'active' | 'not_started' | 'ended'>('loading');
 
   const deploymentTimeline = useMemo(
     () => [
@@ -123,20 +125,31 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
     let isMounted = true;
     const loadData = async () => {
       try {
-        const [total, max, maxWallet] = await Promise.all([
+        const [total, max, maxWallet, isActive] = await Promise.all([
           evmContractService.getTotalMinted(),
           evmContractService.getMaxSupply(),
           evmContractService.getMaxPerWallet(),
+          evmContractService.isMintActive(),
         ]);
         if (!isMounted) return;
         setTotalMinted(total);
         setMaxSupply(max);
         setMaxPerWallet(maxWallet);
+
+        // 判断销售状态
+        if (isActive) {
+          setMintStatus('active');
+        } else if (max > 0 && total >= max) {
+          setMintStatus('ended');
+        } else {
+          setMintStatus('not_started');
+        }
       } catch (error) {
         console.error(
           translate("加载合约数据失败:", "Failed to load contract data:"),
           error
         );
+        setMintStatus('not_started');
       }
     };
 
@@ -405,9 +418,8 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
               {posterCollections.map((collection) => (
                 <article
                   key={collection.id}
-                  className={`poster-card ${
-                    collection.type === "event" ? "poster-card-event" : ""
-                  }`}
+                  className={`poster-card ${collection.type === "event" ? "poster-card-event" : ""
+                    }`}
                 >
                   <div className="poster-card-media">
                     <img src={collection.image} alt={collection.title} />
@@ -438,9 +450,8 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
                 <button
                   type="button"
                   key={index}
-                  className={`poster-dot ${
-                    index === activePoster ? "poster-dot-active" : ""
-                  }`}
+                  className={`poster-dot ${index === activePoster ? "poster-dot-active" : ""
+                    }`}
                   onClick={() => setActivePoster(index)}
                   aria-label={
                     language === "zh"
@@ -538,13 +549,43 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
               userMinted={userMinted}
               maxPerWallet={maxPerWallet}
             />
-            <MintSection
-              isConnected={isConnected}
-              loading={loading}
-              maxPerWallet={maxPerWallet}
-              userMinted={userMinted}
-              onMint={handleMintAction}
-            />
+            {/* 销售状态提示 */}
+            {mintStatus === 'loading' && (
+              <div className="card" style={{ textAlign: 'center', padding: '1rem', marginBottom: '1rem' }}>
+                <p style={{ color: 'var(--color-text-secondary)' }}>
+                  {translate('加载销售状态...', 'Loading sale status...')}
+                </p>
+              </div>
+            )}
+            {mintStatus === 'not_started' && (
+              <div className="card" style={{ textAlign: 'center', padding: '1rem', marginBottom: '1rem', border: '1px solid var(--color-warning, #f59e0b)' }}>
+                <p style={{ color: 'var(--color-warning, #f59e0b)', fontWeight: 'bold', marginBottom: '0.5rem' }}>
+                  ⏳ {translate('销售尚未开始', 'Sale Not Started')}
+                </p>
+                <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
+                  {translate(
+                    '合约管理员尚未设置销售条件，请稍后再来。',
+                    'The contract admin has not set up the sale conditions yet. Please check back later.'
+                  )}
+                </p>
+              </div>
+            )}
+            {mintStatus === 'ended' && (
+              <div className="card" style={{ textAlign: 'center', padding: '1rem', marginBottom: '1rem', border: '1px solid var(--color-error, #ef4444)' }}>
+                <p style={{ color: 'var(--color-error, #ef4444)', fontWeight: 'bold' }}>
+                  🎉 {translate('销售已结束 - 已售罄', 'Sale Ended - Sold Out')}
+                </p>
+              </div>
+            )}
+            {mintStatus === 'active' && (
+              <MintSection
+                isConnected={isConnected}
+                loading={loading}
+                maxPerWallet={maxPerWallet}
+                userMinted={userMinted}
+                onMint={handleMintAction}
+              />
+            )}
             {message && <Message message={message} />}
           </div>
         </div>
