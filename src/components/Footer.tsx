@@ -10,7 +10,7 @@ type FooterColumn = {
 const socialLinks = [
   {
     label: "GitHub",
-    href: "https://github.com/ninjalabscn",
+    href: "https://github.com/Ninja-Labs-CN",
     icon: (
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path
@@ -53,7 +53,7 @@ const footerColumnsMap: Record<"zh" | "en", FooterColumn[]> = {
       links: [
         { label: "Injective", href: "https://injective.com" },
         { label: "Mint 指南", href: "#mint" },
-        { label: "GitHub", href: "https://github.com/ninjalabscn" },
+        { label: "GitHub", href: "https://github.com/Ninja-Labs-CN" },
       ],
     },
     {
@@ -71,7 +71,7 @@ const footerColumnsMap: Record<"zh" | "en", FooterColumn[]> = {
       links: [
         { label: "Injective", href: "https://injective.com" },
         { label: "Mint Guide", href: "#mint" },
-        { label: "GitHub", href: "https://github.com/ninjalabscn" },
+        { label: "GitHub", href: "https://github.com/Ninja-Labs-CN" },
       ],
     },
     {
