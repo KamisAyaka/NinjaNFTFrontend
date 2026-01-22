@@ -541,6 +541,20 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
                 )}
                 {maxPerWallet}
                 {translate(" 个。", " NFT(s).")}
+                <br />
+                {translate(
+                  "你可以在 ",
+                  "You can mint and trade n1nj4:origin "
+                )}
+                <a
+                  href="https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769/drops"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "underline", color: "inherit" }}
+                >
+                  {translate("这里", "here")}
+                </a>
+                {translate(" 铸造和交易 n1nj4:origin。", "")}
               </p>
             </div>
             <StatsGrid
