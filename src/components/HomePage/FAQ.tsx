@@ -1,7 +1,8 @@
 import { useState } from "react";
+import type { ReactNode } from "react";
 import { useLanguage } from "../../context/useLanguage";
 
-type LocaleText = { zh: string; en: string };
+type LocaleText = { zh: ReactNode; en: ReactNode };
 
 interface FAQItem {
   question: LocaleText;
@@ -22,8 +23,8 @@ const faqData: FAQItem[] = [
   {
     question: { zh: "这里到底发生了什么？", en: "What is happening here?" },
     answer: {
-      zh: "N1NJ4 NFT 旨在构建一个专属的开发者社区身份系统。这是一个大规模的生成艺术作品，一种全新的数字所有权模式，以及一个内置的社区贡献激励系统。通过参与社区活动、贡献代码、分享知识等方式，你的 NFT 会随着贡献度提升而升级。",
-      en: "N1NJ4 NFTs power a dedicated developer identity system. It’s a large-scale generative art project, a new model for digital ownership, and a contribution-based incentive program. As you participate in events, code, or share knowledge, your NFT reflects that progress.",
+      zh: "N1NJ4 NFT 旨在构建一个专属的开发者社区身份系统。这是一个大规模的生成艺术作品，一种全新的数字所有权模式，以及一个内置的社区贡献激励系统。未来会有更多城市和不同的忍者特工登录N1NJ4世界，打造一个丰富可供探索的数字世界。",
+      en: "N1NJ4 NFTs aim to build an exclusive developer community identity system. It is a large-scale generative art project, a new model for digital ownership, and a built-in community contribution incentive system. In the future, more cities and diverse Ninja agents will enter the N1NJ4 world, creating a rich digital universe for you to explore.",
     },
   },
   {
@@ -56,8 +57,32 @@ const faqData: FAQItem[] = [
       en: "Where does the market data come from?",
     },
     answer: {
-      zh: "目前网站显示的是模拟数据。未来当我们集成真实的链上数据和市场交易后，所有数据都将来自 Injective 区块链，包括铸造、转移和交易记录。",
-      en: "For now we display simulated data. Once on-chain feeds and marketplace integrations are live, every number will be sourced directly from Injective—mints, transfers, and trades.",
+      zh: (
+        <>
+          目前 N1NJ4 支持 Rarible NFT 市场，你也可以去这里进行铸造和交易：
+          <a
+            href="https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769/drops"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#a855f7", textDecoration: "underline" }}
+          >
+            Rarible
+          </a>
+        </>
+      ),
+      en: (
+        <>
+          Currently N1NJ4 supports the Rarible NFT marketplace, where you can also mint and trade:{" "}
+          <a
+            href="https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769/drops"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#a855f7", textDecoration: "underline" }}
+          >
+            Rarible
+          </a>
+        </>
+      ),
     },
   },
   {
