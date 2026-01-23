@@ -42,10 +42,12 @@
 
 .footer-columns {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, max-content));
   gap: 32px;
   margin-left: auto;
-  width: min(640px, 100%);
+  width: auto;
+  justify-content: end;
+  justify-items: end;
 }
 
 .footer-column-title {

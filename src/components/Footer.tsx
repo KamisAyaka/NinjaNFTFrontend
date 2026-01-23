@@ -32,18 +32,6 @@ const socialLinks = [
       </svg>
     ),
   },
-  {
-    label: "Discord",
-    href: "https://discord.gg/ninjalabs",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path
-          d="M20.32 4.32a17.6 17.6 0 0 0-4.47-1.38c-.2.36-.43.85-.59 1.23a16.1 16.1 0 0 0-5.52 0 11.8 11.8 0 0 0-.61-1.23 17.54 17.54 0 0 0-4.47 1.39C1.8 9.03 1 13.63 1.27 18.19a17.97 17.97 0 0 0 5.45 2.77c.44-.62.83-1.28 1.17-1.98-.65-.25-1.27-.56-1.86-.93.16-.12.31-.25.45-.38 3.58 1.68 7.46 1.68 11 .05.15.14.3.27.46.39-.59.37-1.22.69-1.87.95.34.7.73 1.36 1.18 1.98a17.93 17.93 0 0 0 5.44-2.77c.42-6.1-.7-10.66-2.97-13.86ZM9.02 15.47c-1.06 0-1.94-.98-1.94-2.19 0-1.2.85-2.18 1.94-2.18 1.08 0 1.95.98 1.94 2.18 0 1.21-.85 2.19-1.94 2.19Zm5.94 0c-1.07 0-1.94-.98-1.94-2.19 0-1.2.85-2.18 1.94-2.18 1.08 0 1.95.98 1.94 2.18 0 1.21-.86 2.19-1.94 2.19Z"
-          fill="currentColor"
-        />
-      </svg>
-    ),
-  },
 ];
 
 const footerColumnsMap: Record<"zh" | "en", FooterColumn[]> = {
@@ -52,16 +40,8 @@ const footerColumnsMap: Record<"zh" | "en", FooterColumn[]> = {
       title: "协议",
       links: [
         { label: "Injective", href: "https://injective.com" },
-        { label: "Mint 指南", href: "#mint" },
         { label: "GitHub", href: "https://github.com/Ninja-Labs-CN" },
-      ],
-    },
-    {
-      title: "支持",
-      links: [
-        { label: "帮助中心", href: "#" },
-        { label: "联系我们", href: "mailto:team@ninjalabs.io" },
-        { label: "反馈", href: "#" },
+        { label: "Twitter", href: "https://x.com/ninjalabscn" },
       ],
     },
   ],
@@ -70,16 +50,8 @@ const footerColumnsMap: Record<"zh" | "en", FooterColumn[]> = {
       title: "Protocols",
       links: [
         { label: "Injective", href: "https://injective.com" },
-        { label: "Mint Guide", href: "#mint" },
         { label: "GitHub", href: "https://github.com/Ninja-Labs-CN" },
-      ],
-    },
-    {
-      title: "Support",
-      links: [
-        { label: "Help Center", href: "#" },
-        { label: "Contact Us", href: "mailto:team@ninjalabs.io" },
-        { label: "Feedback", href: "#" },
+        { label: "Twitter", href: "https://x.com/ninjalabscn" },
       ],
     },
   ],
