@@ -20,7 +20,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
   const { language } = useLanguage();
   const translate = useCallback(
     (zh: string, en: string) => (language === "zh" ? zh : en),
-    [language]
+    [language],
   );
 
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,9 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
   const [maxPerWallet, setMaxPerWallet] = useState(1);
   const [activePoster, setActivePoster] = useState(0);
   // 销售状态：'loading' | 'active' | 'not_started' | 'ended'
-  const [mintStatus, setMintStatus] = useState<'loading' | 'active' | 'not_started' | 'ended'>('loading');
+  const [mintStatus, setMintStatus] = useState<
+    "loading" | "active" | "not_started" | "ended"
+  >("loading");
 
   const deploymentTimeline = useMemo(
     () => [
@@ -40,7 +42,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
         title: translate("零号城市部署", "City Zero Deployment"),
         description: translate(
           "发布 N1NJ4:Origins， 公开所有赛博忍者身份",
-          "Launch N1NJ4: Origins and reveal every cyber-ninja identity."
+          "Launch N1NJ4: Origins and reveal every cyber-ninja identity.",
         ),
         status: "LIVE",
       },
@@ -49,7 +51,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
         title: translate("加密中", "Encrypted"),
         description: translate(
           "内容仍被加密，等待解密",
-          "Content remains encrypted and awaits decryption."
+          "Content remains encrypted and awaits decryption.",
         ),
         status: "Locked",
       },
@@ -58,12 +60,12 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
         title: translate("加密中", "Encrypted"),
         description: translate(
           "内容仍被加密，等待解密",
-          "Content remains encrypted and awaits decryption."
+          "Content remains encrypted and awaits decryption.",
         ),
         status: "Locked",
       },
     ],
-    [translate]
+    [translate],
   );
 
   const posterCollections = useMemo(
@@ -73,7 +75,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
         title: translate("零号城市特别广播", "City Zero Broadcast"),
         description: translate(
           "最新的战术数据正在释出，Origin 小队完成了第一轮部署，空投信号覆盖整个 Injective 主城。",
-          "Fresh tactical intel is being released as Team Origin completes phase one and the airdrop signal covers the entire Injective capital."
+          "Fresh tactical intel is being released as Team Origin completes phase one and the airdrop signal covers the entire Injective capital.",
         ),
         image: "/Ninja Labs CN-banner-2-2.jpg",
         type: "event",
@@ -83,7 +85,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
         title: "N1NJ4: Origin Prime",
         description: translate(
           "500 枚原初忍者身份 NFT，算法生成、绝无重复，限定供应正在进行中。",
-          "A generative drop of 500 origin ninjas: never repeated, strictly limited, and live now."
+          "A generative drop of 500 origin ninjas: never repeated, strictly limited, and live now.",
         ),
         image: "/Ninja Labs CN-banner-2-1.png",
       },
@@ -92,12 +94,12 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
         title: "Cyber Ronin Draft",
         description: translate(
           "将 Injective 的速度与社区贡献系统结合的次世代小队，现开放抢先预约。",
-          "A next-generation squad combining Injective speed with our contribution system is now open for early enlistment."
+          "A next-generation squad combining Injective speed with our contribution system is now open for early enlistment.",
         ),
         image: "/Ninja Labs CN-banner-2.png",
       },
     ],
-    [translate]
+    [translate],
   );
 
   useEffect(() => {
@@ -110,7 +112,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.15 },
     );
 
     targets.forEach((el) => observer.observe(el));
@@ -138,18 +140,18 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
 
         // 判断销售状态
         if (isActive) {
-          setMintStatus('active');
+          setMintStatus("active");
         } else if (max > 0 && total >= max) {
-          setMintStatus('ended');
+          setMintStatus("ended");
         } else {
-          setMintStatus('not_started');
+          setMintStatus("not_started");
         }
       } catch (error) {
         console.error(
           translate("加载合约数据失败:", "Failed to load contract data:"),
-          error
+          error,
         );
-        setMintStatus('not_started');
+        setMintStatus("not_started");
       }
     };
 
@@ -175,7 +177,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
       } catch (error) {
         console.error(
           translate("加载用户数据失败:", "Failed to load user data:"),
-          error
+          error,
         );
       }
     };
@@ -197,7 +199,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
       setMessage(
         language === "zh"
           ? `请输入1到${maxPerWallet}之间的数量`
-          : `Enter a value between 1 and ${maxPerWallet}`
+          : `Enter a value between 1 and ${maxPerWallet}`,
       );
       return;
     }
@@ -206,7 +208,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
       setMessage(
         language === "zh"
           ? `超出每个钱包的铸造限制(${maxPerWallet}个)`
-          : `You reached the per-wallet mint limit (${maxPerWallet})`
+          : `You reached the per-wallet mint limit (${maxPerWallet})`,
       );
       return;
     }
@@ -226,12 +228,12 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
       setMessage(
         language === "zh"
           ? `成功铸造 ${quantity} 个 NFT!`
-          : `Successfully minted ${quantity} NFT(s)!`
+          : `Successfully minted ${quantity} NFT(s)!`,
       );
     } catch (error) {
       console.error("Mint failed:", error);
       setMessage(
-        translate("铸造失败: ", "Mint failed: ") + (error as Error).message
+        translate("铸造失败: ", "Mint failed: ") + (error as Error).message,
       );
     } finally {
       setLoading(false);
@@ -262,7 +264,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
                 <p className="hero-download-title">
                   {translate(
                     "零号城市已开放，立刻入驻",
-                    "City Zero is open now."
+                    "City Zero is open now.",
                   )}
                 </p>
               </div>
@@ -291,28 +293,28 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
                 <strong>
                   {translate(
                     "500 个独一无二的赛博朋克忍者即将降临 N1NJ4 零号城市。",
-                    "500 unique cyberpunk ninjas are descending upon the N1NJ4 City Zero."
+                    "500 unique cyberpunk ninjas are descending upon the N1NJ4 City Zero.",
                   )}
                 </strong>
               </p>
               <p>
                 {translate(
                   "这座零号城市由 Ninja Labs 发起并由社区自治共建，是数字秩序与未来文明交汇的起点。",
-                  "City Zero is initiated by Ninja Labs and co-built with the community. It is a joint point between digital order and future civilization."
+                  "City Zero is initiated by Ninja Labs and co-built with the community. It is a joint point between digital order and future civilization.",
                 )}
               </p>
               <p>
                 <strong>
                   {translate(
                     "N1NJ4 致力于打造源自赛博潮流文化与未来朋克美学的专属社区身份系统。",
-                    "N1NJ4 is building a community identity system rooted in cyber street culture and future-punk aesthetics."
+                    "N1NJ4 is building a community identity system rooted in cyber street culture and future-punk aesthetics.",
                   )}
                 </strong>
               </p>
               <p>
                 {translate(
                   "通过深度融合 Injective 生态，我们将数字世界的主权与价值真正交还给每一位社区参与者，实现身份、资产与文化的全面上链。",
-                  "By deeply integrating with the Injective ecosystem, we return digital sovereignty and value to every participant—bringing identity, assets, and culture fully on-chain."
+                  "By deeply integrating with the Injective ecosystem, we return digital sovereignty and value to every participant—bringing identity, assets, and culture fully on-chain.",
                 )}
               </p>
               <p>
@@ -320,21 +322,21 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
                 <strong>N1NJ4</strong>
                 {translate(
                   " 的世界观与城市版图将持续扩展，不断引入更多链上实验与链下交互场景，构建一个集 Web3 科技、潮流文化与沉浸式体验于一体的先锋生态。",
-                  "'s world view and city map will keep expanding with on-chain experiments and real-world interactions, forming a pioneering ecosystem that fuses Web3 tech, culture, and immersive experiences."
+                  "'s world view and city map will keep expanding with on-chain experiments and real-world interactions, forming a pioneering ecosystem that fuses Web3 tech, culture, and immersive experiences.",
                 )}
               </p>
               <p>
                 <strong>
                   {translate(
                     "每一个 N1NJ4：Origin 均由多种特征经算法随机生成，绝无重复。",
-                    "Every N1NJ4: Origin is generated algorithmically from traits—no duplicates."
+                    "Every N1NJ4: Origin is generated algorithmically from traits—no duplicates.",
                   )}
                 </strong>
               </p>
               <p>
                 {translate(
                   "它不仅是一枚 NFT，更是你在赛博忍者世界中的身份象征。",
-                  "It’s more than an NFT, it’s your identity inside the cyber-ninja universe."
+                  "It’s more than an NFT, it’s your identity inside the cyber-ninja universe.",
                 )}
               </p>
             </div>
@@ -343,13 +345,13 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
               <a href="#mint" className="btn btn-primary btn-lg">
                 {translate(
                   "铸造你的专属 N1NJ4，加入零号城市",
-                  "Mint your exclusive N1NJ4 and join City Zero"
+                  "Mint your exclusive N1NJ4 and join City Zero",
                 )}
               </a>
               <Link to="/gallery" className="btn btn-secondary btn-lg">
                 {translate(
                   "进入画廊，探索全部忍者",
-                  "Enter the gallery to explore all ninjas"
+                  "Enter the gallery to explore all ninjas",
                 )}
               </Link>
             </div>
@@ -381,7 +383,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
             <p>
               {translate(
                 "N1NJ4 现已开放入驻，加入零号城市，成为忍者一员，开启独一无二的链上体验！",
-                "N1NJ4 is open, enter City Zero, become a ninja, and unlock a one-of-a-kind on-chain experience."
+                "N1NJ4 is open, enter City Zero, become a ninja, and unlock a one-of-a-kind on-chain experience.",
               )}
             </p>
           </div>
@@ -391,7 +393,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
             <p>
               {translate(
                 "随着忍者们进入零号城市，城市地图将逐渐开放。详尽的城市生存指南即将发布，你准备好了么？",
-                "As ninjas enter City Zero, the map unlocks piece by piece. A complete survival guide is coming, are you ready?"
+                "As ninjas enter City Zero, the map unlocks piece by piece. A complete survival guide is coming, are you ready?",
               )}
             </p>
           </div>
@@ -406,7 +408,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
             <p>
               {translate(
                 "你被选中了。在这座由代码与霓虹构成的城市中，N1NJ4: Origins 正在苏醒。我们正在寻找, 不是旁观者，而是真正的赛博忍者候选人。",
-                "You’ve been selected. In this city of code and neon, N1NJ4: Origins is awakening. We are seeking true cyber-ninja candidates—not bystanders."
+                "You’ve been selected. In this city of code and neon, N1NJ4: Origins is awakening. We are seeking true cyber-ninja candidates—not bystanders.",
               )}
             </p>
           </div>
@@ -418,8 +420,9 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
               {posterCollections.map((collection) => (
                 <article
                   key={collection.id}
-                  className={`poster-card ${collection.type === "event" ? "poster-card-event" : ""
-                    }`}
+                  className={`poster-card ${
+                    collection.type === "event" ? "poster-card-event" : ""
+                  }`}
                 >
                   <div className="poster-card-media">
                     <img src={collection.image} alt={collection.title} />
@@ -450,8 +453,9 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
                 <button
                   type="button"
                   key={index}
-                  className={`poster-dot ${index === activePoster ? "poster-dot-active" : ""
-                    }`}
+                  className={`poster-dot ${
+                    index === activePoster ? "poster-dot-active" : ""
+                  }`}
                   onClick={() => setActivePoster(index)}
                   aria-label={
                     language === "zh"
@@ -497,7 +501,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
             <p>
               {translate(
                 "城市的摩天大楼天际线一望无际，忍者们已经悄然加入，零号城市深度融入 Injective 生态，赛博文化与链上潮流在此无缝叠加。这里不仅是一座城市，更是一个持续进化的实验场。",
-                "The skyline stretches forever as ninjas slip into the city. City Zero is deeply woven into Injective where cyber culture and on-chain trends merge. It’s more than a city; it’s an ever-evolving test field."
+                "The skyline stretches forever as ninjas slip into the city. City Zero is deeply woven into Injective where cyber culture and on-chain trends merge. It’s more than a city; it’s an ever-evolving test field.",
               )}
             </p>
             <div className="ops-actions">
@@ -511,16 +515,14 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
           </div>
 
           <div className="ops-visual reveal">
-            <img
-              src="/Ninja Labs CN-banner-2-1.png"
-              alt="City Zero"
+            <video
+              src="/live.mp4"
               className="ops-image"
+              autoPlay
+              loop
+              muted
+              playsInline
             />
-            <div className="ops-overlay">
-              <div>
-                <p className="ops-value">NINJA BASE CITY</p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -537,15 +539,12 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
               <p className="text-secondary" style={{ lineHeight: "1.7" }}>
                 {translate(
                   "铸造你的专属忍者 NFT，成为 N1NJ4 社区的一员。每个钱包最多可铸造",
-                  "Mint your personal ninja NFT and join the N1NJ4 community. Each wallet can mint up to "
+                  "Mint your personal ninja NFT and join the N1NJ4 community. Each wallet can mint up to ",
                 )}
                 {maxPerWallet}
                 {translate(" 个。", " NFT(s).")}
                 <br />
-                {translate(
-                  "你可以在 ",
-                  "You can mint and trade n1nj4:origin "
-                )}
+                {translate("你可以在 ", "You can mint and trade n1nj4:origin ")}
                 <a
                   href="https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769/drops"
                   target="_blank"
@@ -564,34 +563,73 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
               maxPerWallet={maxPerWallet}
             />
             {/* 销售状态提示 */}
-            {mintStatus === 'loading' && (
-              <div className="card" style={{ textAlign: 'center', padding: '1rem', marginBottom: '1rem' }}>
-                <p style={{ color: 'var(--color-text-secondary)' }}>
-                  {translate('加载销售状态...', 'Loading sale status...')}
+            {mintStatus === "loading" && (
+              <div
+                className="card"
+                style={{
+                  textAlign: "center",
+                  padding: "1rem",
+                  marginBottom: "1rem",
+                }}
+              >
+                <p style={{ color: "var(--color-text-secondary)" }}>
+                  {translate("加载销售状态...", "Loading sale status...")}
                 </p>
               </div>
             )}
-            {mintStatus === 'not_started' && (
-              <div className="card" style={{ textAlign: 'center', padding: '1rem', marginBottom: '1rem', border: '1px solid var(--color-warning, #f59e0b)' }}>
-                <p style={{ color: 'var(--color-warning, #f59e0b)', fontWeight: 'bold', marginBottom: '0.5rem' }}>
-                  ⏳ {translate('销售尚未开始', 'Sale Not Started')}
+            {mintStatus === "not_started" && (
+              <div
+                className="card"
+                style={{
+                  textAlign: "center",
+                  padding: "1rem",
+                  marginBottom: "1rem",
+                  border: "1px solid var(--color-warning, #f59e0b)",
+                }}
+              >
+                <p
+                  style={{
+                    color: "var(--color-warning, #f59e0b)",
+                    fontWeight: "bold",
+                    marginBottom: "0.5rem",
+                  }}
+                >
+                  ⏳ {translate("销售尚未开始", "Sale Not Started")}
                 </p>
-                <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem' }}>
+                <p
+                  style={{
+                    color: "var(--color-text-secondary)",
+                    fontSize: "0.9rem",
+                  }}
+                >
                   {translate(
-                    '合约管理员尚未设置销售条件，请稍后再来。',
-                    'The contract admin has not set up the sale conditions yet. Please check back later.'
+                    "合约管理员尚未设置销售条件，请稍后再来。",
+                    "The contract admin has not set up the sale conditions yet. Please check back later.",
                   )}
                 </p>
               </div>
             )}
-            {mintStatus === 'ended' && (
-              <div className="card" style={{ textAlign: 'center', padding: '1rem', marginBottom: '1rem', border: '1px solid var(--color-error, #ef4444)' }}>
-                <p style={{ color: 'var(--color-error, #ef4444)', fontWeight: 'bold' }}>
-                  🎉 {translate('销售已结束 - 已售罄', 'Sale Ended - Sold Out')}
+            {mintStatus === "ended" && (
+              <div
+                className="card"
+                style={{
+                  textAlign: "center",
+                  padding: "1rem",
+                  marginBottom: "1rem",
+                  border: "1px solid var(--color-error, #ef4444)",
+                }}
+              >
+                <p
+                  style={{
+                    color: "var(--color-error, #ef4444)",
+                    fontWeight: "bold",
+                  }}
+                >
+                  🎉 {translate("销售已结束 - 已售罄", "Sale Ended - Sold Out")}
                 </p>
               </div>
             )}
-            {mintStatus === 'active' && (
+            {mintStatus === "active" && (
               <MintSection
                 isConnected={isConnected}
                 loading={loading}
@@ -615,7 +653,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
             <p>
               {translate(
                 "初始 500 名 Ninja 正在待机",
-                "The first 500 ninjas are standing by."
+                "The first 500 ninjas are standing by.",
               )}
             </p>
           </div>
