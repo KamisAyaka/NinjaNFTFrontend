@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useLanguage } from "../../context/useLanguage";
-import { useNavigate } from "react-router-dom";
 
 interface MintSectionProps {
   maxPerWallet: number;
@@ -11,11 +10,13 @@ function MintSection({
 }: MintSectionProps) {
   const [quantity, setQuantity] = useState(1);
   const { language } = useLanguage();
-  const navigate = useNavigate();
 
   const handleMint = () => {
-    // onMint(quantity); // Disabled for now
-    navigate("/mint-error");
+    // 直接跳转到 Rarible 铸造页面
+    window.open(
+      "https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769/drops",
+      "_blank"
+    );
   };
 
   return (
