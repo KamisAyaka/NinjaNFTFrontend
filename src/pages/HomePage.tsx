@@ -5,7 +5,7 @@ import FAQ from "../components/HomePage/FAQ";
 import NFTPreview from "../components/MintPage/NFTPreview";
 import StatsGrid from "../components/MintPage/StatsGrid";
 import MintSection from "../components/MintPage/MintSection";
-import Message from "../components/MintPage/Message";
+
 import { useLanguage } from "../context/useLanguage";
 import { evmContractService } from "../utils/evmContract";
 import "./HomePage.css";
@@ -16,15 +16,14 @@ interface HomePageProps {
   onMint: (quantity: number) => Promise<void>;
 }
 
-function HomePage({ isConnected, address, onMint }: HomePageProps) {
+
+function HomePage({ isConnected, address }: Omit<HomePageProps, "onMint">) {
   const { language } = useLanguage();
   const translate = useCallback(
     (zh: string, en: string) => (language === "zh" ? zh : en),
     [language],
   );
 
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
   const [totalMinted, setTotalMinted] = useState(0);
   const [userMinted, setUserMinted] = useState(0);
   const [maxSupply, setMaxSupply] = useState(0);
@@ -127,21 +126,21 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
     let isMounted = true;
     const loadData = async () => {
       try {
-        const [total, max, maxWallet, isActive] = await Promise.all([
+        const [total, maxWallet, isActive] = await Promise.all([
           evmContractService.getTotalMinted(),
-          evmContractService.getMaxSupply(),
           evmContractService.getMaxPerWallet(),
           evmContractService.isMintActive(),
         ]);
         if (!isMounted) return;
         setTotalMinted(total);
-        setMaxSupply(max);
+        const hardcodedMax = 500;
+        setMaxSupply(hardcodedMax);
         setMaxPerWallet(maxWallet);
 
         // 判断销售状态
         if (isActive) {
           setMintStatus("active");
-        } else if (max > 0 && total >= max) {
+        } else if (hardcodedMax > 0 && total >= hardcodedMax) {
           setMintStatus("ended");
         } else {
           setMintStatus("not_started");
@@ -189,56 +188,7 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
     };
   }, [isConnected, address, translate]);
 
-  const handleMintAction = async (quantity: number) => {
-    if (!isConnected) {
-      setMessage(translate("请先连接钱包", "Please connect your wallet first"));
-      return;
-    }
 
-    if (quantity < 1 || quantity > maxPerWallet) {
-      setMessage(
-        language === "zh"
-          ? `请输入1到${maxPerWallet}之间的数量`
-          : `Enter a value between 1 and ${maxPerWallet}`,
-      );
-      return;
-    }
-
-    if (userMinted + quantity > maxPerWallet) {
-      setMessage(
-        language === "zh"
-          ? `超出每个钱包的铸造限制(${maxPerWallet}个)`
-          : `You reached the per-wallet mint limit (${maxPerWallet})`,
-      );
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setMessage(translate("正在铸造NFT...", "Minting your NFT..."));
-      await onMint(quantity);
-
-      const [total, userCount] = await Promise.all([
-        evmContractService.getTotalMinted(),
-        evmContractService.getMintedCount(address),
-      ]);
-
-      setTotalMinted(total);
-      setUserMinted(userCount);
-      setMessage(
-        language === "zh"
-          ? `成功铸造 ${quantity} 个 NFT!`
-          : `Successfully minted ${quantity} NFT(s)!`,
-      );
-    } catch (error) {
-      console.error("Mint failed:", error);
-      setMessage(
-        translate("铸造失败: ", "Mint failed: ") + (error as Error).message,
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handlePosterNavigate = (direction: "prev" | "next") => {
     setActivePoster((prev) => {
@@ -419,9 +369,8 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
               {posterCollections.map((collection) => (
                 <article
                   key={collection.id}
-                  className={`poster-card ${
-                    collection.type === "event" ? "poster-card-event" : ""
-                  }`}
+                  className={`poster-card ${collection.type === "event" ? "poster-card-event" : ""
+                    }`}
                 >
                   <div className="poster-card-media">
                     <img src={collection.image} alt={collection.title} />
@@ -452,9 +401,8 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
                 <button
                   type="button"
                   key={index}
-                  className={`poster-dot ${
-                    index === activePoster ? "poster-dot-active" : ""
-                  }`}
+                  className={`poster-dot ${index === activePoster ? "poster-dot-active" : ""
+                    }`}
                   onClick={() => setActivePoster(index)}
                   aria-label={
                     language === "zh"
@@ -630,14 +578,10 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
             )}
             {mintStatus === "active" && (
               <MintSection
-                isConnected={isConnected}
-                loading={loading}
                 maxPerWallet={maxPerWallet}
-                userMinted={userMinted}
-                onMint={handleMintAction}
               />
             )}
-            {message && <Message message={message} />}
+
           </div>
         </div>
       </section>

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 interface MintSectionProps {
   maxPerWallet: number;
-  onMint: (quantity: number) => void;
 }
 
 function MintSection({
