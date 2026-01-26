@@ -9,6 +9,8 @@ import NFTDetailPage from "./pages/NFTDetailPage";
 import { evmContractService } from "./utils/evmContract";
 import { useLanguage } from "./context/useLanguage";
 
+import MintErrorPage from "./pages/MintErrorPage";
+
 function App() {
   const { address, isConnected } = useAccount();
   const addressString = address || "";
@@ -23,10 +25,10 @@ function App() {
     }
 
     console.log(`🔄 Minting ${quantity} NFT(s) for address:`, address);
-    
+
     // 调用合约 mint 函数（内部会自动初始化）
     const receipt = await evmContractService.mint(quantity);
-    
+
     console.log("✅ Mint 成功:", receipt);
   };
 
@@ -55,6 +57,7 @@ function App() {
                 <MyNFTsPage address={addressString} isConnected={isConnected} />
               }
             />
+            <Route path="/mint-error" element={<MintErrorPage />} />
           </Routes>
         </main>
 

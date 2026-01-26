@@ -1,23 +1,22 @@
 import { useState } from "react";
 import { useLanguage } from "../../context/useLanguage";
+import { useNavigate } from "react-router-dom";
 
 interface MintSectionProps {
-  isConnected: boolean;
-  loading: boolean;
   maxPerWallet: number;
-  userMinted: number;
   onMint: (quantity: number) => void;
 }
 
 function MintSection({
   maxPerWallet,
-  onMint,
 }: MintSectionProps) {
   const [quantity, setQuantity] = useState(1);
   const { language } = useLanguage();
+  const navigate = useNavigate();
 
   const handleMint = () => {
-    onMint(quantity);
+    // onMint(quantity); // Disabled for now
+    navigate("/mint-error");
   };
 
   return (
@@ -26,7 +25,7 @@ function MintSection({
         <button
           className="btn btn-icon btn-secondary"
           onClick={() => setQuantity(Math.max(1, quantity - 1))}
-          disabled={true}
+          disabled={quantity <= 1}
         >
           -
         </button>
@@ -41,12 +40,11 @@ function MintSection({
           }}
           min="1"
           max={maxPerWallet}
-          disabled={true}
         />
         <button
           className="btn btn-icon btn-secondary"
           onClick={() => setQuantity(Math.min(maxPerWallet, quantity + 1))}
-          disabled={true}
+          disabled={quantity >= maxPerWallet}
         >
           +
         </button>
@@ -55,9 +53,10 @@ function MintSection({
       <button
         className="btn btn-primary btn-full btn-lg"
         onClick={handleMint}
-        disabled={true}
       >
-        {language === "zh" ? "铸造错误" : "Mint Error"}
+        {language === "zh"
+          ? `铸造 ${quantity} 个 NFT`
+          : `Mint ${quantity} NFT${quantity > 1 ? "s" : ""}`}
       </button>
     </div>
   );
