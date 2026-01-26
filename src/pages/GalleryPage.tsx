@@ -6,7 +6,6 @@ import imagesSummary from "../abi/images_summary.json" assert { type: "json" };
 import rawFilterMap from "../abi/filter_map.json" assert { type: "json" };
 import { useLanguage } from "../context/useLanguage";
 import "./GalleryPage.css";
-import { evmContractService } from "../utils/evmContract";
 
 type TraitCategory = string;
 type TraitMapRecord = Record<TraitCategory, string>;
@@ -14,6 +13,7 @@ type TierValue = string;
 type TierRank = "Rare" | "Common";
 type NFTItem = {
   id: number;
+  visualId: number;
   name: string;
   image: string;
   traits: TraitMapRecord;
@@ -60,13 +60,23 @@ Object.entries(filterMap).forEach(
   }
 );
 
+// 从图片 URL 中提取 NFT 编号（如 /326.png -> 326）
+const extractNftNumber = (imageUrl: string): number => {
+  const match = imageUrl.match(/\/(\d+)\.png/);
+  return match ? parseInt(match[1]) : 0;
+};
+
 const nftList = (imagesSummary as Array<{ edition: number; image: string }>).map(
-  ({ edition, image }) => ({
-    id: edition,
-    name: `NINJ4 #${edition}`,
-    image: resolveImageUrl(image),
-    traits: nftTraitLookup[edition] || ({} as TraitMapRecord),
-  })
+  ({ edition, image }) => {
+    const nftNumber = extractNftNumber(image);
+    return {
+      id: edition,
+      visualId: nftNumber,
+      name: `NINJ4 #${nftNumber.toString().padStart(3, '0')}`,
+      image: resolveImageUrl(image),
+      traits: nftTraitLookup[nftNumber] || ({} as TraitMapRecord),
+    };
+  }
 );
 
 const ITEMS_PER_PAGE = 20; // 每页显示20个
@@ -87,28 +97,7 @@ function GalleryPage() {
   });
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
-    let mounted = true;
-
-    const load = async () => {
-      try {
-        const total = await evmContractService.getTotalMinted();
-        if (!mounted) return;
-        setNfts(
-          nftList
-            .filter((nft) => nft.id <= total)
-            .sort((a, b) => b.id - a.id)
-        );
-      } catch {
-        if (!mounted) return;
-        setNfts([]);
-      }
-    };
-
-    load();
-
-    return () => {
-      mounted = false;
-    };
+    setNfts(nftList.sort((a, b) => b.id - a.id));
   }, []);
 
   const handleFilterChange = (category: TraitCategory, value: string) => {
@@ -243,7 +232,8 @@ function GalleryPage() {
                   {displayedNFTs.map((nft) => (
                     <NFTCard
                       key={nft.id}
-                      id={nft.id}
+                      id={nft.visualId}
+                      linkId={nft.id}
                       name={nft.name}
                       image={nft.image}
                       level={
@@ -287,9 +277,8 @@ function GalleryPage() {
                         typeof page === "number" ? (
                           <button
                             key={index}
-                            className={`pagination-number ${
-                              currentPage === page ? "active" : ""
-                            }`}
+                            className={`pagination-number ${currentPage === page ? "active" : ""
+                              }`}
                             onClick={() => handlePageChange(page)}
                           >
                             {page}

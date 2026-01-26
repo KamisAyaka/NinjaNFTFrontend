@@ -7,7 +7,6 @@ import GalleryPage from "./pages/GalleryPage";
 import MyNFTsPage from "./pages/MyNFTsPage";
 import NFTDetailPage from "./pages/NFTDetailPage";
 
-import MintErrorPage from "./pages/MintErrorPage";
 
 function App() {
   const { address, isConnected } = useAccount();
@@ -37,7 +36,6 @@ function App() {
                 <MyNFTsPage address={addressString} isConnected={isConnected} />
               }
             />
-            <Route path="/mint-error" element={<MintErrorPage />} />
           </Routes>
         </main>
 
