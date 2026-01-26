@@ -16,8 +16,8 @@ const faqData: FAQItem[] = [
       en: "What is the N1NJ4 NFT?",
     },
     answer: {
-      zh: "N1NJ4 NFT 是一个包含 100 个独特像素赛博朋克忍者肖像的 NFT 集合。每个 Ninja 都是从不同的特征（发型、配饰、面部细节）中通过算法生成的，分为两个等级：白色背景（普通贡献者）和紫色背景（资深贡献者）。",
-      en: "The N1NJ4 NFT collection features 100 unique pixel cyberpunk ninja portraits. Each ninja is algorithmically generated from traits such as hairstyle, accessories, and facial details, and grouped into two tiers: white background (community contributors) and purple background (veteran contributors).",
+      zh: "N1NJ4 NFT 是一个包含 500 个独特像素赛博朋克忍者肖像的 NFT 集合。每个 Ninja 都是从不同的特征（发型、配饰、面部细节）中通过算法生成的，分为两个等级：白色背景（普通贡献者）和紫色背景（资深贡献者）。",
+      en: "The N1NJ4 NFT collection features 500 unique pixel cyberpunk ninja portraits. Each ninja is algorithmically generated from traits such as hairstyle, accessories, and facial details, and grouped into two tiers: white background (community contributors) and purple background (veteran contributors).",
     },
   },
   {
@@ -45,7 +45,10 @@ const faqData: FAQItem[] = [
     },
   },
   {
-    question: { zh: "Ninja 是 ERC-721 代币吗？", en: "Are Ninjas ERC-721 tokens?" },
+    question: {
+      zh: "Ninja 是 ERC-721 代币吗？",
+      en: "Are Ninjas ERC-721 tokens?",
+    },
     answer: {
       zh: "N1NJ4 NFT 部署在 Injective 区块链上，遵循类似的 NFT 标准。每个 NFT 都是唯一且不可替代的，可以在支持的市场上进行交易。",
       en: "N1NJ4 NFTs are deployed on the Injective blockchain and follow ERC-721 style behavior. Each token is unique and non-fungible, and can be traded wherever Injective NFTs are supported.",
@@ -72,7 +75,8 @@ const faqData: FAQItem[] = [
       ),
       en: (
         <>
-          Currently N1NJ4 supports the Rarible NFT marketplace, where you can also mint and trade:{" "}
+          Currently N1NJ4 supports the Rarible NFT marketplace, where you can
+          also mint and trade:{" "}
           <a
             href="https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769/drops"
             target="_blank"
