@@ -10,7 +10,7 @@ import "./GalleryPage.css";
 type TraitCategory = string;
 type TraitMapRecord = Record<TraitCategory, string>;
 type TierValue = string;
-type TierRank = "Rare" | "Common";
+
 type NFTItem = {
   id: number;
   visualId: number;
@@ -37,13 +37,7 @@ const resolveImageUrl = (image: string) =>
     ? `https://ipfs.io/ipfs/${image.slice(7)}`
     : image;
 
-const tierOrder: Record<TierRank, number> = {
-  Rare: 0,
-  Common: 1,
-};
 
-const getTierRank = (value?: string): TierRank =>
-  value === "Rare" ? "Rare" : "Common";
 
 const nftTraitLookup: Record<number, TraitMapRecord> = {};
 Object.entries(filterMap).forEach(
@@ -87,7 +81,7 @@ function GalleryPage() {
     language === "zh" ? zh : en;
   const [nfts, setNfts] = useState<NFTItem[]>([]);
   const [searchId, setSearchId] = useState("");
-  const [sortBy, setSortBy] = useState("newest");
+
   const [filters, setFilters] = useState<Record<TraitCategory, string>>(() => {
     const initial = {} as Record<TraitCategory, string>;
     traitCategories.forEach((category) => {
@@ -104,7 +98,7 @@ function GalleryPage() {
     setFilters((prev) => ({ ...prev, [category]: value }));
   };
 
-  // 筛选和排序
+  // 筛选
   const filteredNFTs = nfts
     .filter((nft) => {
       if (!searchId) return true;
@@ -119,20 +113,7 @@ function GalleryPage() {
         return nft.traits[category] === filterValue;
       })
     )
-    .sort((a, b) => {
-      switch (sortBy) {
-        case "level": {
-          const tierA = getTierRank(a.traits["Tier"] as TierValue);
-          const tierB = getTierRank(b.traits["Tier"] as TierValue);
-          return tierOrder[tierA] - tierOrder[tierB];
-        }
-        case "oldest":
-          return a.id - b.id;
-        case "newest":
-        default:
-          return b.id - a.id;
-      }
-    });
+    .sort((a, b) => a.id - b.id); // 默认按最早排序
 
   // 计算分页信息
   const totalPages = Math.ceil(filteredNFTs.length / ITEMS_PER_PAGE);
@@ -143,7 +124,7 @@ function GalleryPage() {
   // 当筛选条件改变时，重置到第一页
   useEffect(() => {
     setCurrentPage(1);
-  }, [filters, sortBy, searchId]);
+  }, [filters, searchId]);
 
   // 生成页码数组
   const getPageNumbers = () => {
@@ -202,8 +183,7 @@ function GalleryPage() {
             traitSummary={traitSummary}
             filters={filters}
             onFilterChange={handleFilterChange}
-            sortBy={sortBy}
-            onSortChange={setSortBy}
+
           />
 
           {/* 右侧内容 */}

@@ -8,16 +8,12 @@ interface GallerySidebarProps {
   traitSummary: TraitSummary;
   filters: Record<string, string>;
   onFilterChange: (category: string, value: string) => void;
-  sortBy: string;
-  onSortChange: (sort: string) => void;
 }
 
 function GallerySidebar({
   traitSummary,
   filters,
   onFilterChange,
-  sortBy,
-  onSortChange,
 }: GallerySidebarProps) {
   const { language } = useLanguage();
   const translate = useMemo(
@@ -39,32 +35,14 @@ function GallerySidebar({
   return (
     <div className="gallery-sidebar">
       <div className="sidebar-section">
-        <h3 className="sidebar-title">
-          {translate("排序方式", "Sort By")}
+        <h3 className="sidebar-title" style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>
+          {translate("按属性筛选", "Filter By")}
         </h3>
-        <div className="sidebar-options">
-          <button
-            className={`sidebar-option ${sortBy === "newest" ? "active" : ""}`}
-            onClick={() => onSortChange("newest")}
-          >
-            {translate("最新", "Newest")}
-          </button>
-          <button
-            className={`sidebar-option ${sortBy === "oldest" ? "active" : ""}`}
-            onClick={() => onSortChange("oldest")}
-          >
-            {translate("最早", "Oldest")}
-          </button>
-          <button
-            className={`sidebar-option ${sortBy === "level" ? "active" : ""}`}
-            onClick={() => onSortChange("level")}
-          >
-            {translate("等级", "Level")}
-          </button>
-        </div>
       </div>
-
       <div className="sidebar-divider"></div>
+
+
+
 
       {categories.map((category) => {
         const options = Object.keys(traitSummary[category]);
@@ -82,9 +60,8 @@ function GallerySidebar({
             {isOpen && (
               <div className="sidebar-options">
                 <button
-                  className={`sidebar-option ${
-                    filters[category] === "all" ? "active" : ""
-                  }`}
+                  className={`sidebar-option ${filters[category] === "all" ? "active" : ""
+                    }`}
                   onClick={() => onFilterChange(category, "all")}
                 >
                   {translate("全部", "All")}
@@ -92,9 +69,8 @@ function GallerySidebar({
                 {options.map((option) => (
                   <button
                     key={option}
-                    className={`sidebar-option ${
-                      filters[category] === option ? "active" : ""
-                    }`}
+                    className={`sidebar-option ${filters[category] === option ? "active" : ""
+                      }`}
                     onClick={() => onFilterChange(category, option)}
                   >
                     {option}
