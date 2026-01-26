@@ -28,50 +28,40 @@ function MintSection({
     <div className="card flex-col gap-lg">
       <div className="flex-center gap-md">
         <button
-        className="btn btn-icon btn-secondary"
-        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-        disabled={loading || quantity <= 1 || reachedLimit}
-      >
-        -
-      </button>
-      <input
-        type="number"
+          className="btn btn-icon btn-secondary"
+          onClick={() => setQuantity(Math.max(1, quantity - 1))}
+          disabled={true}
+        >
+          -
+        </button>
+        <input
+          type="number"
           className="input text-center font-bold text-xl"
           style={{ width: "80px" }}
           value={quantity}
           onChange={(e) => {
-          const val = parseInt(e.target.value) || 1;
-          setQuantity(Math.min(maxPerWallet, Math.max(1, val)));
-        }}
-        min="1"
-        max={maxPerWallet}
-        disabled={loading || reachedLimit}
-      />
-      <button
-        className="btn btn-icon btn-secondary"
-        onClick={() => setQuantity(Math.min(maxPerWallet, quantity + 1))}
-        disabled={loading || quantity >= maxPerWallet || reachedLimit}
-      >
-        +
-      </button>
+            const val = parseInt(e.target.value) || 1;
+            setQuantity(Math.min(maxPerWallet, Math.max(1, val)));
+          }}
+          min="1"
+          max={maxPerWallet}
+          disabled={true}
+        />
+        <button
+          className="btn btn-icon btn-secondary"
+          onClick={() => setQuantity(Math.min(maxPerWallet, quantity + 1))}
+          disabled={true}
+        >
+          +
+        </button>
       </div>
 
       <button
         className="btn btn-primary btn-full btn-lg"
         onClick={handleMint}
-        disabled={loading || !isConnected || reachedLimit}
+        disabled={true}
       >
-        {reachedLimit
-          ? language === "zh"
-            ? "已达到钱包铸造上限"
-            : "Wallet mint limit reached"
-          : loading
-          ? language === "zh"
-            ? "处理中..."
-            : "Processing..."
-          : language === "zh"
-          ? `铸造 ${quantity} 个 NFT`
-          : `Mint ${quantity} NFT${quantity > 1 ? "s" : ""}`}
+        {language === "zh" ? "铸造错误" : "Mint Error"}
       </button>
     </div>
   );
