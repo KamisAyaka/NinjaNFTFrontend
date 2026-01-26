@@ -371,7 +371,6 @@ function HomePage({ isConnected, address, onMint }: HomePageProps) {
             <div className="status-item reveal">
               <span className="status-label">ACCESS</span>
               <span className="status-value">FREE</span>
-              <span className="status-meta">Whitelist Optional</span>
             </div>
           </div>
         </div>
