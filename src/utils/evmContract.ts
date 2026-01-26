@@ -304,50 +304,6 @@ export class EvmContractService {
   }
 
   /**
-   * 查询用户拥有的所有 NFT token IDs
-   * 注意：由于标准 ERC721 没有枚举功能，我们需要遍历所有 token
-   * @param owner 用户地址
-   */
-  async getUserNFTs(owner: string): Promise<number[]> {
-    try {
-      console.log(`🔍 查询用户 ${owner} 的 NFT...`);
-      const contract = await this.getReadContract();
-      const totalMinted = await contract.totalMinted();
-      const nftIds: number[] = [];
-
-      // 遍历所有已铸造的 token，检查拥有者
-      // 为了提高性能，可以批量查询
-      const batchSize = 50; // 每批查询50个
-
-      for (let i = 0; i < Number(totalMinted); i += batchSize) {
-        const endIndex = Math.min(i + batchSize, Number(totalMinted));
-
-        // 创建批量查询 promises
-        const promises: Promise<string>[] = [];
-        for (let j = i; j < endIndex; j++) {
-          promises.push(contract.ownerOf(j).catch(() => ZeroAddress));
-        }
-
-        // 并行查询
-        const owners = await Promise.all(promises);
-
-        // 检查哪些 token 属于该用户
-        for (let k = 0; k < owners.length; k++) {
-          if (owners[k].toLowerCase() === owner.toLowerCase()) {
-            nftIds.push(i + k);
-          }
-        }
-      }
-
-      console.log(`✅ 找到 ${nftIds.length} 个 NFT`);
-      return nftIds;
-    } catch (error) {
-      console.error('查询用户 NFT 失败:', error);
-      return [];
-    }
-  }
-
-  /**
    * 获取 NFT token URI
    * @param tokenId token ID
    */
@@ -374,31 +330,6 @@ export class EvmContractService {
     } catch (error) {
       console.error('查询 balanceOf 失败:', error);
       return 0;
-    }
-  }
-
-  /**
-   * 查询用户持有的 NFT（包含 tokenURI）
-   * 注意：新合约可能没有 ownerTokensWithURI，改用 getUserNFTs + getTokenURI
-   */
-  async getOwnerTokensWithURI(owner: string): Promise<Array<{ tokenId: number; tokenURI: string }>> {
-    if (!owner) {
-      return [];
-    }
-
-    try {
-      const tokenIds = await this.getUserNFTs(owner);
-      const results: Array<{ tokenId: number; tokenURI: string }> = [];
-
-      for (const tokenId of tokenIds) {
-        const tokenURI = await this.getTokenURI(tokenId);
-        results.push({ tokenId, tokenURI });
-      }
-
-      return results;
-    } catch (error) {
-      console.error('查询 ownerTokensWithURI 失败:', error);
-      return [];
     }
   }
 }

@@ -225,9 +225,7 @@ function HomePage({ isConnected, address }: Omit<HomePageProps, "onMint">) {
                 <Link to="/gallery" className="download-btn">
                   {translate("查看忍者", "View Ninjas")}
                 </Link>
-                <Link to="/my-nfts" className="download-btn">
-                  {translate("我的身份", "My Identity")}
-                </Link>
+
               </div>
             </div>
           </div>
@@ -455,9 +453,7 @@ function HomePage({ isConnected, address }: Omit<HomePageProps, "onMint">) {
               <a href="#mint" className="btn btn-primary">
                 {translate("开始铸造", "Start Minting")}
               </a>
-              <Link to="/my-nfts" className="btn btn-secondary">
-                {translate("查看身份", "View Identity")}
-              </Link>
+
             </div>
           </div>
 

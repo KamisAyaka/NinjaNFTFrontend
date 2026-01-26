@@ -4,7 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import GalleryPage from "./pages/GalleryPage";
-import MyNFTsPage from "./pages/MyNFTsPage";
+
 import NFTDetailPage from "./pages/NFTDetailPage";
 
 
@@ -30,12 +30,7 @@ function App() {
             />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/nft/:id" element={<NFTDetailPage />} />
-            <Route
-              path="/my-nfts"
-              element={
-                <MyNFTsPage address={addressString} isConnected={isConnected} />
-              }
-            />
+
           </Routes>
         </main>
 

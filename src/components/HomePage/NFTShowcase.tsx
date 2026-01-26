@@ -6,8 +6,14 @@ import filterMap from "../../abi/filter_map.json" assert { type: "json" };
 
 type NFTLevel = "white" | "purple";
 
+const extractNftNumber = (imageUrl: string): number => {
+  const match = imageUrl.match(/\/(\d+)\.png/);
+  return match ? parseInt(match[1]) : 0;
+};
+
 interface NFT {
   id: number;
+  visualId: number;
   name: string;
   image: string;
   level: NFTLevel;
@@ -28,7 +34,7 @@ function NFTShowcase({ count = 18 }: NFTShowcaseProps) {
   const rareSet = useMemo(() => {
     const rareList =
       (filterMap as Record<string, Record<string, number[]>>)?.["Tier"]?.[
-        "Rare"
+      "Rare"
       ] || [];
     return new Set(rareList);
   }, []);
@@ -38,9 +44,11 @@ function NFTShowcase({ count = 18 }: NFTShowcaseProps) {
       imagesSummary as Array<{ edition: number; image: string }>
     ).map(({ edition, image }) => {
       const level: NFTLevel = rareSet.has(edition) ? "purple" : "white";
+      const visualId = extractNftNumber(image);
       return {
         id: edition,
-        name: `NINJ4 #${edition}`,
+        visualId,
+        name: `NINJ4 #${visualId}`,
         image: resolveImageUrl(image),
         level,
       };
@@ -55,11 +63,27 @@ function NFTShowcase({ count = 18 }: NFTShowcaseProps) {
   }, [rareSet, totalMinted]);
 
   const showcaseNFTs: NFT[] = useMemo(() => {
+    // 随机打乱数组的辅助函数
+    const shuffle = <T,>(array: T[]) => {
+      const newArr = [...array];
+      for (let i = newArr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+      }
+      return newArr;
+    };
+
     const minted = allNFTs.filter((nft) => nft.id <= totalMinted);
     const notMinted = allNFTs.filter((nft) => nft.id > totalMinted);
-    const pickedMinted = minted.slice(0, count);
+
+    // 分别随机打乱
+    const randomMinted = shuffle(minted);
+    const randomNotMinted = shuffle(notMinted);
+
+    const pickedMinted = randomMinted.slice(0, count);
     const remaining = count - pickedMinted.length;
-    const pickedPlaceholder = remaining > 0 ? notMinted.slice(0, remaining) : [];
+    const pickedPlaceholder = remaining > 0 ? randomNotMinted.slice(0, remaining) : [];
+
     return [...pickedMinted, ...pickedPlaceholder];
   }, [allNFTs, totalMinted, count]);
 
@@ -82,7 +106,7 @@ function NFTShowcase({ count = 18 }: NFTShowcaseProps) {
             <>
               <img src={imageSrc} alt={nft.name} loading="lazy" />
               {isMinted && (
-                <span className="nft-showcase-id">#{nft.id}</span>
+                <span className="nft-showcase-id">#{nft.visualId}</span>
               )}
             </>
           );

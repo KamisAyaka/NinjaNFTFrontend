@@ -110,7 +110,7 @@ function GalleryPage() {
       if (!searchId) return true;
       const idNumber = Number(searchId);
       if (!idNumber) return false;
-      return nft.id === idNumber;
+      return nft.visualId === idNumber;
     })
     .filter((nft) =>
       traitCategories.every((category) => {

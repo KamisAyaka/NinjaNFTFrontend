@@ -27,7 +27,7 @@ const translationMap: Record<Language, TranslationDictionary> = {
       navItems: [
         { path: "/", label: "Home" },
         { path: "/gallery", label: "Gallery" },
-        { path: "/my-nfts", label: "My NFTs" },
+
       ],
       languageSwitcherLabel: "Language",
     },
@@ -37,7 +37,7 @@ const translationMap: Record<Language, TranslationDictionary> = {
       navItems: [
         { path: "/", label: "首页" },
         { path: "/gallery", label: "画廊" },
-        { path: "/my-nfts", label: "我的 NFT" },
+
       ],
       languageSwitcherLabel: "语言切换",
     },

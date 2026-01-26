@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "../context/useLanguage";
 import imagesSummary from "../abi/images_summary.json" assert { type: "json" };
+import config from "../config";
 
 type Attribute = {
   trait_type: string;
@@ -312,6 +313,10 @@ function NFTDetailPage() {
               <button
                 className="btn btn-primary btn-lg"
                 style={{ width: "100%" }}
+                onClick={() => {
+                  const url = `${config.chain.explorer}/token/${config.nft.contractAddress}/instance/${editionNumber}`;
+                  window.open(url, "_blank");
+                }}
               >
                 {translate("在区块链上查看", "View on-chain")}
               </button>
