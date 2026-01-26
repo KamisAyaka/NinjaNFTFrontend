@@ -10,10 +10,7 @@ interface MintSectionProps {
 }
 
 function MintSection({
-  isConnected,
-  loading,
   maxPerWallet,
-  userMinted,
   onMint,
 }: MintSectionProps) {
   const [quantity, setQuantity] = useState(1);
@@ -22,7 +19,6 @@ function MintSection({
   const handleMint = () => {
     onMint(quantity);
   };
-  const reachedLimit = userMinted >= maxPerWallet;
 
   return (
     <div className="card flex-col gap-lg">
