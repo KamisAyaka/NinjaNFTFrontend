@@ -141,6 +141,12 @@ function NFTDetailPage() {
     );
   }
 
+  const tierAttribute =
+    metadata.attributes.find((attr) => attr.trait_type === "Tier") || null;
+  const otherAttributes = metadata.attributes.filter(
+    (attr) => attr.trait_type !== "Tier"
+  );
+
   return (
     <div className="page-wrapper section">
       <div className="container">
@@ -239,44 +245,45 @@ function NFTDetailPage() {
                 {translate("属性", "Attributes")}
               </h1>
               <div className="flex-col gap-sm">
+                {tierAttribute ? (
+                  <div
+                    className="card text-center p-md"
+                    style={{ width: "100%" }}
+                  >
+                    <p
+                      className="text-xs text-tertiary mb-xs"
+                      style={{
+                        textTransform: "uppercase",
+                        letterSpacing: "0.5px",
+                      }}
+                    >
+                      {tierAttribute.trait_type}
+                    </p>
+                    <p className="text-base font-semibold text-primary">
+                      {tierAttribute.value}
+                    </p>
+                  </div>
+                ) : null}
                 <div className="nft-attributes-grid gap-sm">
-                  {/* 优先渲染 Tier === Rare，其余属性排在后面 */}
-                  {[
-                    ...metadata.attributes.filter(
-                      (attr) =>
-                        attr.trait_type === "Tier" && attr.value === "Rare"
-                    ),
-                    ...metadata.attributes.filter(
-                      (attr) =>
-                        !(
-                          attr.trait_type === "Tier" && attr.value === "Rare"
-                        )
-                    ),
-                  ].map((attr, index) => {
-                    const isTierRare =
-                      attr.trait_type === "Tier" && attr.value === "Rare";
-                    return (
-                      <div
-                        key={`${attr.trait_type}-${index}`}
-                        className={`card text-center p-md${
-                          isTierRare ? " attribute-tier-rare" : ""
-                        }`}
+                  {otherAttributes.map((attr, index) => (
+                    <div
+                      key={`${attr.trait_type}-${index}`}
+                      className="card text-center p-md"
+                    >
+                      <p
+                        className="text-xs text-tertiary mb-xs"
+                        style={{
+                          textTransform: "uppercase",
+                          letterSpacing: "0.5px",
+                        }}
                       >
-                        <p
-                          className="text-xs text-tertiary mb-xs"
-                          style={{
-                            textTransform: "uppercase",
-                            letterSpacing: "0.5px",
-                          }}
-                        >
-                          {attr.trait_type}
-                        </p>
-                        <p className="text-base font-semibold text-primary">
-                          {attr.value}
-                        </p>
-                      </div>
-                    );
-                  })}
+                        {attr.trait_type}
+                      </p>
+                      <p className="text-base font-semibold text-primary">
+                        {attr.value}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

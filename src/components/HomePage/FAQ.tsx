@@ -16,7 +16,7 @@ const faqData: FAQItem[] = [
       en: "What is the N1NJ4 NFT?",
     },
     answer: {
-      zh: "N1NJ4 NFT 是一个包含 500 个独特像素赛博朋克忍者肖像的 NFT 集合。每个 Ninja 都是从不同的特征（发型、配饰、面部细节）中通过算法生成的，分为两个等级：白色背景（普通贡献者）和紫色背景（资深贡献者）。",
+      zh: "N1NJ4 NFT 是一个包含 500 个独特像素赛博朋克忍者肖像的 NFT 集合。每个 Ninja 都是从不同的特征（发型、配饰、面部细节）中通过算法生成的，分为两个等级：白色背景（普通贡献者）和橙色背景（资深贡献者）。",
       en: "The N1NJ4 NFT collection features 500 unique pixel cyberpunk ninja portraits. Each ninja is algorithmically generated from traits such as hairstyle, accessories, and facial details, and grouped into two tiers: white background (community contributors) and purple background (veteran contributors).",
     },
   },
