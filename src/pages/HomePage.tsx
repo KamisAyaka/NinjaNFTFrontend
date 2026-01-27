@@ -29,9 +29,9 @@ function HomePage({ isConnected, address }: Omit<HomePageProps, "onMint">) {
   const [maxSupply, setMaxSupply] = useState(0);
   const [maxPerWallet, setMaxPerWallet] = useState(1);
   const [activePoster, setActivePoster] = useState(0);
-  // 销售状态：'loading' | 'active' | 'not_started' | 'ended'
+  // 销售状态：'loading' | 'ended'
   const [mintStatus, setMintStatus] = useState<
-    "loading" | "active" | "not_started" | "ended"
+    "loading" | "ended"
   >("loading");
 
   const deploymentTimeline = useMemo(
@@ -126,31 +126,22 @@ function HomePage({ isConnected, address }: Omit<HomePageProps, "onMint">) {
     let isMounted = true;
     const loadData = async () => {
       try {
-        const [total, maxWallet, isActive] = await Promise.all([
+        const [total, maxWallet] = await Promise.all([
           evmContractService.getTotalMinted(),
           evmContractService.getMaxPerWallet(),
-          evmContractService.isMintActive(),
         ]);
         if (!isMounted) return;
         setTotalMinted(total);
         const hardcodedMax = 500;
         setMaxSupply(hardcodedMax);
         setMaxPerWallet(maxWallet);
-
-        // 判断销售状态
-        if (isActive) {
-          setMintStatus("active");
-        } else if (hardcodedMax > 0 && total >= hardcodedMax) {
-          setMintStatus("ended");
-        } else {
-          setMintStatus("not_started");
-        }
+        setMintStatus("ended");
       } catch (error) {
         console.error(
           translate("加载合约数据失败:", "Failed to load contract data:"),
           error,
         );
-        setMintStatus("not_started");
+        setMintStatus("ended");
       }
     };
 
@@ -516,39 +507,7 @@ function HomePage({ isConnected, address }: Omit<HomePageProps, "onMint">) {
                 }}
               >
                 <p style={{ color: "var(--color-text-secondary)" }}>
-                  {translate("加载销售状态...", "Loading sale status...")}
-                </p>
-              </div>
-            )}
-            {mintStatus === "not_started" && (
-              <div
-                className="card"
-                style={{
-                  textAlign: "center",
-                  padding: "1rem",
-                  marginBottom: "1rem",
-                  border: "1px solid var(--color-warning, #f59e0b)",
-                }}
-              >
-                <p
-                  style={{
-                    color: "var(--color-warning, #f59e0b)",
-                    fontWeight: "bold",
-                    marginBottom: "0.5rem",
-                  }}
-                >
-                  ⏳ {translate("销售尚未开始", "Sale Not Started")}
-                </p>
-                <p
-                  style={{
-                    color: "var(--color-text-secondary)",
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  {translate(
-                    "合约管理员尚未设置销售条件，请稍后再来。",
-                    "The contract admin has not set up the sale conditions yet. Please check back later.",
-                  )}
+                  {translate("加载铸造状态...", "Loading mint status...")}
                 </p>
               </div>
             )}
@@ -568,15 +527,11 @@ function HomePage({ isConnected, address }: Omit<HomePageProps, "onMint">) {
                     fontWeight: "bold",
                   }}
                 >
-                  🎉 {translate("销售已结束 - 已售罄", "Sale Ended - Sold Out")}
+                  🎉 {translate("铸造已结束", "Mint Ended")}
                 </p>
               </div>
             )}
-            {mintStatus === "active" && (
-              <MintSection
-                maxPerWallet={maxPerWallet}
-              />
-            )}
+            {mintStatus === "ended" && <MintSection />}
 
           </div>
         </div>

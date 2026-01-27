@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { useMemo } from "react";
-import { useHomeMintStats } from "./useHomeMintStats";
 import imagesSummary from "../../abi/images_summary.json" assert { type: "json" };
 import filterMap from "../../abi/filter_map.json" assert { type: "json" };
 
@@ -29,8 +28,6 @@ const resolveImageUrl = (image: string) =>
     : image;
 
 function NFTShowcase({ count = 18 }: NFTShowcaseProps) {
-  const { totalMinted } = useHomeMintStats();
-
   const rareSet = useMemo(() => {
     const rareList =
       (filterMap as Record<string, Record<string, number[]>>)?.["Tier"]?.[
@@ -53,14 +50,8 @@ function NFTShowcase({ count = 18 }: NFTShowcaseProps) {
         level,
       };
     });
-    // 已铸造的在前，未铸造的在后
-    return list.sort((a, b) => {
-      const aMinted = a.id <= totalMinted;
-      const bMinted = b.id <= totalMinted;
-      if (aMinted === bMinted) return 0;
-      return aMinted ? -1 : 1;
-    });
-  }, [rareSet, totalMinted]);
+    return list;
+  }, [rareSet]);
 
   const showcaseNFTs: NFT[] = useMemo(() => {
     // 随机打乱数组的辅助函数
@@ -73,19 +64,8 @@ function NFTShowcase({ count = 18 }: NFTShowcaseProps) {
       return newArr;
     };
 
-    const minted = allNFTs.filter((nft) => nft.id <= totalMinted);
-    const notMinted = allNFTs.filter((nft) => nft.id > totalMinted);
-
-    // 分别随机打乱
-    const randomMinted = shuffle(minted);
-    const randomNotMinted = shuffle(notMinted);
-
-    const pickedMinted = randomMinted.slice(0, count);
-    const remaining = count - pickedMinted.length;
-    const pickedPlaceholder = remaining > 0 ? randomNotMinted.slice(0, remaining) : [];
-
-    return [...pickedMinted, ...pickedPlaceholder];
-  }, [allNFTs, totalMinted, count]);
+    return shuffle(allNFTs).slice(0, count);
+  }, [allNFTs, count]);
 
   return (
     <div className="nft-showcase">
@@ -97,21 +77,14 @@ function NFTShowcase({ count = 18 }: NFTShowcaseProps) {
       </div>
       <div className="nft-showcase-grid">
         {showcaseNFTs.map((nft) => {
-          const isMinted = nft.id <= totalMinted;
-          const imageSrc = isMinted
-            ? nft.image
-            : "/Placeholder_image.jpg";
-
           const content = (
             <>
-              <img src={imageSrc} alt={nft.name} loading="lazy" />
-              {isMinted && (
-                <span className="nft-showcase-id">#{nft.visualId}</span>
-              )}
+              <img src={nft.image} alt={nft.name} loading="lazy" />
+              <span className="nft-showcase-id">#{nft.visualId}</span>
             </>
           );
 
-          return isMinted ? (
+          return (
             <Link
               key={nft.id}
               to={`/nft/${nft.id}`}
@@ -120,13 +93,6 @@ function NFTShowcase({ count = 18 }: NFTShowcaseProps) {
             >
               {content}
             </Link>
-          ) : (
-            <div
-              key={nft.id}
-              className={`nft-showcase-item level-${nft.level}`}
-            >
-              {content}
-            </div>
           );
         })}
       </div>

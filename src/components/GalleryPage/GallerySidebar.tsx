@@ -18,14 +18,18 @@ function GallerySidebar({
   const { language } = useLanguage();
   const translate = useMemo(
     () => (zh: string, en: string) => (language === "zh" ? zh : en),
-    [language]
+    [language],
   );
   const categories = Object.keys(traitSummary);
-  const [openSections, setOpenSections] = useState<Record<string, boolean>>(() =>
-    categories.reduce((acc, category) => {
-      acc[category] = false;
-      return acc;
-    }, {} as Record<string, boolean>)
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>(
+    () =>
+      categories.reduce(
+        (acc, category) => {
+          acc[category] = false;
+          return acc;
+        },
+        {} as Record<string, boolean>,
+      ),
   );
 
   const toggleSection = (category: string) => {
@@ -35,15 +39,14 @@ function GallerySidebar({
   return (
     <div className="gallery-sidebar">
       <div className="sidebar-section">
-        <h3 className="sidebar-title" style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>
+        <h3
+          className="sidebar-title"
+          style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}
+        >
           {translate("按属性筛选", "Filter By")}
         </h3>
       </div>
       <div className="sidebar-divider"></div>
-
-
-
-
       {categories.map((category) => {
         const options = Object.keys(traitSummary[category]);
         const isOpen = openSections[category];
@@ -60,8 +63,9 @@ function GallerySidebar({
             {isOpen && (
               <div className="sidebar-options">
                 <button
-                  className={`sidebar-option ${filters[category] === "all" ? "active" : ""
-                    }`}
+                  className={`sidebar-option ${
+                    filters[category] === "all" ? "active" : ""
+                  }`}
                   onClick={() => onFilterChange(category, "all")}
                 >
                   {translate("全部", "All")}
@@ -69,8 +73,9 @@ function GallerySidebar({
                 {options.map((option) => (
                   <button
                     key={option}
-                    className={`sidebar-option ${filters[category] === option ? "active" : ""
-                      }`}
+                    className={`sidebar-option ${
+                      filters[category] === option ? "active" : ""
+                    }`}
                     onClick={() => onFilterChange(category, option)}
                   >
                     {option}

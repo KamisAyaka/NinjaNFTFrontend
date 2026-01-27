@@ -25,7 +25,6 @@ export const config = {
     description: "N1NJ4 NFT Collection on Injective",
     links: {
       twitter: "https://x.com/ninjalabscn",
-      discord: "https://discord.gg/ninjalabs",
       github: "https://github.com/Ninja-Labs-CN",
     },
   },
