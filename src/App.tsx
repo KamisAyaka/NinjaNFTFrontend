@@ -4,7 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import GalleryPage from "./pages/GalleryPage";
-
+import CityZeroPage from "./pages/CityZeroPage";
 import NFTDetailPage from "./pages/NFTDetailPage";
 
 
@@ -28,6 +28,7 @@ function App() {
                 />
               }
             />
+            <Route path="/city-zero" element={<CityZeroPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/nft/:id" element={<NFTDetailPage />} />
 

@@ -26,6 +26,7 @@ const translationMap: Record<Language, TranslationDictionary> = {
     header: {
       navItems: [
         { path: "/", label: "Home" },
+        { path: "/city-zero", label: "City Zero" },
         { path: "/gallery", label: "Gallery" },
 
       ],
@@ -36,6 +37,7 @@ const translationMap: Record<Language, TranslationDictionary> = {
     header: {
       navItems: [
         { path: "/", label: "首页" },
+        { path: "/city-zero", label: "零号城市" },
         { path: "/gallery", label: "画廊" },
 
       ],
