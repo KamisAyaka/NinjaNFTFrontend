@@ -8,6 +8,9 @@ import CityZeroPage from "./pages/CityZeroPage";
 import NFTDetailPage from "./pages/NFTDetailPage";
 
 
+import CityZeroStadiumPage from "./pages/CityZeroStadiumPage";
+import CityZeroTaskDetailPage from "./pages/CityZeroTaskDetails/CityZeroTaskDetailPage";
+
 function App() {
   const { address, isConnected } = useAccount();
   const addressString = address || "";
@@ -29,6 +32,8 @@ function App() {
               }
             />
             <Route path="/city-zero" element={<CityZeroPage />} />
+            <Route path="/city-zero/stadium" element={<CityZeroStadiumPage />} />
+            <Route path="/city-zero/task-detail" element={<CityZeroTaskDetailPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/nft/:id" element={<NFTDetailPage />} />
 

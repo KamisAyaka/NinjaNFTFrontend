@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./CityZeroPage.css";
 import CityZeroTasks from "../components/CityZeroTasks";
 
@@ -21,6 +22,11 @@ const CityZeroPage: React.FC = () => {
                 </div>
                 <div className="hero-image-container">
                     <img src="/CityZero/city.png" alt="City Zero" className="hero-image" />
+                    {/* Stadium Hotspot Link */}
+                    <Link to="/city-zero/stadium" className="stadium-hotspot-btn" title="Enter Stadium">
+                        <div className="hotspot-pulse"></div>
+                        <span className="hotspot-text">Enter Stadium</span>
+                    </Link>
                 </div>
             </section>
 

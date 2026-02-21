@@ -1,6 +1,8 @@
 import React from 'react';
 import './CityZeroTasks.css';
 
+import { Link } from 'react-router-dom';
+
 type TaskCardProps = {
     category: string;
     categoryColor: string; // e.g., '#93c5fd' for blue, '#fde047' for yellow, '#86efac' for green
@@ -11,7 +13,7 @@ type TaskCardProps = {
 
 const TaskCard: React.FC<TaskCardProps> = ({ category, categoryColor, imageSrc, title, description }) => {
     return (
-        <div className="city-task-card">
+        <Link to="/city-zero/task-detail" className="city-task-card" style={{ textDecoration: 'none', color: 'inherit' }}>
             <div
                 className="task-card-header"
                 style={{ backgroundColor: categoryColor }}
@@ -25,7 +27,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ category, categoryColor, imageSrc, 
                 <h3 className="task-card-title">{title}</h3>
                 <p className="task-card-desc">{description}</p>
             </div>
-        </div>
+        </Link>
     );
 };
 
