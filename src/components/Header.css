@@ -32,7 +32,7 @@
 .header-container {
   max-width: 1600px;
   margin: 0 auto;
-  padding: 1rem 2.5rem;
+  padding: 0.5rem 2.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -50,7 +50,7 @@
 }
 
 .logo-symbol {
-  height: 68px;
+  height: 48px;
   width: auto;
   display: block;
   filter: drop-shadow(0 15px 45px rgba(255, 176, 107, 0.4));
@@ -79,13 +79,12 @@
 
 .nav-links {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   align-items: center;
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(28, 31, 43, 0.05);
-  }
+  padding: 0;
+  background: transparent;
+  border: none;
+}
 
 .nav-link {
   position: relative;
@@ -98,7 +97,8 @@
   font-weight: 600;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   gap: 0.25rem;
   min-width: 110px;
   transition: color 0.2s ease, transform 0.2s ease, background 0.2s ease;
