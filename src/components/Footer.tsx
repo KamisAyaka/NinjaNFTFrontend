@@ -39,6 +39,7 @@ const footerColumnsMap: Record<"zh" | "en", FooterColumn[]> = {
     {
       title: "协议",
       links: [
+        { label: "白皮书", href: "https://n1nj4.mintlify.app" },
         { label: "Injective", href: "https://injective.com" },
         { label: "GitHub", href: "https://github.com/Ninja-Labs-CN" },
         { label: "Twitter", href: "https://x.com/ninjalabscn" },
@@ -49,6 +50,7 @@ const footerColumnsMap: Record<"zh" | "en", FooterColumn[]> = {
     {
       title: "Protocols",
       links: [
+        { label: "Whitepaper", href: "https://n1nj4.mintlify.app" },
         { label: "Injective", href: "https://injective.com" },
         { label: "GitHub", href: "https://github.com/Ninja-Labs-CN" },
         { label: "Twitter", href: "https://x.com/ninjalabscn" },
