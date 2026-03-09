@@ -49,7 +49,7 @@ const CityZeroPage: React.FC = () => {
                             This can also include tasks from Ninja Labs.<br />
                             The idea appears to be simple but finding projects who are willing to put up tasks there might be difficult since the Injective ecosystem is not very big at the moment & most teams operate independently.
                         </p>
-                        <button className="read-more-btn">Read More</button>
+                        <a href="https://n1nj4.mintlify.app" target="_blank" rel="noopener noreferrer" className="read-more-btn">Read More</a>
                     </div>
                     <div className="info-image-container">
                         <img src="/CityZero/city_image1.png" alt="City Zero Introduction" className="info-image" />
