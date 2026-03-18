@@ -71,65 +71,67 @@ const CityZeroInfoCarousel: React.FC = () => {
 
     return (
         <section className="info-carousel-section">
-            <div className="carousel-container">
-                {/* Left Arrow */}
-                <button className="carousel-arrow left-arrow" onClick={prevSlide} aria-label="Previous Slide">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                </button>
+            <div className="info-carousel-frame">
+                <div className="carousel-container">
+                    {/* Left Arrow */}
+                    <button className="carousel-arrow left-arrow" onClick={prevSlide} aria-label="Previous Slide">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </button>
 
-                <div className="carousel-track-container">
-                    <div
-                        className="carousel-track"
-                        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-                    >
-                        {items.map((item) => (
-                            <div className="carousel-slide" key={item.id}>
-                                <div className="slide-content-wrapper">
-                                    <div className="slide-text">
-                                        <h2>{item.title}</h2>
-                                        <div className="slide-description">
-                                            {item.content}
+                    <div className="carousel-track-container">
+                        <div
+                            className="carousel-track"
+                            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                        >
+                            {items.map((item) => (
+                                <div className="carousel-slide" key={item.id}>
+                                    <div className="slide-content-wrapper">
+                                        <div className="slide-text">
+                                            <h2>{item.title}</h2>
+                                            <div className="slide-description">
+                                                {item.content}
+                                            </div>
+                                            {item.readMoreLink && (
+                                                <a
+                                                    href={item.readMoreLink}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="read-more-btn"
+                                                >
+                                                    Read More
+                                                </a>
+                                            )}
                                         </div>
-                                        {item.readMoreLink && (
-                                            <a
-                                                href={item.readMoreLink}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="read-more-btn"
-                                            >
-                                                Read More
-                                            </a>
-                                        )}
-                                    </div>
-                                    <div className="slide-image-container">
-                                        <img src={item.imageSrc} alt={item.imageAlt} className="slide-image" />
+                                        <div className="slide-image-container">
+                                            <img src={item.imageSrc} alt={item.imageAlt} className="slide-image" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
+
+                    {/* Right Arrow */}
+                    <button className="carousel-arrow right-arrow" onClick={nextSlide} aria-label="Next Slide">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </button>
                 </div>
 
-                {/* Right Arrow */}
-                <button className="carousel-arrow right-arrow" onClick={nextSlide} aria-label="Next Slide">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                </button>
-            </div>
-
-            {/* Pagination Dots */}
-            <div className="carousel-pagination">
-                {items.map((_, index) => (
-                    <button
-                        key={index}
-                        className={`pagination-dot ${index === currentIndex ? 'active' : ''}`}
-                        onClick={() => goToSlide(index)}
-                        aria-label={`Go to slide ${index + 1}`}
-                    />
-                ))}
+                {/* Pagination Dots */}
+                <div className="carousel-pagination">
+                    {items.map((_, index) => (
+                        <button
+                            key={index}
+                            className={`pagination-dot ${index === currentIndex ? 'active' : ''}`}
+                            onClick={() => goToSlide(index)}
+                            aria-label={`Go to slide ${index + 1}`}
+                        />
+                    ))}
+                </div>
             </div>
         </section>
     );

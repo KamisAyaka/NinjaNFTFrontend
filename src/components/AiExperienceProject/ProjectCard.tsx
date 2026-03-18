@@ -96,7 +96,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, imageSrc,
                 <img src={imageSrc} alt={title} className="ai-project-image" />
             </div>
             <div className="ai-project-content">
-                <h3 className="ai-project-title">{title}</h3>
+                <h3 className="ai-project-card-title">{title}</h3>
                 <p className="ai-project-desc">{description}</p>
 
                 <div className="ai-project-tags">

@@ -92,23 +92,25 @@ const CityZeroTasks: React.FC = () => {
 
     return (
         <section className="city-tasks-section">
-            <div className="tasks-marquee-container">
+            <div className="city-tasks-container">
+                <h2 className="city-tasks-title">COMMUNITY GALLERY</h2>
 
-                {/* Row 2: Right to Left */}
-                <div className="marquee-row marquee-right-to-left">
-                    <div className="marquee-track">
-                        {row2Data.map((task, idx) => (
-                            <TaskCard key={`row2-${idx}`} {...task} />
-                        ))}
-                    </div>
-                    {/* Duplicate track for seamless infinite scroll */}
-                    <div className="marquee-track">
-                        {row2Data.map((task, idx) => (
-                            <TaskCard key={`row2-dup-${idx}`} {...task} />
-                        ))}
+                <div className="tasks-marquee-container">
+                    {/* Row 2: Right to Left */}
+                    <div className="marquee-row marquee-right-to-left">
+                        <div className="marquee-track">
+                            {row2Data.map((task, idx) => (
+                                <TaskCard key={`row2-${idx}`} {...task} />
+                            ))}
+                        </div>
+                        {/* Duplicate track for seamless infinite scroll */}
+                        <div className="marquee-track">
+                            {row2Data.map((task, idx) => (
+                                <TaskCard key={`row2-dup-${idx}`} {...task} />
+                            ))}
+                        </div>
                     </div>
                 </div>
-
             </div>
         </section>
     );

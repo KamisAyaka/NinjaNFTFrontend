@@ -15,12 +15,12 @@
 }
 
 .ai-experience-title {
-  font-size: 2rem;
-  font-weight: 800;
+  font-size: clamp(1.5rem, 2.2vw, 1.85rem);
+  font-weight: 700;
   margin-bottom: 2rem;
   color: #111827;
   text-transform: uppercase;
-  letter-spacing: -0.5px;
+  letter-spacing: 0;
 }
 
 /* Banner */
@@ -255,8 +255,12 @@
     padding: 3rem 1.5rem;
   }
 
+  .ai-experience-title {
+    font-size: 1.35rem;
+    margin-bottom: 1.4rem;
+  }
+
   .project-grid {
     grid-template-columns: 1fr;
   }
 }
-
