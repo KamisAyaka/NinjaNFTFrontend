@@ -6,14 +6,11 @@ import HomePage from "./pages/HomePage";
 import GalleryPage from "./pages/GalleryPage";
 import CityZeroPage from "./pages/CityZeroPage";
 import NFTDetailPage from "./pages/NFTDetailPage";
-
-
 import CityZeroStadiumPage from "./pages/CityZeroStadiumPage";
 import TaskBoardDetailPage from "./pages/CityZeroTaskDetails/TaskBoardDetailPage";
 import JobBoardDetailPage from "./pages/CityZeroTaskDetails/JobBoardDetailPage";
 import GrantsHubDetailPage from "./pages/CityZeroTaskDetails/GrantsHubDetailPage";
 import AiProjectDetailPage from "./pages/AiProjectDetails/AiProjectDetailPage";
-
 function App() {
   const { address, isConnected } = useAccount();
   const addressString = address || "";
@@ -28,10 +25,13 @@ function App() {
             <Route
               path="/"
               element={
-                <HomePage
-                  isConnected={isConnected}
-                  address={addressString}
-                />
+                <HomePage isConnected={isConnected} address={addressString} />
+              }
+            />
+            <Route
+              path="/city-zero"
+              element={
+                <HomePage isConnected={isConnected} address={addressString} />
               }
             />
             <Route path="/city-zero" element={<CityZeroPage />} />
@@ -42,7 +42,6 @@ function App() {
             <Route path="/ai-project/:owner/:repo" element={<AiProjectDetailPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/nft/:id" element={<NFTDetailPage />} />
-
           </Routes>
         </main>
 

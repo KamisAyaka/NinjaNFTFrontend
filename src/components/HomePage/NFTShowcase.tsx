@@ -31,7 +31,7 @@ function NFTShowcase({ count = 18 }: NFTShowcaseProps) {
   const rareSet = useMemo(() => {
     const rareList =
       (filterMap as Record<string, Record<string, number[]>>)?.["Tier"]?.[
-      "Rare"
+        "Rare"
       ] || [];
     return new Set(rareList);
   }, []);
@@ -69,12 +69,6 @@ function NFTShowcase({ count = 18 }: NFTShowcaseProps) {
 
   return (
     <div className="nft-showcase">
-      <div className="nft-showcase-header">
-        <h2 className="title title-lg text-center mb-md">All N1NJ4 NFTs</h2>
-        <Link to="/gallery" className="btn btn-outline btn-sm">
-          See all NFTs →
-        </Link>
-      </div>
       <div className="nft-showcase-grid">
         {showcaseNFTs.map((nft) => {
           const content = (
@@ -95,6 +89,11 @@ function NFTShowcase({ count = 18 }: NFTShowcaseProps) {
             </Link>
           );
         })}
+      </div>
+      <div className="nft-showcase-header">
+        <Link to="/gallery" className="btn btn-outline btn-sm">
+          View All 500 Ninjas →
+        </Link>
       </div>
     </div>
   );
