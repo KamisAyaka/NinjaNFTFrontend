@@ -9,7 +9,10 @@ import NFTDetailPage from "./pages/NFTDetailPage";
 
 
 import CityZeroStadiumPage from "./pages/CityZeroStadiumPage";
-import CityZeroTaskDetailPage from "./pages/CityZeroTaskDetails/CityZeroTaskDetailPage";
+import TaskBoardDetailPage from "./pages/CityZeroTaskDetails/TaskBoardDetailPage";
+import JobBoardDetailPage from "./pages/CityZeroTaskDetails/JobBoardDetailPage";
+import GrantsHubDetailPage from "./pages/CityZeroTaskDetails/GrantsHubDetailPage";
+import AiProjectDetailPage from "./pages/AiProjectDetails/AiProjectDetailPage";
 
 function App() {
   const { address, isConnected } = useAccount();
@@ -33,7 +36,10 @@ function App() {
             />
             <Route path="/city-zero" element={<CityZeroPage />} />
             <Route path="/city-zero/stadium" element={<CityZeroStadiumPage />} />
-            <Route path="/city-zero/task-detail" element={<CityZeroTaskDetailPage />} />
+            <Route path="/city-zero/task-board" element={<TaskBoardDetailPage />} />
+            <Route path="/city-zero/job-board" element={<JobBoardDetailPage />} />
+            <Route path="/city-zero/grants-hub" element={<GrantsHubDetailPage />} />
+            <Route path="/ai-project/:owner/:repo" element={<AiProjectDetailPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/nft/:id" element={<NFTDetailPage />} />
 
