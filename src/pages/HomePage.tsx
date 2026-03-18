@@ -7,7 +7,14 @@ import { useLanguage } from "../context/useLanguage";
 import { evmContractService } from "../utils/evmContract";
 import "./HomePage.css";
 
-function HomePage() {
+interface HomePageProps {
+  isConnected: boolean;
+  address: string;
+}
+
+function HomePage({ isConnected, address }: HomePageProps) {
+  void isConnected;
+  void address;
   const { language } = useLanguage();
   const translate = useCallback(
     (zh: string, en: string) => (language === "zh" ? zh : en),
