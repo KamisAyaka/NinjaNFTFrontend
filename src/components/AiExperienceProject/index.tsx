@@ -12,6 +12,8 @@ interface ProjectItem {
     starCount?: number;
 }
 
+type JsonRecord = Record<string, unknown>;
+
 const AI_EXPERIENCE_IMAGE_POOL = [
     "/AI EXPERIENCE PROJECT/Ninja Labs CN-banner-2-2.jpg",
     "/AI EXPERIENCE PROJECT/Ninja Labs CN-banner-2-1.png",
@@ -68,6 +70,13 @@ const AiExperienceProject: React.FC = () => {
             return;
         }
 
+        const isRecord = (value: unknown): value is JsonRecord =>
+            typeof value === 'object' && value !== null;
+        const asRecord = (value: unknown): JsonRecord =>
+            (isRecord(value) ? value : {});
+        const asRecordArray = (value: unknown): JsonRecord[] =>
+            Array.isArray(value) ? value.filter(isRecord) : [];
+
         const normalizeGithubRepo = (value: unknown): string => {
             const raw = String(value || '').trim();
             if (!raw) return '';
@@ -103,7 +112,7 @@ const AiExperienceProject: React.FC = () => {
                 .slice(0, 6);
         };
 
-        const safeParseJson = (text: string): any => {
+        const safeParseJson = (text: string): unknown => {
             try {
                 return JSON.parse(text);
             } catch {
@@ -122,21 +131,32 @@ const AiExperienceProject: React.FC = () => {
             }
         };
 
-        const extractRows = (payload: any): any[] => {
+        const extractRows = (payload: unknown): JsonRecord[] => {
             if (!payload) return [];
-            if (Array.isArray(payload)) return payload;
-            if (Array.isArray(payload?.data)) return payload.data;
-            if (Array.isArray(payload?.rows)) return payload.rows;
+            if (Array.isArray(payload)) return asRecordArray(payload);
+            if (!isRecord(payload)) return [];
+
+            const directDataRows = asRecordArray(payload.data);
+            if (directDataRows.length > 0) return directDataRows;
+
+            const directRows = asRecordArray(payload.rows);
+            if (directRows.length > 0) return directRows;
 
             // Google Visualization table format
-            const cols = payload?.table?.cols;
-            const rows = payload?.table?.rows;
+            const table = asRecord(payload.table);
+            const cols = Array.isArray(table.cols) ? table.cols : [];
+            const rows = Array.isArray(table.rows) ? table.rows : [];
             if (Array.isArray(cols) && Array.isArray(rows)) {
-                const headers = cols.map((c: any) => c?.label || c?.id || '');
-                return rows.map((row: any) => {
-                    const cells = Array.isArray(row?.c) ? row.c : [];
-                    return headers.reduce((acc: Record<string, any>, header: string, idx: number) => {
-                        acc[header] = cells[idx]?.v;
+                const headers = cols.map((col) => {
+                    const c = asRecord(col);
+                    return String(c.label ?? c.id ?? '');
+                });
+                return rows.map((row) => {
+                    const rowRecord = asRecord(row);
+                    const cells = Array.isArray(rowRecord.c) ? rowRecord.c : [];
+                    return headers.reduce((acc: JsonRecord, header: string, idx: number) => {
+                        const cell = asRecord(cells[idx]);
+                        acc[header] = cell.v;
                         return acc;
                     }, {});
                 });
@@ -161,8 +181,8 @@ const AiExperienceProject: React.FC = () => {
             return AI_EXPERIENCE_IMAGE_POOL[index];
         };
 
-        const toProjectItem = (row: any): ProjectItem | null => {
-            const normalized = normalizeRow(row || {});
+        const toProjectItem = (row: JsonRecord): ProjectItem | null => {
+            const normalized = normalizeRow(row);
 
             const approveValue = normalized.approve;
             if (approveValue !== undefined && !isApproved(approveValue)) {

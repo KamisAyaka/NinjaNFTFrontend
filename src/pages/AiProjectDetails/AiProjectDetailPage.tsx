@@ -66,6 +66,8 @@ interface DetailPageData {
     contributionProgress: ContributionItem[];
 }
 
+type JsonRecord = Record<string, unknown>;
+
 const DETAIL_CACHE_PREFIX = 'ai_project_detail_cache_v2:';
 const DETAIL_CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes
 const MORE_PROJECTS_CACHE_KEY = 'ai_more_projects_rank_cache_v2';
@@ -153,6 +155,12 @@ const AiProjectDetailPage: React.FC = () => {
         }
 
         const sheetApiUrl = import.meta.env.VITE_GOOGLE_SHEET_API as string | undefined;
+        const isRecord = (value: unknown): value is JsonRecord =>
+            typeof value === 'object' && value !== null;
+        const asRecord = (value: unknown): JsonRecord =>
+            (isRecord(value) ? value : {});
+        const asRecordArray = (value: unknown): JsonRecord[] =>
+            Array.isArray(value) ? value.filter(isRecord) : [];
         const normalizeRepoFromInput = (value: unknown): string => {
             const raw = String(value || '').trim();
             if (!raw) return '';
@@ -169,7 +177,7 @@ const AiProjectDetailPage: React.FC = () => {
             return repoOwner && repoName ? `${repoOwner}/${repoName.replace(/\.git$/, '')}`.toLowerCase() : '';
         };
 
-        const safeParseJson = (text: string): any => {
+        const safeParseJson = (text: string): unknown => {
             try {
                 return JSON.parse(text);
             } catch {
@@ -186,19 +194,31 @@ const AiProjectDetailPage: React.FC = () => {
             }
         };
 
-        const extractRows = (payload: any): any[] => {
+        const extractRows = (payload: unknown): JsonRecord[] => {
             if (!payload) return [];
-            if (Array.isArray(payload)) return payload;
-            if (Array.isArray(payload?.data)) return payload.data;
-            if (Array.isArray(payload?.rows)) return payload.rows;
-            const cols = payload?.table?.cols;
-            const rows = payload?.table?.rows;
+            if (Array.isArray(payload)) return asRecordArray(payload);
+            if (!isRecord(payload)) return [];
+
+            const directDataRows = asRecordArray(payload.data);
+            if (directDataRows.length > 0) return directDataRows;
+
+            const directRows = asRecordArray(payload.rows);
+            if (directRows.length > 0) return directRows;
+
+            const table = asRecord(payload.table);
+            const cols = Array.isArray(table.cols) ? table.cols : [];
+            const rows = Array.isArray(table.rows) ? table.rows : [];
             if (Array.isArray(cols) && Array.isArray(rows)) {
-                const headers = cols.map((c: any) => c?.label || c?.id || '');
-                return rows.map((row: any) => {
-                    const cells = Array.isArray(row?.c) ? row.c : [];
-                    return headers.reduce((acc: Record<string, any>, header: string, idx: number) => {
-                        acc[header] = cells[idx]?.v;
+                const headers = cols.map((col) => {
+                    const c = asRecord(col);
+                    return String(c.label ?? c.id ?? '');
+                });
+                return rows.map((row) => {
+                    const rowRecord = asRecord(row);
+                    const cells = Array.isArray(rowRecord.c) ? rowRecord.c : [];
+                    return headers.reduce((acc: JsonRecord, header: string, idx: number) => {
+                        const cell = asRecord(cells[idx]);
+                        acc[header] = cell.v;
                         return acc;
                     }, {});
                 });
@@ -275,7 +295,7 @@ const AiProjectDetailPage: React.FC = () => {
                     const sheetText = await sheetRes.text();
                     const payload = safeParseJson(sheetText);
                     const rows = extractRows(payload);
-                    sheetRows = rows.map((row: any) => normalizeRow(row || {}));
+                    sheetRows = rows.map((row) => normalizeRow(row));
                     const currentRepo = `${owner}/${repo}`.toLowerCase();
                     const matched = sheetRows
                         .find((row: Record<string, unknown>) => {
@@ -316,8 +336,9 @@ const AiProjectDetailPage: React.FC = () => {
 
                 const contributorList: Contributor[] = (Array.isArray(contributorsData) ? contributorsData : [])
                     .slice(0, 5)
-                    .map((item: any, index: number) => {
-                        const login = String(item?.login || 'unknown');
+                    .map((item, index: number) => {
+                        const contributor = asRecord(item);
+                        const login = String(contributor.login || 'unknown');
                         const initials = login
                             .split(/[\W_]+/)
                             .filter(Boolean)
@@ -328,7 +349,7 @@ const AiProjectDetailPage: React.FC = () => {
                             name: login,
                             initials,
                             color: CONTRIBUTOR_COLOR_PALETTE[index % CONTRIBUTOR_COLOR_PALETTE.length],
-                            contributions: Number(item?.contributions || 0),
+                            contributions: Number(contributor.contributions || 0),
                         };
                     });
 
@@ -375,16 +396,20 @@ const AiProjectDetailPage: React.FC = () => {
                 const topics: string[] = Array.isArray(repoData?.topics) ? repoData.topics : [];
                 const contributionProgress: ContributionItem[] = (Array.isArray(commitsData) ? commitsData : [])
                     .slice(0, 5)
-                    .map((item: any, index: number) => {
-                        const login = String(item?.author?.login || item?.commit?.author?.name || 'unknown');
+                    .map((item, index: number) => {
+                        const commitItem = asRecord(item);
+                        const author = asRecord(commitItem.author);
+                        const commit = asRecord(commitItem.commit);
+                        const commitAuthor = asRecord(commit.author);
+                        const login = String(author.login || commitAuthor.name || 'unknown');
                         const initials = login
                             .split(/[\W_]+/)
                             .filter(Boolean)
                             .slice(0, 2)
                             .map((x: string) => x[0]?.toUpperCase() || '')
                             .join('') || login.slice(0, 2).toUpperCase();
-                        const message = String(item?.commit?.message || '').split('\n')[0] || 'Commit update';
-                        const date = new Date(item?.commit?.author?.date || Date.now()).toLocaleDateString('en-US', {
+                        const message = String(commit.message || '').split('\n')[0] || 'Commit update';
+                        const date = new Date(String(commitAuthor.date || Date.now())).toLocaleDateString('en-US', {
                             month: 'short',
                             day: 'numeric',
                             year: 'numeric',
@@ -395,8 +420,8 @@ const AiProjectDetailPage: React.FC = () => {
                             name: login,
                             description: message,
                             date,
-                            tag: String(item?.sha || '').slice(0, 7) || 'commit',
-                            commitUrl: item?.html_url || `https://github.com/${owner}/${repo}/commits`,
+                            tag: String(commitItem.sha || '').slice(0, 7) || 'commit',
+                            commitUrl: String(commitItem.html_url || `https://github.com/${owner}/${repo}/commits`),
                         };
                     });
 
