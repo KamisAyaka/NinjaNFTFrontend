@@ -12,12 +12,6 @@
   padding: 0 20px;
 }
 
-.container-md {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
 .container-sm {
   max-width: 900px;
   margin: 0 auto;
@@ -45,11 +39,6 @@
   pointer-events: none;
 }
 
-.section-sm {
-  padding: 60px 20px;
-  position: relative;
-}
-
 /* ============ Flex 布局 ============ */
 .flex {
   display: flex;
@@ -58,28 +47,6 @@
 .flex-col {
   display: flex;
   flex-direction: column;
-}
-
-.flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.flex-between {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.flex-start {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.flex-wrap {
-  flex-wrap: wrap;
 }
 
 /* ============ Grid 布局 ============ */
@@ -93,27 +60,11 @@
   gap: 20px;
 }
 
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.grid-auto {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
-
 /* NFT 详情属性网格：Tier 独占一行，其余一行四个，更紧凑 */
 .nft-attributes-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 20px;
-}
-
-.attribute-tier-rare {
-  grid-column: 1 / -1; /* 在属性网格中单独占一整行 */
 }
 
 @media (max-width: 1200px) {
@@ -167,23 +118,14 @@
 }
 
 /* ============ 间距工具 ============ */
-.gap-xs { gap: 8px; }
 .gap-sm { gap: 12px; }
 .gap-md { gap: 16px; }
 .gap-lg { gap: 24px; }
-.gap-xl { gap: 32px; }
-
-.m-0 { margin: 0; }
-.mt-sm { margin-top: 12px; }
 .mt-md { margin-top: 20px; }
-.mt-lg { margin-top: 32px; }
 .mb-sm { margin-bottom: 12px; }
 .mb-md { margin-bottom: 20px; }
 .mb-lg { margin-bottom: 32px; }
-
-.p-sm { padding: 12px; }
 .p-md { padding: 20px; }
-.p-lg { padding: 32px; }
 
 /* ============ 卡片样式 ============ */
 .card {
@@ -200,23 +142,6 @@
   border-color: rgba(255, 138, 61, 0.5);
   transform: translateY(-6px);
   box-shadow: 0 40px 120px rgba(255, 164, 90, 0.35);
-}
-
-.card-sm {
-  padding: 18px;
-  border-radius: 12px;
-}
-
-.card-lg {
-  padding: 36px;
-}
-
-.card-no-hover {
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(12, 16, 30, 0.08);
-  border-radius: 16px;
-  padding: 28px;
-  backdrop-filter: blur(18px);
 }
 
 /* ============ 按钮样式 ============ */
@@ -254,19 +179,6 @@
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 30px 80px rgba(255, 140, 120, 0.45);
-}
-
-.btn-secondary {
-  background: linear-gradient(120deg, rgba(69, 211, 255, 0.15), rgba(255, 138, 61, 0.15));
-  color: var(--text-primary);
-  border: 1px solid rgba(12, 16, 30, 0.1);
-}
-
-.btn-secondary:hover:not(:disabled) {
-  color: var(--text-primary);
-  border-color: rgba(12, 16, 30, 0.25);
-  transform: translateY(-4px);
-  background: linear-gradient(120deg, rgba(69, 211, 255, 0.25), rgba(255, 138, 61, 0.25));
 }
 
 .btn-outline {
@@ -328,16 +240,6 @@
   cursor: not-allowed;
 }
 
-.input-sm {
-  padding: 8px 12px;
-  font-size: 0.875rem;
-}
-
-.input-lg {
-  padding: 16px 20px;
-  font-size: 1.125rem;
-}
-
 /* ============ 文本样式 ============ */
 .text-primary {
   color: var(--text-primary);
@@ -355,24 +257,12 @@
   text-align: center;
 }
 
-.text-left {
-  text-align: left;
-}
-
-.text-right {
-  text-align: right;
-}
-
 .font-bold {
   font-weight: 700;
 }
 
 .font-semibold {
   font-weight: 600;
-}
-
-.font-medium {
-  font-weight: 500;
 }
 
 .uppercase {
@@ -389,26 +279,6 @@
 
 .text-base {
   font-size: 1rem;
-}
-
-.text-lg {
-  font-size: 1.125rem;
-}
-
-.text-xl {
-  font-size: 1.25rem;
-}
-
-.text-2xl {
-  font-size: 1.5rem;
-}
-
-.text-3xl {
-  font-size: 2rem;
-}
-
-.text-4xl {
-  font-size: 2.5rem;
 }
 
 /* ============ 标题样式 ============ */
@@ -428,136 +298,25 @@
   font-size: 2.5rem;
 }
 
-.title-md {
-  font-size: 2rem;
-}
-
-.title-sm {
-  font-size: 1.5rem;
-}
-
 /* ============ 徽章样式 ============ */
-.badge {
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border: 1px solid;
-  display: inline-block;
-}
-
-.badge-white {
-  background: white;
-  color: var(--text-primary);
-  border-color: var(--border-color);
-}
-
-.badge-purple {
-  background: #8b5cf6;
-  color: white;
-  border-color: #7c3aed;
-}
-
-.badge-orange {
-  background: #f97316;
-  color: white;
-  border-color: #ea580c;
-}
 
 /* ============ 背景样式 ============ */
-.bg-primary {
-  background: var(--bg-primary);
-}
-
-.bg-secondary {
-  background: var(--bg-secondary);
-}
-
-.bg-tertiary {
-  background: var(--bg-tertiary);
-}
 
 .bg-gradient-light {
   background: linear-gradient(180deg, #f7f8fa 0%, #ffffff 100%);
 }
 
-.bg-gradient-white {
-  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-}
-
-.bg-gradient-purple {
-  background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%);
-}
-
-.bg-gradient-orange {
-  background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
-}
-
 /* ============ 边框样式 ============ */
-.border {
-  border: 2px solid var(--border-color);
-}
-
-.border-top {
-  border-top: 1px solid var(--border-color);
-}
 
 .border-bottom {
   border-bottom: 1px solid var(--border-color);
 }
 
-.border-radius {
-  border-radius: 8px;
-}
-
-.border-radius-lg {
-  border-radius: 12px;
-}
-
 /* ============ 阴影效果 ============ */
-.shadow-sm {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.shadow-md {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.shadow-lg {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
 
 /* ============ 过渡效果 ============ */
-.transition {
-  transition: all 0.3s ease;
-}
-
-.transition-fast {
-  transition: all 0.2s ease;
-}
-
-.hover-lift:hover {
-  transform: translateY(-2px);
-}
-
-.hover-scale:hover {
-  transform: scale(1.05);
-}
 
 /* ============ 定位工具 ============ */
-.relative {
-  position: relative;
-}
-
-.absolute {
-  position: absolute;
-}
-
-.fixed {
-  position: fixed;
-}
 
 .sticky {
   position: sticky;
@@ -569,18 +328,9 @@
   display: none;
 }
 
-.visible {
-  display: block;
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-
 /* ============ 响应式工具 ============ */
 @media (max-width: 1024px) {
-  .container,
-  .container-md {
+  .container {
     padding: 0 1.5rem;
   }
 
@@ -599,7 +349,6 @@
 
 @media (max-width: 768px) {
   .container,
-  .container-md,
   .container-sm {
     padding: 0 1rem;
   }
@@ -608,17 +357,8 @@
     padding: 40px 16px;
   }
 
-  .section-sm {
-    padding: 30px 16px;
-  }
-
-  .grid-2,
-  .grid-3 {
+  .grid-2 {
     grid-template-columns: 1fr;
-  }
-
-  .grid-auto {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 
   .title-xl {
@@ -629,14 +369,7 @@
     font-size: 1.75rem;
   }
 
-  .title-md {
-    font-size: 1.5rem;
-  }
-
   /* 响应式文本 */
-  .text-responsive-lg {
-    font-size: 1rem;
-  }
 
   /* 响应式按钮 */
   .btn-lg {
@@ -663,10 +396,6 @@
     font-size: 1.5rem;
   }
 
-  .grid-auto {
-    grid-template-columns: 1fr;
-  }
-
   .card {
     padding: 16px;
   }
@@ -689,10 +418,6 @@
   }
 }
 
-.fade-in {
-  animation: fadeIn 0.3s ease;
-}
-
 @keyframes slideIn {
   from {
     transform: translateX(-20px);
@@ -702,10 +427,6 @@
     transform: translateX(0);
     opacity: 1;
   }
-}
-
-.slide-in {
-  animation: slideIn 0.3s ease;
 }
 
 /* ============ 特殊组件样式 ============ */
@@ -743,13 +464,6 @@
 }
 
 /* 分页控件 */
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 40px 0;
-}
 
 .pagination-btn {
   width: 44px;
@@ -810,22 +524,8 @@
 }
 
 /* 等级相关样式 */
-.level-white {
-  --level-color: #f5f5f5;
-}
-
-.level-purple {
-  --level-color: #8b5cf6;
-}
-
-.level-orange {
-  --level-color: #f97316;
-}
 
 /* Monospace字体 */
-.font-mono {
-  font-family: 'Courier New', monospace;
-}
 
 /* 链接样式 */
 .link {
@@ -838,38 +538,7 @@
   color: var(--text-primary);
 }
 
-.link-underline {
-  position: relative;
-  padding-bottom: 4px;
-}
-
-.link-underline::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--text-primary);
-  transition: width 0.3s ease;
-}
-
-.link-underline:hover::after {
-  width: 100%;
-}
-
 /* 空状态 */
-.empty-state {
-  text-align: center;
-  padding: 100px 20px;
-  color: var(--text-tertiary);
-}
-
-.empty-state p {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin: 0;
-}
 
 /* 加载状态 */
 .loading {
@@ -904,15 +573,6 @@
 }
 
 /* ============ 主页英雄区域响应式 ============ */
-@media (max-width: 768px) {
-  .hero-float-image {
-    float: none !important;
-    width: 100% !important;
-    margin-left: 0 !important;
-    margin-bottom: 32px !important;
-    display: block;
-  }
-}
 
 /* ============ NFT 展示组件 ============ */
 .nft-showcase {
@@ -1101,3 +761,4 @@
     font-size: 0.9rem;
   }
 }
+

@@ -138,7 +138,7 @@
 }
 
 /* Inputs */
-.form-input, .form-textarea, .tag-text-input {
+.form-input, .form-textarea {
     background-color: #f9fafb;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
@@ -149,7 +149,7 @@
     box-sizing: border-box;
 }
 
-.form-input:focus, .form-textarea:focus, .tag-text-input:focus {
+.form-input:focus, .form-textarea:focus {
     outline: none;
     border-color: #3b82f6;
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
@@ -401,3 +401,4 @@
 .submit-review-btn:hover {
     background-color: #2563eb;
 }
+

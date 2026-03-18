@@ -38,11 +38,6 @@
 }
 
 /* Animations */
-.marquee-left-to-right {
-    animation: scrollLeftToRight 45s linear infinite;
-    /* Start shifted so it doesn't look empty initially */
-    transform: translateX(-50%);
-}
 
 .marquee-right-to-left {
     animation: scrollRightToLeft 45s linear infinite;
@@ -51,16 +46,6 @@
 /* Pause on hover for better UX */
 .marquee-row:hover {
     animation-play-state: paused;
-}
-
-@keyframes scrollLeftToRight {
-    from {
-        transform: translateX(-50%);
-    }
-
-    to {
-        transform: translateX(0%);
-    }
 }
 
 @keyframes scrollRightToLeft {

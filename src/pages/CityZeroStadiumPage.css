@@ -207,19 +207,9 @@
     color: #1f2937;
 }
 
-.status-completed {
-    background-color: #86efac;
-}
-
 /* Green */
-.status-ongoing {
-    background-color: #fef08a;
-}
 
 /* Yellow */
-.status-upcoming {
-    background-color: #fde047;
-}
 
 /* Brighter Yellow/Orange mix */
 
