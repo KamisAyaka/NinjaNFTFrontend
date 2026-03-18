@@ -921,9 +921,10 @@
 
 .nft-showcase-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 32px;
+  margin-top: 26px;
+  margin-bottom: 0;
   flex-wrap: wrap;
   gap: 16px;
 }

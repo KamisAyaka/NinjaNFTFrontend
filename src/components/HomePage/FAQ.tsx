@@ -64,7 +64,7 @@ const faqData: FAQItem[] = [
         <>
           目前 N1NJ4 支持 Rarible NFT 市场，你也可以去这里进行铸造和交易：
           <a
-            href="https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769/drops"
+            href="https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769"
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: "#a855f7", textDecoration: "underline" }}
@@ -78,7 +78,7 @@ const faqData: FAQItem[] = [
           Currently N1NJ4 supports the Rarible NFT marketplace, where you can
           also mint and trade:{" "}
           <a
-            href="https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769/drops"
+            href="https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769"
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: "#a855f7", textDecoration: "underline" }}
