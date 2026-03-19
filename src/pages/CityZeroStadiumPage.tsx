@@ -13,32 +13,21 @@ interface PhaseData {
 const PHASE_DATA: PhaseData[] = [
     {
         id: 1,
-        title: "PHASE ONE - Mission Name Abstract",
+        title: "Ninja Labs: City Zero Construction",
         image: "https://placehold.co/800x250/bbf7d0/1f2937?text=Characters+Concept+Art",
-        status: "Completed",
+        status: "Ongoing",
         descriptions: [
-            "The page with all the different tasks related to the ecosystem and reward for those tasks.These tasks can be developer related for now, possibility of creator related tasks can be explored in the future.",
-            "These tasks can be something like a 'Bounty' where the ecosystem projects can simply list out something they'd wanna do for their projects and list it there with a reward.The idea appears to be simple but finding projects who are willing to put up tasks there might be difficult since the Injective ecosystem is not very big at the moment & most teams operate independently."
+            "City Zero is now open for long-term builder partnerships. If you are a developer or a project team looking for a home, we want to hear from you. Reach out to Ninja Labs and we will work with you on bringing your project into the city.",
+            "Projects that join will get featured across City Zero and receive ongoing support from the Ninja Labs team. You can also offer your project as a resource or service to the broader community, making it a permanent part of what City Zero has to offer. This is not a short-term grant program. It is an open invitation to build here for the long run."
         ]
     },
     {
         id: 2,
-        title: "PHASE TWO - Mission Name Abstract",
+        title: "AI Frontier Bootcamp",
         image: "https://placehold.co/800x400/93c5fd/1f2937?text=Collector's+Passport",
-        status: "Ongoing",
-        descriptions: [
-            "The page with all the different tasks related to the ecosystem and reward for those tasks.These tasks can be developer related for now, possibility of creator related tasks can be explored in the future.",
-            "These tasks can be something like a 'Bounty' where the ecosystem projects can simply list out something they'd wanna do for their projects and list it there with a reward.The idea appears to be simple but finding projects who are willing to put up tasks there might be difficult since the Injective ecosystem is not very big at the moment & most teams operate independently."
-        ]
-    },
-    {
-        id: 3,
-        title: "PHASE THREE - Mission Name Abstract",
-        image: "https://placehold.co/800x250/e5e7eb/1f2937?text=Project+We+Love+Kickstarter",
         status: "Upcoming",
         descriptions: [
-            "The page with all the different tasks related to the ecosystem and reward for those tasks.These tasks can be developer related for now, possibility of creator related tasks can be explored in the future.",
-            "These tasks can be something like a 'Bounty' where the ecosystem projects can simply list out something they'd wanna do for their projects and list it there with a reward.The idea appears to be simple but finding projects who are willing to put up tasks there might be difficult since the Injective ecosystem is not very big at the moment & most teams operate independently."
+            "Coming soon. Details will be revealed shortly."
         ]
     }
 ];
@@ -59,8 +48,7 @@ const CityZeroStadiumPage: React.FC = () => {
                     {/* Header Row */}
                     <div className="stadium-header-row">
                         <div className="stadium-title-group">
-                            <h1 className="stadium-title">City Zero Stadium Construction Project</h1>
-                            <p className="stadium-deadline">Until 26th May 2026</p>
+                            <h1 className="stadium-title">City Zero Stadium</h1>
                         </div>
                         <div className="stadium-status-badge">
                             Ongoing
@@ -72,10 +60,10 @@ const CityZeroStadiumPage: React.FC = () => {
                         <div className="stadium-text-column">
                             <h3 className="stadium-subtitle">BRIEF INTRODUCTION</h3>
                             <p>
-                                The page with all the different tasks related to the ecosystem and reward for those tasks.These tasks can be developer related for now, possibility of creator related tasks can be explored in the future.
+                                City Zero Stadium is the playground that Ninja Labs built for the residents of City Zero. This is where you will find our major ongoing events and a direct line to interact with the Ninja Labs team.
                             </p>
                             <p>
-                                These tasks can be something like a 'Bounty' where the ecosystem projects can simply list out something they'd wanna do for their projects and list it there with a reward.The idea appears to be simple but finding projects who are willing to put up tasks there might be difficult since the Injective ecosystem is not very big at the moment & most teams operate independently.
+                                The Stadium is also where we share participation opportunities as they come up, whether that means joining a campaign, contributing to something we are building, or simply being part of what is happening in the community. If you are a builder, this is also where we post growth opportunities designed specifically for people who want to create and ship things within City Zero. Come check in regularly. There is usually something worth your attention.
                             </p>
                         </div>
 
