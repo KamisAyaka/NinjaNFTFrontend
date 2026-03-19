@@ -13,32 +13,21 @@ interface PhaseData {
 const PHASE_DATA: PhaseData[] = [
     {
         id: 1,
-        title: "PHASE ONE - Mission Name Abstract",
+        title: "Ninja Labs: City Zero Construction",
         image: "https://placehold.co/800x250/bbf7d0/1f2937?text=Characters+Concept+Art",
-        status: "Completed",
+        status: "Ongoing",
         descriptions: [
-            "The page with all the different tasks related to the ecosystem and reward for those tasks.These tasks can be developer related for now, possibility of creator related tasks can be explored in the future.",
-            "These tasks can be something like a 'Bounty' where the ecosystem projects can simply list out something they'd wanna do for their projects and list it there with a reward.The idea appears to be simple but finding projects who are willing to put up tasks there might be difficult since the Injective ecosystem is not very big at the moment & most teams operate independently."
+            "City Zero is now open for long-term builder partnerships. If you are a developer or a project team looking for a home, we want to hear from you. Reach out to Ninja Labs and we will work with you on bringing your project into the city.",
+            "Projects that join will get featured across City Zero and receive ongoing support from the Ninja Labs team. You can also offer your project as a resource or service to the broader community, making it a permanent part of what City Zero has to offer. This is not a short-term grant program. It is an open invitation to build here for the long run."
         ]
     },
     {
         id: 2,
-        title: "PHASE TWO - Mission Name Abstract",
+        title: "AI Frontier Bootcamp",
         image: "https://placehold.co/800x400/93c5fd/1f2937?text=Collector's+Passport",
-        status: "Ongoing",
-        descriptions: [
-            "The page with all the different tasks related to the ecosystem and reward for those tasks.These tasks can be developer related for now, possibility of creator related tasks can be explored in the future.",
-            "These tasks can be something like a 'Bounty' where the ecosystem projects can simply list out something they'd wanna do for their projects and list it there with a reward.The idea appears to be simple but finding projects who are willing to put up tasks there might be difficult since the Injective ecosystem is not very big at the moment & most teams operate independently."
-        ]
-    },
-    {
-        id: 3,
-        title: "PHASE THREE - Mission Name Abstract",
-        image: "https://placehold.co/800x250/e5e7eb/1f2937?text=Project+We+Love+Kickstarter",
         status: "Upcoming",
         descriptions: [
-            "The page with all the different tasks related to the ecosystem and reward for those tasks.These tasks can be developer related for now, possibility of creator related tasks can be explored in the future.",
-            "These tasks can be something like a 'Bounty' where the ecosystem projects can simply list out something they'd wanna do for their projects and list it there with a reward.The idea appears to be simple but finding projects who are willing to put up tasks there might be difficult since the Injective ecosystem is not very big at the moment & most teams operate independently."
+            "Coming soon. Details will be revealed shortly."
         ]
     }
 ];
@@ -59,8 +48,7 @@ const CityZeroStadiumPage: React.FC = () => {
                     {/* Header Row */}
                     <div className="stadium-header-row">
                         <div className="stadium-title-group">
-                            <h1 className="stadium-title">City Zero Stadium Construction Project</h1>
-                            <p className="stadium-deadline">Until 26th May 2026</p>
+                            <h1 className="stadium-title">City Zero Stadium</h1>
                         </div>
                         <div className="stadium-status-badge">
                             Ongoing
@@ -72,10 +60,10 @@ const CityZeroStadiumPage: React.FC = () => {
                         <div className="stadium-text-column">
                             <h3 className="stadium-subtitle">BRIEF INTRODUCTION</h3>
                             <p>
-                                The page with all the different tasks related to the ecosystem and reward for those tasks.These tasks can be developer related for now, possibility of creator related tasks can be explored in the future.
+                                City Zero Stadium is the playground that Ninja Labs built for the residents of City Zero. This is where you will find our major ongoing events and a direct line to interact with the Ninja Labs team.
                             </p>
                             <p>
-                                These tasks can be something like a 'Bounty' where the ecosystem projects can simply list out something they'd wanna do for their projects and list it there with a reward.The idea appears to be simple but finding projects who are willing to put up tasks there might be difficult since the Injective ecosystem is not very big at the moment & most teams operate independently.
+                                The Stadium is also where we share participation opportunities as they come up, whether that means joining a campaign, contributing to something we are building, or simply being part of what is happening in the community. If you are a builder, this is also where we post growth opportunities designed specifically for people who want to create and ship things within City Zero. Come check in regularly. There is usually something worth your attention.
                             </p>
                         </div>
 
@@ -155,56 +143,57 @@ const CityZeroStadiumPage: React.FC = () => {
                                 </div>
                             </div>
 
-                            {/* Widget 3: Available Rewards */}
+                            {/* Widget 3: Grants & Incubation */}
                             <div className="sidebar-widget no-padding">
                                 <div className="widget-header-wrapper">
-                                    <h3 className="widget-main-title">Available rewards</h3>
+                                    <h3 className="widget-main-title">Grants &amp; Incubation</h3>
                                 </div>
-                                <div className="widget-body-wrapper reward-body">
-                                    <img src="https://placehold.co/300x200/efefef/666?text=Product+Hero" alt="Product" className="reward-product-image" />
-                                    <div className="reward-pricing">
-                                        <div className="reward-price-left">
-                                            <h4>Late Pledge Price</h4>
-                                            <p>| Aceii One x 1</p>
+                                <div className="widget-body-wrapper grants-body">
+                                    <p className="grants-intro">
+                                        Ninja Labs Incubation Program.
+                                    </p>
+
+                                    <div className="grants-section">
+                                        <div className="grants-section-header">
+                                            <span className="grants-badge grants-badge-green">Community Grants</span>
                                         </div>
-                                        <div className="reward-price-right">
-                                            <span className="currency">HK$</span>
-                                            <span className="amount">11,692</span>
-                                            <span className="approx">ABOUT $1,496</span>
+                                        <p className="grants-section-desc">
+                                            Direct funding for projects that benefit City Zero citizens. Grants are approved by N1NJ4 holders through on-chain voting, milestone-based, and fully transparent on Injective.
+                                        </p>
+                                        <div className="grants-tags">
+                                            <span className="grants-tag">Open Source Infra</span>
+                                            <span className="grants-tag">Consumer Apps</span>
+                                            <span className="grants-tag">Research</span>
+                                            <span className="grants-tag">Community Building</span>
                                         </div>
                                     </div>
-                                    <div className="reward-details-list">
-                                        <p className="highlight-text">🎯 Late Pledge Now Available — Save $600 OFF the $2,099 MSRP!</p>
-                                        <p className="detail-header">⚡ INCLUDES:</p>
-                                        <ul>
-                                            <li>Aceii One Tennis Robot *1</li>
-                                            <li>Portable Charger *1</li>
-                                            <li>Aceii One Battery *1</li>
-                                            <li>1-Year International Warranty</li>
+
+                                    <div className="grants-divider" />
+
+                                    <div className="grants-section">
+                                        <div className="grants-section-header">
+                                            <span className="grants-badge grants-badge-blue">Incubation</span>
+                                        </div>
+                                        <p className="grants-section-desc">
+                                            A structured support path for builders who want to grow a lasting project inside City Zero. Goes beyond a one-time grant.
+                                        </p>
+                                        <ul className="grants-list">
+                                            <li>Multi-phase sustained funding tied to milestones</li>
+                                            <li>Direct technical support from Ninja Labs engineers</li>
+                                            <li>Featured as an endorsed City Zero project</li>
+                                            <li>Mentorship from experienced web3 builders</li>
+                                            <li>On-chain credentialing of your deliverables</li>
                                         </ul>
-                                        <p className="disclaimer">*Price may be displayed in HKD. Please change them to your local currency.</p>
                                     </div>
-                                    <div className="reward-shipping-info">
-                                        <div className="shipping-col">
-                                            <span className="info-label">Backers</span>
-                                            <span className="info-val">6</span>
-                                        </div>
-                                        <div className="shipping-col">
-                                            <span className="info-label">Ships to</span>
-                                            <span className="info-val">Anywhere in the world</span>
-                                        </div>
-                                        <div className="shipping-col">
-                                            <span className="info-label">Estimated delivery</span>
-                                            <span className="info-val">Feb 2026</span>
-                                        </div>
-                                        <div className="shipping-col">
-                                            <span className="info-label">Limited quantity</span>
-                                            <span className="info-val">194 left of 200</span>
-                                        </div>
-                                    </div>
-                                    <div className="reward-footer">
-                                        <span><strong>1 item included</strong> + optional add-ons</span>
-                                    </div>
+
+                                    <a
+                                        href="https://n1nj4.mintlify.app/economy/grants-incubation"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="grants-apply-btn"
+                                    >
+                                        Learn More
+                                    </a>
                                 </div>
                             </div>
                         </div>
