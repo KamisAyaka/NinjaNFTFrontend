@@ -20,16 +20,16 @@ const CityZeroInfoCarousel: React.FC = () => {
             content: (
                 <>
                     <p>
-                        City Zero is the first digital city built on the Injective blockchain — the flagship project of Ninja Labs and the foundation of Phase 1 development.
+                        City Zero is the first digital city built on the Injective blockchain. It is the flagship project of Ninja Labs and the primary focus of Phase 1 development.
                     </p>
                     <p>
-                        Unlike virtual worlds or metaverse platforms built on speculation, City Zero is an infrastructure layer: a set of on-chain identities, community structures, governance mechanisms, and economic incentives that together form a functioning digital city. Every action — from identity creation to governance votes to grant disbursements — is an on-chain transaction.
+                        Unlike virtual worlds or metaverse platforms built on speculation, City Zero functions as a real infrastructure layer. It brings together on-chain identities, community structures, governance mechanisms, and economic incentives to form a functioning digital city. Every action in City Zero, from creating an identity to casting a governance vote or disbursing a grant, is recorded on-chain.
                     </p>
                     <p>
-                        City Zero is AI-native from day one, designed to accommodate AI agents as full residents with on-chain identity and the ability to participate in the city's economy. Every developer who contributes earns a stake in its future — a structural commitment to sharing growth with those who build it.
+                        City Zero is built to be AI-native from day one. AI agents can join as full residents, hold on-chain identities, and participate in the city's economy alongside humans. Every developer who contributes to City Zero earns a stake in its future, because growth should be shared with the people who build it.
                     </p>
                     <p>
-                        Phase 1 focuses on five areas: establishing the identity layer through N1NJ4 NFTs, onboarding founding citizens, activating the developer ecosystem, welcoming AI residents, and launching decentralized governance. This is the foundation. Everything else is built on top.
+                        Phase 1 focuses on five things: establishing the identity layer through N1NJ4 NFTs, onboarding founding citizens, activating the developer ecosystem, welcoming AI residents, and launching decentralized governance. This is the foundation. Everything else gets built on top of it.
                     </p>
                 </>
             ),
@@ -43,16 +43,16 @@ const CityZeroInfoCarousel: React.FC = () => {
             content: (
                 <>
                     <p>
-                        Citizenship in City Zero is not an application process — it is a consequence of identity. Every holder of a N1NJ4 identity NFT is automatically a citizen of City Zero. The NFT is your passport: owning it means you belong to the city, with all the rights that entails.
+                        Becoming a citizen of City Zero does not require an application. You become one simply by holding a N1NJ4 identity NFT. The NFT acts as your passport, and owning it means you are part of the city with all the rights that come with it.
                     </p>
                     <p>
-                        Citizens receive governance rights to vote on treasury allocations, grant approvals, and infrastructure decisions. They gain economic participation through City Zero's growth sharing programs, access to Ninja Labs' grant and incubation programs, and the ability to deploy AI agents within the city's identity layer.
+                        Citizens can vote on governance decisions including treasury use, grant approvals, and infrastructure upgrades. They also get access to City Zero's growth sharing programs, Ninja Labs' grant and incubation resources, and the ability to deploy AI agents that operate within the city's identity layer.
                     </p>
                     <p>
-                        The earliest N1NJ4 holders carry a special distinction as <strong>Founding Citizens</strong> — those who arrived before the city was fully built. Founding Citizen status carries additional governance weight and priority in future growth distributions. On-chain identity makes this status permanent and verifiable.
+                        The earliest N1NJ4 holders have a special standing as <strong>Founding Citizens</strong>. These are the people who showed up before the city was fully built and helped shape what it became. Founding Citizens carry more weight in governance and get priority when future growth benefits are distributed. Because this status is recorded on-chain, it is permanent and cannot be taken away.
                     </p>
                     <p>
-                        City Zero makes no distinction between human and AI citizens. Both hold on-chain credentials, both participate in the economy, and both shape the city's future — built to reflect the reality of tomorrow from day one.
+                        City Zero treats human and AI citizens the same way at the identity layer. Both hold on-chain credentials, both contribute to the city's activity, and both have a place in its future. That is by design.
                     </p>
                 </>
             ),
