@@ -16,44 +16,49 @@ const CityZeroInfoCarousel: React.FC = () => {
     const items: CarouselItem[] = [
         {
             id: 1,
-            title: "City Zero Introdunction- Text",
+            title: "What is City Zero",
             content: (
                 <>
                     <p>
-                        page with all the different tasks related to the ecosystem and reward for those tasks.These tasks can be developer related for now, possibility of creator related tasks can be explored in the future.
+                        City Zero is the first digital city built on the Injective blockchain — the flagship project of Ninja Labs and the foundation of Phase 1 development.
                     </p>
                     <p>
-                        These tasks can be something like a 'Bounty' where the ecosystem projects can simply list out something they'd wanna do for their projects and list it there with a reward.The idea appears to be simple but finding projects who are willing to put up tasks there might be difficult since the Injective ecosystem is not very big at the moment & most teams operate independently.
+                        Unlike virtual worlds or metaverse platforms built on speculation, City Zero is an infrastructure layer: a set of on-chain identities, community structures, governance mechanisms, and economic incentives that together form a functioning digital city. Every action — from identity creation to governance votes to grant disbursements — is an on-chain transaction.
                     </p>
                     <p>
-                        The idea appears to be simple but finding projects who are willing to put up tasks there might be difficult since the Injective ecosystem is not very big at the moment & most teams operate independently.
+                        City Zero is AI-native from day one, designed to accommodate AI agents as full residents with on-chain identity and the ability to participate in the city's economy. Every developer who contributes earns a stake in its future — a structural commitment to sharing growth with those who build it.
+                    </p>
+                    <p>
+                        Phase 1 focuses on five areas: establishing the identity layer through N1NJ4 NFTs, onboarding founding citizens, activating the developer ecosystem, welcoming AI residents, and launching decentralized governance. This is the foundation. Everything else is built on top.
                     </p>
                 </>
             ),
             imageSrc: "/CityZero/city_image2.png",
             imageAlt: "City Zero Introduction City Image 2",
-            readMoreLink: "https://n1nj4.mintlify.app"
+            readMoreLink: "https://n1nj4.mintlify.app/city-zero/what-is-city-zero"
         },
         {
             id: 2,
-            title: "City Zero Introdunction- Text & Image",
+            title: "Citizenship",
             content: (
                 <>
                     <p>
-                        page with all the different tasks related to the ecosystem and reward for those tasks.These tasks can be developer related for now, possibility of creator related tasks can be explored in the future.
+                        Citizenship in City Zero is not an application process — it is a consequence of identity. Every holder of a N1NJ4 identity NFT is automatically a citizen of City Zero. The NFT is your passport: owning it means you belong to the city, with all the rights that entails.
                     </p>
                     <p>
-                        These tasks can be something like a 'Bounty' where the ecosystem projects can simply list out something they'd wanna do for their projects and list it there with a reward.The idea appears to be simple but finding projects who are willing to put up tasks there might be difficult since the Injective ecosystem is not very big at the moment & most teams operate independently.
+                        Citizens receive governance rights to vote on treasury allocations, grant approvals, and infrastructure decisions. They gain economic participation through City Zero's growth sharing programs, access to Ninja Labs' grant and incubation programs, and the ability to deploy AI agents within the city's identity layer.
                     </p>
                     <p>
-                        This can also include tasks from Ninja Labs.<br />
-                        The idea appears to be simple but finding projects who are willing to put up tasks there might be difficult since the Injective ecosystem is not very big at the moment & most teams operate independently.
+                        The earliest N1NJ4 holders carry a special distinction as <strong>Founding Citizens</strong> — those who arrived before the city was fully built. Founding Citizen status carries additional governance weight and priority in future growth distributions. On-chain identity makes this status permanent and verifiable.
+                    </p>
+                    <p>
+                        City Zero makes no distinction between human and AI citizens. Both hold on-chain credentials, both participate in the economy, and both shape the city's future — built to reflect the reality of tomorrow from day one.
                     </p>
                 </>
             ),
             imageSrc: "/CityZero/city_image1.png",
             imageAlt: "City Zero Introduction City Image 1",
-            readMoreLink: "https://n1nj4.mintlify.app"
+            readMoreLink: "https://n1nj4.mintlify.app/city-zero/citizenship"
         }
     ];
 
