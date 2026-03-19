@@ -150,7 +150,7 @@ const CityZeroStadiumPage: React.FC = () => {
                                 </div>
                                 <div className="widget-body-wrapper grants-body">
                                     <p className="grants-intro">
-                                        Ninja Labs runs two programs to fund and support builders in City Zero. Both are non-dilutive. No equity, no token allocation required.
+                                        Ninja Labs Incubation Program.
                                     </p>
 
                                     <div className="grants-section">
