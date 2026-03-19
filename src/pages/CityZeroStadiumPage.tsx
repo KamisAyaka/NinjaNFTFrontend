@@ -143,56 +143,57 @@ const CityZeroStadiumPage: React.FC = () => {
                                 </div>
                             </div>
 
-                            {/* Widget 3: Available Rewards */}
+                            {/* Widget 3: Grants & Incubation */}
                             <div className="sidebar-widget no-padding">
                                 <div className="widget-header-wrapper">
-                                    <h3 className="widget-main-title">Available rewards</h3>
+                                    <h3 className="widget-main-title">Grants &amp; Incubation</h3>
                                 </div>
-                                <div className="widget-body-wrapper reward-body">
-                                    <img src="https://placehold.co/300x200/efefef/666?text=Product+Hero" alt="Product" className="reward-product-image" />
-                                    <div className="reward-pricing">
-                                        <div className="reward-price-left">
-                                            <h4>Late Pledge Price</h4>
-                                            <p>| Aceii One x 1</p>
+                                <div className="widget-body-wrapper grants-body">
+                                    <p className="grants-intro">
+                                        Ninja Labs runs two programs to fund and support builders in City Zero. Both are non-dilutive. No equity, no token allocation required.
+                                    </p>
+
+                                    <div className="grants-section">
+                                        <div className="grants-section-header">
+                                            <span className="grants-badge grants-badge-green">Community Grants</span>
                                         </div>
-                                        <div className="reward-price-right">
-                                            <span className="currency">HK$</span>
-                                            <span className="amount">11,692</span>
-                                            <span className="approx">ABOUT $1,496</span>
+                                        <p className="grants-section-desc">
+                                            Direct funding for projects that benefit City Zero citizens. Grants are approved by N1NJ4 holders through on-chain voting, milestone-based, and fully transparent on Injective.
+                                        </p>
+                                        <div className="grants-tags">
+                                            <span className="grants-tag">Open Source Infra</span>
+                                            <span className="grants-tag">Consumer Apps</span>
+                                            <span className="grants-tag">Research</span>
+                                            <span className="grants-tag">Community Building</span>
                                         </div>
                                     </div>
-                                    <div className="reward-details-list">
-                                        <p className="highlight-text">🎯 Late Pledge Now Available — Save $600 OFF the $2,099 MSRP!</p>
-                                        <p className="detail-header">⚡ INCLUDES:</p>
-                                        <ul>
-                                            <li>Aceii One Tennis Robot *1</li>
-                                            <li>Portable Charger *1</li>
-                                            <li>Aceii One Battery *1</li>
-                                            <li>1-Year International Warranty</li>
+
+                                    <div className="grants-divider" />
+
+                                    <div className="grants-section">
+                                        <div className="grants-section-header">
+                                            <span className="grants-badge grants-badge-blue">Incubation</span>
+                                        </div>
+                                        <p className="grants-section-desc">
+                                            A structured support path for builders who want to grow a lasting project inside City Zero. Goes beyond a one-time grant.
+                                        </p>
+                                        <ul className="grants-list">
+                                            <li>Multi-phase sustained funding tied to milestones</li>
+                                            <li>Direct technical support from Ninja Labs engineers</li>
+                                            <li>Featured as an endorsed City Zero project</li>
+                                            <li>Mentorship from experienced web3 builders</li>
+                                            <li>On-chain credentialing of your deliverables</li>
                                         </ul>
-                                        <p className="disclaimer">*Price may be displayed in HKD. Please change them to your local currency.</p>
                                     </div>
-                                    <div className="reward-shipping-info">
-                                        <div className="shipping-col">
-                                            <span className="info-label">Backers</span>
-                                            <span className="info-val">6</span>
-                                        </div>
-                                        <div className="shipping-col">
-                                            <span className="info-label">Ships to</span>
-                                            <span className="info-val">Anywhere in the world</span>
-                                        </div>
-                                        <div className="shipping-col">
-                                            <span className="info-label">Estimated delivery</span>
-                                            <span className="info-val">Feb 2026</span>
-                                        </div>
-                                        <div className="shipping-col">
-                                            <span className="info-label">Limited quantity</span>
-                                            <span className="info-val">194 left of 200</span>
-                                        </div>
-                                    </div>
-                                    <div className="reward-footer">
-                                        <span><strong>1 item included</strong> + optional add-ons</span>
-                                    </div>
+
+                                    <a
+                                        href="https://n1nj4.mintlify.app/economy/grants-incubation"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="grants-apply-btn"
+                                    >
+                                        Learn More
+                                    </a>
                                 </div>
                             </div>
                         </div>
