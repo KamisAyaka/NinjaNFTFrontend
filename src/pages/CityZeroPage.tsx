@@ -9,7 +9,10 @@ import { useLanguage } from "../context/useLanguage";
 const CityZeroPage: React.FC = () => {
     const { language } = useLanguage();
     const translate = (zh: string, en: string) => (language === "zh" ? zh : en);
-    const announcementText = translate("滚动公告 · 城市零号实时更新", "SCROLLING ANNOUNCEMENTS");
+    const announcementText = translate(
+        "进行中：City Zero 建设，预告：AI 前沿训练营",
+        "Ongoing: City Zero Construction, Upcoming: AI Frontier Bootcamp"
+    );
 
     return (
         <div className="city-zero-page">

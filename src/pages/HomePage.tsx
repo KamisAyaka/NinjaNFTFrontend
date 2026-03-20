@@ -624,21 +624,19 @@ function HomePage() {
           </p>
           <div className="city-entry-actions">
             <a
-              href="https://x.com/ninjalabscn"
+              href="https://n1nj4.mintlify.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="city-entry-btn city-entry-btn-dark"
             >
-              Twitter / X
+              {translate("白皮书", "Whitepaper")}
             </a>
-            <a
-              href="https://github.com/Ninja-Labs-CN"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/city-zero"
               className="city-entry-btn city-entry-btn-muted"
             >
-              GitHub
-            </a>
+              {translate("探索", "Explore")}
+            </Link>
           </div>
         </div>
       </section>
