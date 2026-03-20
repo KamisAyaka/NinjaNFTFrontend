@@ -6,9 +6,9 @@ import GalleryPage from "./pages/GalleryPage";
 import CityZeroPage from "./pages/CityZeroPage";
 import NFTDetailPage from "./pages/NFTDetailPage";
 import CityZeroStadiumPage from "./pages/CityZeroStadiumPage";
-import TaskBoardDetailPage from "./pages/CityZeroTaskDetails/TaskBoardDetailPage";
-import JobBoardDetailPage from "./pages/CityZeroTaskDetails/JobBoardDetailPage";
-import GrantsHubDetailPage from "./pages/CityZeroTaskDetails/GrantsHubDetailPage";
+import MetaloftDetailPage from "./pages/CityZeroTaskDetails/MetaloftDetailPage";
+import InjectivePassDetailPage from "./pages/CityZeroTaskDetails/InjectivePassDetailPage";
+import N1NJ4DetailPage from "./pages/CityZeroTaskDetails/N1NJ4DetailPage";
 import AiProjectDetailPage from "./pages/AiProjectDetails/AiProjectDetailPage";
 
 function App() {
@@ -22,9 +22,9 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/city-zero" element={<CityZeroPage />} />
             <Route path="/city-zero/stadium" element={<CityZeroStadiumPage />} />
-            <Route path="/city-zero/task-board" element={<TaskBoardDetailPage />} />
-            <Route path="/city-zero/job-board" element={<JobBoardDetailPage />} />
-            <Route path="/city-zero/grants-hub" element={<GrantsHubDetailPage />} />
+            <Route path="/city-zero/metaloft" element={<MetaloftDetailPage />} />
+            <Route path="/city-zero/injective-pass" element={<InjectivePassDetailPage />} />
+            <Route path="/city-zero/n1nj4" element={<N1NJ4DetailPage />} />
             <Route path="/ai-project/:owner/:repo" element={<AiProjectDetailPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/nft/:id" element={<NFTDetailPage />} />

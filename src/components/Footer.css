@@ -64,7 +64,7 @@
 
 .footer-columns {
   display: grid;
-  grid-template-columns: repeat(3, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 220px));
   gap: 48px;
   width: 100%;
   justify-content: start;
@@ -135,7 +135,7 @@
   }
 
   .footer-columns {
-    grid-template-columns: repeat(2, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 220px));
   }
 }
 
@@ -164,4 +164,3 @@
     align-items: flex-start;
   }
 }
-

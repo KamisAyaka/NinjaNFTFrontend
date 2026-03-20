@@ -37,81 +37,21 @@ const socialLinks = [
 const footerColumnsMap: Record<"zh" | "en", FooterColumn[]> = {
   zh: [
     {
-      title: "PROTOCOL",
+      title: "协议",
       links: [
-        { label: "白皮书", href: "https://n1nj4.mintlify.app" },
-        { label: "Injective Chain", href: "https://injective.com" },
-        { label: "GitHub", href: "https://github.com/Ninja-Labs-CN" },
-        {
-          label: "Block Explorer",
-          href: "https://blockscout.injective.network/address/0x816070929010a3d202d8a6b89f92bee33b7e8769",
-        },
-      ],
-    },
-    {
-      title: "MARKET",
-      links: [
-        {
-          label: "Rarible · Buy",
-          href: "https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769",
-        },
-        { label: "NFT Gallery", href: "/gallery" },
-        {
-          label: "Floor Price",
-          href: "https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769",
-        },
-        {
-          label: "Rarity Tool",
-          href: "https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769",
-        },
-      ],
-    },
-    {
-      title: "COMMUNITY",
-      links: [
-        { label: "Twitter / X", href: "https://x.com/ninjalabscn" },
-        { label: "Holder Portal", href: "#" },
-        { label: "Mission Hub", href: "#" },
+        { label: "Injective", href: "https://injective.com" },
+        { label: "Github", href: "https://github.com/Ninja-Labs-CN" },
+        { label: "Twitter", href: "https://x.com/ninjalabscn" },
       ],
     },
   ],
   en: [
     {
-      title: "PROTOCOL",
+      title: "Protocols",
       links: [
-        { label: "Whitepaper", href: "https://n1nj4.mintlify.app" },
-        { label: "Injective Chain", href: "https://injective.com" },
-        { label: "GitHub", href: "https://github.com/Ninja-Labs-CN" },
-        {
-          label: "Block Explorer",
-          href: "https://blockscout.injective.network/address/0x816070929010a3d202d8a6b89f92bee33b7e8769",
-        },
-      ],
-    },
-    {
-      title: "MARKET",
-      links: [
-        {
-          label: "Rarible · Buy",
-          href: "https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769",
-        },
-        { label: "NFT Gallery", href: "/gallery" },
-        {
-          label: "Floor Price",
-          href: "https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769",
-        },
-        {
-          label: "Rarity Tool",
-          href: "https://rarible.com/injective/collections/0x816070929010a3d202d8a6b89f92bee33b7e8769",
-        },
-      ],
-    },
-    {
-      title: "COMMUNITY",
-      links: [
-        { label: "Twitter / X", href: "https://x.com/ninjalabscn" },
-        { label: "Holder Portal", href: "#" },
-        { label: "Mission Hub", href: "#" },
+        { label: "Injective", href: "https://injective.com" },
+        { label: "Github", href: "https://github.com/Ninja-Labs-CN" },
+        { label: "Twitter", href: "https://x.com/ninjalabscn" },
       ],
     },
   ],
@@ -120,15 +60,19 @@ const footerColumnsMap: Record<"zh" | "en", FooterColumn[]> = {
 function Footer() {
   const { language } = useLanguage();
   const footerColumns = useMemo(() => footerColumnsMap[language], [language]);
+  const brandDescription = useMemo(
+    () =>
+      language === "zh"
+        ? "构建在 Injective 上的赛博社区身份系统。500 位忍者，一座 City Zero，无限可能。"
+        : "Cyberpunk community identity system on Injective. 500 ninjas. One City Zero. Infinite possibility.",
+    [language],
+  );
   return (
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-brand">
           <img src="/NINJ4-Logo-2.svg" alt="N1NJ4" className="footer-logo" />
-          <p>
-            Cyberpunk community identity system on Injective. 500 ninjas. One
-            City Zero. Infinite possibility.
-          </p>
+          <p>{brandDescription}</p>
           <div className="footer-social">
             {socialLinks.map((link) => (
               <a

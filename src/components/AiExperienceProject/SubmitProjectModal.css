@@ -352,7 +352,7 @@
 /* Footer */
 .modal-footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding-top: 1rem;
 }
@@ -370,6 +370,8 @@
 .footer-actions {
     display: flex;
     gap: 1rem;
+    justify-content: center;
+    align-items: center;
 }
 
 .cancel-btn {
@@ -401,4 +403,3 @@
 .submit-review-btn:hover {
     background-color: #2563eb;
 }
-

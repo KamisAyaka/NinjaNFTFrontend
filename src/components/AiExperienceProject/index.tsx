@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ProjectCard from './ProjectCard';
 import SubmitProjectModal from './SubmitProjectModal';
 import './AiExperienceProject.css';
+import { useLanguage } from "../../context/useLanguage";
 
 interface ProjectItem {
     title: string;
@@ -23,6 +24,10 @@ const PROJECTS_CACHE_KEY = 'ai_experience_projects_cache_v1';
 const PROJECTS_CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes
 
 const AiExperienceProject: React.FC = () => {
+    const { language } = useLanguage();
+    const isZh = language === "zh";
+    const translate = useCallback((zh: string, en: string) => (isZh ? zh : en), [isZh]);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [showSteps, setShowSteps] = useState(false);
     const [projects, setProjects] = useState<ProjectItem[]>([]);
@@ -65,7 +70,7 @@ const AiExperienceProject: React.FC = () => {
 
         if (!sheetApiUrl) {
             setProjects([]);
-            setProjectsMessage('VITE_GOOGLE_SHEET_API is not configured.');
+            setProjectsMessage(translate('未配置 VITE_GOOGLE_SHEET_API。', 'VITE_GOOGLE_SHEET_API is not configured.'));
             setIsLoadingProjects(false);
             return;
         }
@@ -205,9 +210,9 @@ const AiExperienceProject: React.FC = () => {
 
             return {
                 title,
-                description: description || 'AI experience project from City Zero contributors.',
+                description: description || translate('来自 City Zero 贡献者的 AI 体验项目。', 'AI experience project from City Zero contributors.'),
                 imageSrc,
-                tags: tags.length ? tags : ['AI', 'Open Source'],
+                tags: tags.length ? tags : [translate('AI', 'AI'), translate('开源', 'Open Source')],
                 githubRepo
             };
         };
@@ -252,39 +257,39 @@ const AiExperienceProject: React.FC = () => {
                 setProjects(projectsWithStars);
                 writeProjectsCache(projectsWithStars);
                 if (!parsedProjects.length) {
-                    setProjectsMessage('No approved projects found in Google Sheet yet.');
+                    setProjectsMessage(translate('Google Sheet 暂无已审核通过的项目。', 'No approved projects found in Google Sheet yet.'));
                 }
             } catch (error) {
                 console.error('Failed to load AI projects from Google Sheet:', error);
                 setProjects([]);
-                setProjectsMessage('Failed to load projects from Google Sheet.');
+                setProjectsMessage(translate('从 Google Sheet 加载项目失败。', 'Failed to load projects from Google Sheet.'));
             } finally {
                 setIsLoadingProjects(false);
             }
         };
 
         fetchProjects();
-    }, []);
+    }, [translate]);
 
     return (
         <section className="ai-experience-section">
             <div className="ai-experience-container">
-                <h2 className="ai-experience-title">AI EXPERIENCE PROJECT</h2>
+                <h2 className="ai-experience-title">{translate("AI 体验项目", "AI EXPERIENCE PROJECT")}</h2>
 
                 {/* Banner */}
                 <div className="contribution-banner">
                     <div className="banner-left">
                         <div className="rocket-icon">🚀</div>
                         <div className="banner-text">
-                            <h3>Open for contributions — submit your AI project</h3>
-                            <p>Fork, build, and share your work with the City Zero community</p>
+                            <h3>{translate("开放贡献中 — 提交你的 AI 项目", "Open for contributions — submit your AI project")}</h3>
+                            <p>{translate("Fork、构建并向 City Zero 社区分享你的作品", "Fork, build, and share your work with the City Zero community")}</p>
                         </div>
                     </div>
                     <div className="banner-right">
                         <button className="banner-btn secondary-btn" onClick={() => setShowSteps(!showSteps)}>
-                            {showSteps ? 'Hide guide' : 'How to participate'}
+                            {showSteps ? translate('收起指南', 'Hide guide') : translate('如何参与', 'How to participate')}
                         </button>
-                        <button className="banner-btn primary-btn" onClick={() => setIsModalOpen(true)}>Submit project →</button>
+                        <button className="banner-btn primary-btn" onClick={() => setIsModalOpen(true)}>{translate('提交项目', 'Submit project')} →</button>
                     </div>
                 </div>
 
@@ -293,22 +298,22 @@ const AiExperienceProject: React.FC = () => {
                     <div className="steps-navigation">
                         <div className="step-item">
                             <div className="step-number">1</div>
-                            <div className="step-label">Fork the base repo</div>
+                            <div className="step-label">{translate('Fork 基础仓库', 'Fork the base repo')}</div>
                         </div>
                         <div className="step-divider">&gt;</div>
                         <div className="step-item">
                             <div className="step-number">2</div>
-                            <div className="step-label">Build your repo</div>
+                            <div className="step-label">{translate('构建你的项目', 'Build your repo')}</div>
                         </div>
                         <div className="step-divider">&gt;</div>
                         <div className="step-item">
                             <div className="step-number">3</div>
-                            <div className="step-label">Submit the PR</div>
+                            <div className="step-label">{translate('提交 PR', 'Submit the PR')}</div>
                         </div>
                         <div className="step-divider">&gt;</div>
                         <div className="step-item">
                             <div className="step-number">4</div>
-                            <div className="step-label">Get featured</div>
+                            <div className="step-label">{translate('审核通过并展示', 'Get featured')}</div>
                         </div>
                     </div>
                 )}
@@ -321,7 +326,7 @@ const AiExperienceProject: React.FC = () => {
 
                     {!isLoadingProjects && projects.length === 0 && (
                         <div className="projects-empty-state">
-                            {projectsMessage || 'No projects available.'}
+                            {projectsMessage || translate('暂无可展示项目。', 'No projects available.')}
                         </div>
                     )}
 
@@ -330,8 +335,8 @@ const AiExperienceProject: React.FC = () => {
                         <div className="submit-icon-circle">
                             <span className="plus-icon">+</span>
                         </div>
-                        <h3 className="submit-title">Submit your project</h3>
-                        <div className="submit-tag">Open for contributors</div>
+                        <h3 className="submit-title">{translate('提交你的项目', 'Submit your project')}</h3>
+                        <div className="submit-tag">{translate('开放贡献中', 'Open for contributors')}</div>
                     </div>
                 </div>
             </div>

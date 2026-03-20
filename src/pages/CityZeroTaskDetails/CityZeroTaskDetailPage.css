@@ -16,9 +16,10 @@
 
 .task-detail-hero-image {
     width: 100%;
-    max-height: 500px;
+    height: 500px;
     object-fit: cover;
     object-position: center top;
+    display: block;
 }
 
 /* Content Section */
@@ -192,6 +193,10 @@
 
 /* Responsive */
 @media (max-width: 900px) {
+    .task-detail-hero-image {
+        height: 360px;
+    }
+
     .task-body-layout {
         flex-direction: column;
         gap: 3rem;
@@ -208,5 +213,11 @@
     .event-website-btn {
         width: 100%;
         text-align: center;
+    }
+}
+
+@media (max-width: 560px) {
+    .task-detail-hero-image {
+        height: 260px;
     }
 }

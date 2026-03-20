@@ -32,7 +32,10 @@ function HomePage() {
       },
       {
         phase: "ROADMAP · PHASE 02",
-        title: translate("城市扩张 · Cyber Ronin", "City Expansion · Cyber Ronin"),
+        title: translate(
+          "城市扩张 · Cyber Ronin",
+          "City Expansion · Cyber Ronin",
+        ),
         description: translate(
           "第二套忍者系列 Cyber Ronin 即将部署，社区贡献系统同步开启，链上任务与城市分区将逐步解锁。",
           "The second ninja series, Cyber Ronin, is on the way with a community contribution layer, on-chain missions, and new city sectors.",
@@ -57,13 +60,12 @@ function HomePage() {
   const posterSlides = useMemo(
     () => [
       {
-        image: "/Ninja Labs CN-banner-2-1.png",
+        image: "/Ninja Labs CN-banner-2-3.png",
         title: translate("City Zero Broadcast", "City Zero Broadcast"),
         description: translate(
           "战术情报正在持续释放。随着第一阶段部署完成，空投信号已覆盖整个 Injective 主城。",
           "Fresh tactical intel is being released as phase one completes and the airdrop signal spreads across the Injective capital.",
         ),
-        tag: translate("现场信号", "Live Signal"),
       },
       {
         image: "/Ninja Labs CN-banner-2-2.jpg",
@@ -72,7 +74,6 @@ function HomePage() {
           "N1NJ4 小队已在城市边界建立据点。持有者社群任务与实战地图正在同步解锁。",
           "N1NJ4 squads have secured city outposts. Holder missions and tactical map sectors are unlocking in sync.",
         ),
-        tag: translate("任务更新", "Mission Update"),
       },
       {
         image: "/Ninja Labs CN-banner-2.png",
@@ -81,7 +82,6 @@ function HomePage() {
           "每一枚 Origin 都是链上身份入口。500 个起点，持续扩展的城市叙事。",
           "Each Origin is an on-chain identity entry point: 500 starting points for an expanding city narrative.",
         ),
-        tag: translate("身份档案", "Identity Feed"),
       },
     ],
     [translate],
@@ -119,14 +119,6 @@ function HomePage() {
   }, [translate]);
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      setActivePosterIndex((prev) => (prev + 1) % posterSlides.length);
-    }, 5000);
-
-    return () => window.clearInterval(timer);
-  }, [posterSlides.length]);
-
-  useEffect(() => {
     let isMounted = true;
     const loadData = async () => {
       try {
@@ -151,18 +143,17 @@ function HomePage() {
   }, [translate]);
 
   const safeMaxSupply = maxSupply || 500;
-  const mintedRatio = Math.min(100, Math.round((totalMinted / safeMaxSupply) * 100));
+  const mintedRatio = Math.min(
+    100,
+    Math.round((totalMinted / safeMaxSupply) * 100),
+  );
 
   return (
     <div className="page-wrapper home-page reveal in-view">
       <section className="section hero-section reveal">
         <div className="hero-visual-wrap">
           <div className="hero-illustration">
-            <img
-              src="/Ninja Labs CN-banner-2.png"
-              alt="N1NJ4 Poster"
-              className="hero-art"
-            />
+            <img src="/homepage.png" alt="N1NJ4 Poster" className="hero-art" />
             <div className="hero-overlay hero-overlay-left">
               <p className="hero-badge">
                 {translate("Phase 01 · 已上线", "Phase 01 · Live Now")}
@@ -260,7 +251,7 @@ function HomePage() {
             <div className="deployment-status-item">
               <p>{translate("状态", "Status")}</p>
               <strong className="status-soldout">
-                {(maxSupply > 0 && totalMinted >= maxSupply)
+                {maxSupply > 0 && totalMinted >= maxSupply
                   ? "✓ Sold Out"
                   : translate("进行中", "Live")}
               </strong>
@@ -308,11 +299,11 @@ function HomePage() {
       <section className="section showcase-section reveal">
         <div className="container">
           <div className="showcase-header">
-            <div>
+            <div className="showcase-heading">
               <p className="section-kicker">NINJA INDEX</p>
               <h1>{translate("预览名单", "Preview Roster")}</h1>
             </div>
-            <p>
+            <p className="showcase-subtitle">
               {translate(
                 "500个起源忍者，每个都由算法根据独特的特征组合生成。没有两个是相同的。每个代币都是艺术与身份的完美结合。",
                 "500 Origin ninjas, each algorithmically generated from a unique combination of traits. No two are alike. Every token is art and identity in one.",
@@ -416,7 +407,7 @@ function HomePage() {
               </div>
               <div className="market-side-copy">
                 <h3>{translate("智能合约", "Smart Contract")}</h3>
-                <p>0x8160...8769 · Injective EVM · Verified on-chain</p>
+                <p>0x8160...8769 · Injective EVM · Checked on-chain</p>
               </div>
               <a
                 href="https://blockscout.injective.network/address/0x816070929010a3d202d8a6b89f92bee33b7e8769"
@@ -424,7 +415,7 @@ function HomePage() {
                 rel="noopener noreferrer"
                 className="market-side-action"
               >
-                Verify →
+                Go →
               </a>
             </article>
 
@@ -531,7 +522,6 @@ function HomePage() {
                     <div className="poster-card-body">
                       <div className="poster-card-head">
                         <h3>{slide.title}</h3>
-                        <span className="timeline-status status-live">{slide.tag}</span>
                       </div>
                       <p>{slide.description}</p>
                     </div>
@@ -606,7 +596,7 @@ function HomePage() {
 
           <div className="ops-visual reveal">
             <video
-              src="/live.mp4"
+              src="/live1.mp4"
               className="ops-image"
               autoPlay
               loop

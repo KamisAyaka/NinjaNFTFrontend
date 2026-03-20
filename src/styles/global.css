@@ -577,13 +577,15 @@
 /* ============ NFT 展示组件 ============ */
 .nft-showcase {
   width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
 }
 
 .nft-showcase-header {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 26px;
+  margin-top: 30px;
   margin-bottom: 0;
   flex-wrap: wrap;
   gap: 16px;
@@ -592,31 +594,36 @@
 .nft-showcase-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 24px;
-  max-width: 1200px;
+  gap: 22px;
+  max-width: 1168px;
   margin: 0 auto;
 }
 
 .nft-showcase-item {
   position: relative;
   aspect-ratio: 1;
-  border: 1px solid rgba(12, 16, 30, 0.08);
+  border: 1px solid rgba(12, 16, 30, 0.14);
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.35s ease;
-  background: radial-gradient(circle at top, rgba(255, 255, 255, 0.9), rgba(255, 243, 232, 0.9));
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  box-shadow: 0 25px 60px rgba(165, 119, 90, 0.2);
+  box-shadow: 0 10px 24px rgba(16, 20, 33, 0.08);
+}
+
+.nft-showcase-item:first-child {
+  border-color: rgba(212, 234, 60, 0.95);
+  box-shadow: 0 10px 24px rgba(212, 234, 60, 0.24);
 }
 
 .nft-showcase-item:hover {
-  border-color: rgba(255, 138, 61, 0.5);
-  transform: translateY(-8px) scale(1.01);
-  box-shadow: 0 30px 100px rgba(255, 164, 90, 0.35);
+  border-color: rgba(12, 16, 30, 0.28);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(16, 20, 33, 0.14);
 }
 
 .nft-showcase-item img {
@@ -628,55 +635,83 @@
 
 .nft-showcase-id {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(252, 169, 113, 0.85) 30%, rgba(252, 169, 113, 0.85) 70%, rgba(255, 255, 255, 0));
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 6px;
+  left: 50%;
+  bottom: 8px;
+  transform: translateX(-50%);
+  background: #dcf845;
+  border-radius: 999px;
+  color: #101521;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+  min-width: 76px;
+  padding: 7px 14px;
   text-align: center;
   font-family: monospace;
-  opacity: 0;
-  transition: opacity 0.2s ease;
 }
 
-.nft-showcase-item:hover .nft-showcase-id {
-  opacity: 1;
+.nft-showcase-header .btn.btn-outline.btn-sm {
+  min-height: 56px;
+  padding: 0 34px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(12, 16, 30, 0.85);
+  background: rgba(246, 246, 243, 0.96);
+  color: #0f131d;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: none;
+}
+
+.nft-showcase-header .btn.btn-outline.btn-sm:hover:not(:disabled) {
+  background: #ffffff;
+  border-color: rgba(12, 16, 30, 1);
 }
 
 /* NFT 展示响应式 */
 @media (max-width: 1400px) {
   .nft-showcase-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 20px;
   }
 }
 
 @media (max-width: 1024px) {
   .nft-showcase-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
   }
 }
 
 @media (max-width: 768px) {
   .nft-showcase-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
   }
 
   .nft-showcase-header {
-    flex-direction: column;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 560px) {
   .nft-showcase-grid {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+  }
+
+  .nft-showcase-id {
+    font-size: 0.88rem;
+    min-width: 62px;
+    padding: 6px 12px;
+  }
+
+  .nft-showcase-header .btn.btn-outline.btn-sm {
+    min-height: 48px;
+    padding: 0 24px;
+    letter-spacing: 0.2em;
+    font-size: 0.82rem;
   }
 }
 
@@ -761,4 +796,3 @@
     font-size: 0.9rem;
   }
 }
-
