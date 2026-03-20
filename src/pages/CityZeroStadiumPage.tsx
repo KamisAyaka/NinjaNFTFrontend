@@ -88,13 +88,13 @@ const CityZeroStadiumPage: React.FC = () => {
               <p>
                 {translate(
                   "City Zero Stadium 是 Ninja Labs 为 City Zero 居民打造的互动场域。在这里你可以看到当前最重要的进行中活动，并与 Ninja Labs 团队直接连接。",
-                  "City Zero Stadium is the playground that Ninja Labs built for the residents of City Zero. This is where you will find our major ongoing events and a direct line to interact with the Ninja Labs team."
+                  "City Zero Stadium is the playground that Ninja Labs built for the residents of City Zero. This is where you will find our major ongoing events and a direct line to interact with the Ninja Labs team.",
                 )}
               </p>
               <p>
                 {translate(
                   "Stadium 也是我们持续发布参与机会的地方。无论是加入活动、参与共建，还是跟进社区动态，你都可以在这里找到入口。如果你是建设者，这里也会发布面向落地执行者的成长机会。建议定期查看，通常都会有值得参与的新内容。",
-                  "The Stadium is also where we share participation opportunities as they come up, whether that means joining a campaign, contributing to something we are building, or simply being part of what is happening in the community. If you are a builder, this is also where we post growth opportunities designed specifically for people who want to create and ship things within City Zero. Come check in regularly. There is usually something worth your attention."
+                  "The Stadium is also where we share participation opportunities as they come up, whether that means joining a campaign, contributing to something we are building, or simply being part of what is happening in the community. If you are a builder, this is also where we post growth opportunities designed specifically for people who want to create and ship things within City Zero. Come check in regularly. There is usually something worth your attention.",
                 )}
               </p>
             </div>
@@ -139,7 +139,7 @@ const CityZeroStadiumPage: React.FC = () => {
                     {(isZh ? phase.descriptionsZh : phase.descriptionsEn).map(
                       (desc, idx) => (
                         <p key={idx}>{desc}</p>
-                      )
+                      ),
                     )}
                   </div>
                 </div>
@@ -155,7 +155,11 @@ const CityZeroStadiumPage: React.FC = () => {
                 </h4>
                 <div className="participant-list">
                   <div className="participant-item">
-                    <img src="/inj%20logo.svg" alt="Injective" className="p-avatar" />
+                    <img
+                      src="/inj%20logo.svg"
+                      alt="Injective"
+                      className="p-avatar"
+                    />
                     <span>Injective</span>
                   </div>
                   <div className="participant-item">
@@ -164,46 +168,17 @@ const CityZeroStadiumPage: React.FC = () => {
                       alt="Ninja Labs CN"
                       className="p-avatar"
                     />
-                    <span>Ninja Labs CN</span>
+                    <span>Ninja Labs HQ</span>
                   </div>
                 </div>
                 <h4 className="widget-title">
                   {translate("参与方链接", "Participant Links")}
                 </h4>
-                <div className="project-link-btn">Injective：https://injective.com/zh</div>
                 <div className="project-link-btn">
-                  Ninja Labs CN：https://injective.notion.site/ninja-labs-cn
+                  Injective：https://injective.com/
                 </div>
-              </div>
-
-              {/* Widget 2: Support Pledge */}
-              <div className="sidebar-widget no-padding">
-                <div className="widget-header-wrapper">
-                  <h3 className="widget-main-title">{translate("支持", "Support")}</h3>
-                </div>
-                <div className="widget-body-wrapper">
-                  <h4 className="pledge-title">
-                    {translate("无回报支持", "Make a pledge without a reward")}
-                  </h4>
-                  <div className="pledge-input-group">
-                    <div className="pledge-currency">HK$</div>
-                    <input type="number" defaultValue="10" className="pledge-input" />
-                  </div>
-                  <div className="pledge-about">{translate("约 $2", "ABOUT $2")}</div>
-                  <div className="pledge-reason-box">
-                    <h5>
-                      {translate(
-                        "因为相信它，所以支持它。",
-                        "Back it because you believe in it."
-                      )}
-                    </h5>
-                    <p>
-                      {translate(
-                        "无需回报，仅因你认可这个项目就可以支持。",
-                        "Support the project for no reward, just because it speaks to you."
-                      )}
-                    </p>
-                  </div>
+                <div className="project-link-btn">
+                  Ninja Labs HQ：https://x.com/NinjaLabsHQ
                 </div>
               </div>
 
@@ -218,7 +193,7 @@ const CityZeroStadiumPage: React.FC = () => {
                   <p className="grants-intro">
                     {translate(
                       "Ninja Labs 孵化计划。",
-                      "Ninja Labs Incubation Program."
+                      "Ninja Labs Incubation Program.",
                     )}
                   </p>
 
@@ -231,7 +206,7 @@ const CityZeroStadiumPage: React.FC = () => {
                     <p className="grants-section-desc">
                       {translate(
                         "为能惠及 City Zero 居民的项目提供直接资金支持。资助由 N1NJ4 持有者通过链上投票批准，按里程碑发放，并在 Injective 上保持全流程透明。",
-                        "Direct funding for projects that benefit City Zero citizens. Grants are approved by N1NJ4 holders through on-chain voting, milestone-based, and fully transparent on Injective."
+                        "Direct funding for projects that benefit City Zero citizens. Grants are approved by N1NJ4 holders through on-chain voting, milestone-based, and fully transparent on Injective.",
                       )}
                     </p>
                     <div className="grants-tags">
@@ -241,7 +216,9 @@ const CityZeroStadiumPage: React.FC = () => {
                       <span className="grants-tag">
                         {translate("消费级应用", "Consumer Apps")}
                       </span>
-                      <span className="grants-tag">{translate("研究", "Research")}</span>
+                      <span className="grants-tag">
+                        {translate("研究", "Research")}
+                      </span>
                       <span className="grants-tag">
                         {translate("社区建设", "Community Building")}
                       </span>
@@ -259,38 +236,38 @@ const CityZeroStadiumPage: React.FC = () => {
                     <p className="grants-section-desc">
                       {translate(
                         "为希望在 City Zero 内长期成长的建设者提供结构化支持路径，超越一次性资助。",
-                        "A structured support path for builders who want to grow a lasting project inside City Zero. Goes beyond a one-time grant."
+                        "A structured support path for builders who want to grow a lasting project inside City Zero. Goes beyond a one-time grant.",
                       )}
                     </p>
                     <ul className="grants-list">
                       <li>
                         {translate(
                           "与里程碑绑定的多阶段持续资金支持",
-                          "Multi-phase sustained funding tied to milestones"
+                          "Multi-phase sustained funding tied to milestones",
                         )}
                       </li>
                       <li>
                         {translate(
                           "来自 Ninja Labs 工程团队的直接技术支持",
-                          "Direct technical support from Ninja Labs engineers"
+                          "Direct technical support from Ninja Labs engineers",
                         )}
                       </li>
                       <li>
                         {translate(
                           "作为官方认可的 City Zero 项目进行展示",
-                          "Featured as an endorsed City Zero project"
+                          "Featured as an endorsed City Zero project",
                         )}
                       </li>
                       <li>
                         {translate(
                           "资深 Web3 建设者导师辅导",
-                          "Mentorship from experienced web3 builders"
+                          "Mentorship from experienced web3 builders",
                         )}
                       </li>
                       <li>
                         {translate(
                           "交付成果的链上凭证记录",
-                          "On-chain credentialing of your deliverables"
+                          "On-chain credentialing of your deliverables",
                         )}
                       </li>
                     </ul>

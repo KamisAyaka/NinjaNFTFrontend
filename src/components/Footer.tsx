@@ -109,7 +109,7 @@ function Footer() {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>© 2024 Ninja Labs · N1NJ4: Origins. All rights reserved.</p>
+        <p>© 2025 Ninja Labs · N1NJ4: Origins. All rights reserved.</p>
         <p className="footer-powered">
           <span aria-hidden>•</span> POWERED BY INJECTIVE
         </p>
